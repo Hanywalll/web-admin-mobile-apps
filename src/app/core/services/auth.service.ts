@@ -37,18 +37,21 @@ export class AuthService {
     }
   }
 
-  login(credentials: { email: string; password: string }): Observable<ApiResponse<{ token: string; user: User }>> {
-    return this.api.post<{ token: string; user: User }>('/auth/login', credentials).pipe(
+  login(credentials: { email: string; password: string }): Observable<ApiResponse<any>> {
+    return this.api.post<any>('/auth/login', credentials).pipe(
       tap((res) => {
         if (res.success && res.data) {
-          const token = res.data.token;
+          const token = res.data.token || res.data.tokens?.access_token;
           const user = res.data.user;
 
-          this.token.set(token);
-          this.currentUser.set(user);
-
-          localStorage.setItem('kpm_admin_token', token);
-          localStorage.setItem('kpm_admin_user', JSON.stringify(user));
+          if (token) {
+            this.token.set(token);
+            localStorage.setItem('kpm_admin_token', token);
+          }
+          if (user) {
+            this.currentUser.set(user);
+            localStorage.setItem('kpm_admin_user', JSON.stringify(user));
+          }
         }
       })
     );

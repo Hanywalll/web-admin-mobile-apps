@@ -44,18 +44,44 @@ export class AdminService {
 
   // --- BANNERS ---
   getBanners(): Observable<Banner[]> {
-    return this.api.get<Banner[]>('/banners').pipe(
-      map((res) => (res && res.data && res.data.length > 0) ? res.data : this.getMockBanners()),
+    return this.api.get<any[]>('/banners').pipe(
+      map((res) => {
+        if (res && res.data && res.data.length > 0) {
+          return res.data.map((b: any) => ({
+            id: b.id,
+            title: b.title,
+            imageUrl: b.image_url || b.imageUrl,
+            targetUrl: b.route || b.target_url || b.targetUrl || '/package_list',
+            order: b.sort_order || b.order || 1,
+            isActive: b.is_active ?? b.isActive ?? true,
+          }));
+        }
+        return this.getMockBanners();
+      }),
       catchError(() => of(this.getMockBanners()))
     );
   }
 
   createBanner(banner: Partial<Banner>): Observable<ApiResponse<Banner>> {
-    return this.api.post<Banner>('/admin/banners', banner);
+    const payload = {
+      title: banner.title,
+      image_url: banner.imageUrl || banner.image_url,
+      route: banner.targetUrl || banner.target_url || '/package_list',
+      sort_order: banner.order || 1,
+      is_active: banner.isActive ?? true,
+    };
+    return this.api.post<Banner>('/admin/banners', payload);
   }
 
   updateBanner(id: string, banner: Partial<Banner>): Observable<ApiResponse<Banner>> {
-    return this.api.put<Banner>(`/admin/banners/${id}`, banner);
+    const payload = {
+      title: banner.title,
+      image_url: banner.imageUrl || banner.image_url,
+      route: banner.targetUrl || banner.target_url || '/package_list',
+      sort_order: banner.order || 1,
+      is_active: banner.isActive ?? true,
+    };
+    return this.api.put<Banner>(`/admin/banners/${id}`, payload);
   }
 
   deleteBanner(id: string): Observable<ApiResponse<any>> {
@@ -64,18 +90,55 @@ export class AdminService {
 
   // --- PACKAGES ---
   getPackages(): Observable<Package[]> {
-    return this.api.get<Package[]>('/admin/packages').pipe(
-      map((res) => (res && res.data && res.data.length > 0) ? res.data : this.getMockPackages()),
+    return this.api.get<any[]>('/packages').pipe(
+      map((res) => {
+        if (res && res.data && res.data.length > 0) {
+          return res.data.map((p: any) => ({
+            id: p.id,
+            title: p.title,
+            description: p.description || '',
+            price: p.price || 0,
+            discountPrice: p.discount_price || p.discountPrice || p.price,
+            isDiscountActive: p.is_discount_active ?? p.isDiscountActive ?? true,
+            activeDays: p.active_days || p.activeDays || 180,
+            kelas: p.kelas || p.class || 'Semua Kelas',
+            jenjang: p.jenjang || 'SMA',
+            totalModules: p.total_modules || p.totalModules || 20,
+            isActive: p.is_active ?? p.isActive ?? true,
+          }));
+        }
+        return this.getMockPackages();
+      }),
       catchError(() => of(this.getMockPackages()))
     );
   }
 
   createPackage(pkg: Partial<Package>): Observable<ApiResponse<Package>> {
-    return this.api.post<Package>('/admin/packages', pkg);
+    const payload = {
+      title: pkg.title,
+      description: pkg.description,
+      price: pkg.price,
+      discount_price: pkg.discountPrice || pkg.discount_price,
+      active_days: pkg.activeDays || pkg.active_days || 180,
+      kelas: pkg.kelas,
+      jenjang: pkg.jenjang || 'SMA',
+      is_active: pkg.isActive ?? true,
+    };
+    return this.api.post<Package>('/admin/packages', payload);
   }
 
   updatePackage(id: string, pkg: Partial<Package>): Observable<ApiResponse<Package>> {
-    return this.api.put<Package>(`/admin/packages/${id}`, pkg);
+    const payload = {
+      title: pkg.title,
+      description: pkg.description,
+      price: pkg.price,
+      discount_price: pkg.discountPrice || pkg.discount_price,
+      active_days: pkg.activeDays || pkg.active_days || 180,
+      kelas: pkg.kelas,
+      jenjang: pkg.jenjang || 'SMA',
+      is_active: pkg.isActive ?? true,
+    };
+    return this.api.put<Package>(`/admin/packages/${id}`, payload);
   }
 
   deletePackage(id: string): Observable<ApiResponse<any>> {
@@ -84,8 +147,23 @@ export class AdminService {
 
   // --- LIVE CLASSES ---
   getLiveClasses(): Observable<LiveClass[]> {
-    return this.api.get<LiveClass[]>('/live-classes').pipe(
-      map((res) => (res && res.data && res.data.length > 0) ? res.data : this.getMockLiveClasses()),
+    return this.api.get<any[]>('/live-classes').pipe(
+      map((res) => {
+        if (res && res.data && res.data.length > 0) {
+          return res.data.map((lc: any) => ({
+            id: lc.id,
+            title: lc.title,
+            subject: lc.subject || 'Umum',
+            tutorName: lc.tutor_name || lc.tutorName || 'Tutor KPM',
+            tutorAvatar: lc.tutor_avatar || lc.tutorAvatar,
+            scheduledAt: lc.scheduled_at ? new Date(lc.scheduled_at).toLocaleString('id-ID') : (lc.scheduledAt || '2026-10-20 19:30 WIB'),
+            meetingUrl: lc.zoom_url || lc.meeting_url || lc.meetingUrl || 'https://zoom.us',
+            grade: lc.grade || 'Semua Jenjang',
+            isActive: lc.is_active ?? lc.isActive ?? true,
+          }));
+        }
+        return this.getMockLiveClasses();
+      }),
       catchError(() => of(this.getMockLiveClasses()))
     );
   }
@@ -104,8 +182,21 @@ export class AdminService {
 
   // --- VIDEOS ---
   getVideos(): Observable<Video[]> {
-    return this.api.get<Video[]>('/admin/videos').pipe(
-      map((res) => (res && res.data && res.data.length > 0) ? res.data : this.getMockVideos()),
+    return this.api.get<any[]>('/admin/videos').pipe(
+      map((res) => {
+        if (res && res.data && res.data.length > 0) {
+          return res.data.map((v: any) => ({
+            id: v.id,
+            title: v.title,
+            description: v.description || '',
+            category: v.category || 'Matematika SMA',
+            videoUrl: v.video_url || v.videoUrl,
+            durationSeconds: v.duration_seconds || v.durationSeconds || 1800,
+            isLocked: v.is_locked ?? v.isLocked ?? false,
+          }));
+        }
+        return this.getMockVideos();
+      }),
       catchError(() => of(this.getMockVideos()))
     );
   }
@@ -124,8 +215,21 @@ export class AdminService {
 
   // --- MODULES ---
   getModules(): Observable<Module[]> {
-    return this.api.get<Module[]>('/modules').pipe(
-      map((res) => (res && res.data && res.data.length > 0) ? res.data : this.getMockModules()),
+    return this.api.get<any[]>('/modules').pipe(
+      map((res) => {
+        if (res && res.data && res.data.length > 0) {
+          return res.data.map((m: any) => ({
+            id: m.id,
+            title: m.title,
+            subject: m.subject || 'Matematika Nalaria',
+            grade: m.grade || 'SD & SMP',
+            fileUrl: m.pdf_url || m.file_url || m.fileUrl || '',
+            totalPages: m.total_pages || m.totalPages || 30,
+            fileSizeMb: m.file_size_mb || m.fileSizeMb || 5.0,
+          }));
+        }
+        return this.getMockModules();
+      }),
       catchError(() => of(this.getMockModules()))
     );
   }
@@ -157,8 +261,27 @@ export class AdminService {
 
   // --- ORDERS & TRANSACTIONS ---
   getOrders(): Observable<Order[]> {
-    return this.api.get<Order[]>('/admin/orders').pipe(
-      map((res) => (res && res.data && res.data.length > 0) ? res.data : this.getMockOrders()),
+    return this.api.get<any[]>('/admin/orders').pipe(
+      map((res) => {
+        if (res && res.data && res.data.length > 0) {
+          return res.data.map((o: any) => ({
+            id: o.order_number || o.id,
+            studentName: o.user?.name || o.student_name || o.studentName || 'Siswa KPM',
+            studentPhone: o.user?.phone || o.student_phone || o.studentPhone || '-',
+            school: o.user?.school_name || o.school || '-',
+            packageTitle: o.package?.title || o.package_title || o.packageTitle || 'Paket Belajar KPM',
+            amount: o.amount || o.gross_amount || 0,
+            originalAmount: o.original_amount || o.amount || 0,
+            discountAmount: o.discount_amount || o.discountAmount || 0,
+            voucherCode: o.voucher_code || o.voucherCode,
+            status: (o.status || 'PENDING').toUpperCase() as any,
+            paymentMethod: o.payment_type || o.payment_method || o.paymentMethod || 'Midtrans Snap',
+            accessDuration: o.access_duration || '180 Hari',
+            createdAt: o.created_at ? new Date(o.created_at).toLocaleString('id-ID') : (o.createdAt || '-'),
+          }));
+        }
+        return this.getMockOrders();
+      }),
       catchError(() => of(this.getMockOrders()))
     );
   }
@@ -169,8 +292,23 @@ export class AdminService {
 
   // --- USERS ---
   getUsers(): Observable<User[]> {
-    return this.api.get<User[]>('/admin/users').pipe(
-      map((res) => (res && res.data && res.data.length > 0) ? res.data : this.getMockUsers()),
+    return this.api.get<any[]>('/admin/users').pipe(
+      map((res) => {
+        if (res && res.data && res.data.length > 0) {
+          return res.data.map((u: any) => ({
+            id: u.id,
+            name: u.name || 'Pengguna KPM',
+            email: u.email,
+            phone: u.phone || '-',
+            role: (u.role === 'admin' ? 'admin' : (u.role === 'tutor' ? 'tutor' : 'user')) as 'admin' | 'tutor' | 'user',
+            school: u.school_name || u.school || '-',
+            city: u.city || 'Bogor',
+            isActive: u.is_active ?? u.isActive ?? true,
+            createdAt: u.created_at ? new Date(u.created_at).toLocaleDateString('id-ID') : (u.createdAt || '-'),
+          }));
+        }
+        return this.getMockUsers();
+      }),
       catchError(() => of(this.getMockUsers()))
     );
   }

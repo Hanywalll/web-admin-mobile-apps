@@ -12,13 +12,11 @@ import { IconComponent } from '../../shared/components/icon/icon.component';
   imports: [CommonModule, RouterModule, IconComponent],
   template: `
     <div class="space-y-6">
-      <!-- Page Header -->
-      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <!-- Page Title & Operational Actions -->
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-2 border-b border-zinc-200 dark:border-zinc-800">
         <div>
-          <h1 class="text-xl sm:text-2xl font-extrabold tracking-tight text-foreground">Dashboard Administrator</h1>
-          <p class="text-xs text-muted-foreground mt-0.5">
-            Ringkasan metrik belajar, performa penjualan paket & sinkronisasi data KPM Academy
-          </p>
+          <h1 class="text-lg sm:text-xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100">Ringkasan Operasional</h1>
+          <p class="text-xs text-zinc-500 mt-0.5">Monitoring aktivitas belajar, pembayaran siswa, dan integritas katalog KPM</p>
         </div>
 
         <div class="flex items-center gap-2">
@@ -26,244 +24,244 @@ import { IconComponent } from '../../shared/components/icon/icon.component';
             type="button"
             (click)="loadData()"
             [disabled]="isLoading()"
-            class="h-9 px-3 rounded-lg border border-border bg-card hover:bg-muted text-xs font-semibold text-foreground flex items-center gap-2 transition-all shadow-sm"
+            class="h-8 px-3 rounded-md border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 hover:bg-zinc-50 dark:hover:bg-zinc-800 text-xs font-medium text-zinc-700 dark:text-zinc-300 flex items-center gap-1.5 transition-colors shadow-none"
           >
-            <app-icon name="refresh" [size]="14" [className]="isLoading() ? 'animate-spin' : ''"></app-icon>
-            <span>Sinkron Data</span>
+            <app-icon name="refresh" [size]="13" [className]="isLoading() ? 'animate-spin' : ''"></app-icon>
+            <span>Perbarui Data</span>
           </button>
 
           <a
-            routerLink="/admin/cms"
-            class="h-9 px-3.5 rounded-lg bg-primary text-primary-foreground text-xs font-bold flex items-center gap-2 hover:bg-primary/90 transition-all shadow-sm"
+            routerLink="/admin/orders"
+            class="h-8 px-3 rounded-md bg-blue-600 hover:bg-blue-700 text-white text-xs font-medium flex items-center gap-1.5 transition-colors"
           >
-            <app-icon name="plus" [size]="14"></app-icon>
-            <span>Kelola CMS</span>
+            <app-icon name="shopping-cart" [size]="13"></app-icon>
+            <span>Daftar Transaksi</span>
           </a>
         </div>
       </div>
 
-      <!-- METRICS GRID (Responsive 1-col on mobile, 2-col on tablet, 4-col on desktop) -->
+      <!-- SYSTEM INTEGRITY STATUS STRIP -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-3 p-3.5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-xs">
+        <div class="flex items-center gap-2.5">
+          <span class="h-2 w-2 rounded-full bg-emerald-500 flex-shrink-0"></span>
+          <div>
+            <span class="font-medium text-zinc-800 dark:text-zinc-200 block text-xs">Backend Go Fiber Engine</span>
+            <span class="text-[11px] text-zinc-400 font-mono">Port 3000 / REST API v1.0.0</span>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-2.5 md:border-l md:border-zinc-200 md:dark:border-zinc-800 md:pl-4">
+          <span class="h-2 w-2 rounded-full bg-blue-500 flex-shrink-0"></span>
+          <div>
+            <span class="font-medium text-zinc-800 dark:text-zinc-200 block text-xs">Midtrans Payment Gateway</span>
+            <span class="text-[11px] text-zinc-400 font-mono">Snap QRIS, VA BCA/Mandiri/BNI</span>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-2.5 md:border-l md:border-zinc-200 md:dark:border-zinc-800 md:pl-4">
+          <span class="h-2 w-2 rounded-full bg-purple-500 flex-shrink-0"></span>
+          <div>
+            <span class="font-medium text-zinc-800 dark:text-zinc-200 block text-xs">Gemini 3.5 Flash AI Tutor</span>
+            <span class="text-[11px] text-zinc-400 font-mono">Pembahasan Soal 24/7 Aktif</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- KEY METRIC CARDS -->
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <!-- 1. Total Siswa -->
-        <div class="rounded-xl border border-border bg-card p-5 text-card-foreground shadow-sm hover:border-primary/40 transition-colors">
-          <div class="flex items-center justify-between">
-            <span class="text-xs font-bold text-muted-foreground">Total Siswa Terdaftar</span>
-            <div class="h-8 w-8 rounded-lg bg-blue-500/10 text-blue-600 flex items-center justify-center">
-              <app-icon name="users" [size]="16"></app-icon>
-            </div>
+        <div class="rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-4 shadow-none">
+          <div class="flex items-center justify-between text-zinc-500 dark:text-zinc-400 text-xs font-medium">
+            <span>Siswa Terdaftar</span>
+            <app-icon name="users" [size]="15"></app-icon>
           </div>
-          <div class="mt-3">
-            <div class="text-2xl font-black text-foreground">{{ (stats()?.totalUsers || 5) | number }}</div>
-            <div class="flex items-center gap-1.5 mt-1 text-[11px] text-emerald-600 font-bold">
-              <span>+100% Realtime</span>
-              <span class="text-muted-foreground font-normal">Sinkron akun mobile</span>
-            </div>
+          <div class="mt-2.5 flex items-baseline justify-between">
+            <span class="text-2xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100 font-mono">
+              {{ (stats()?.totalUsers || 5) | number }}
+            </span>
+            <span class="text-[11px] text-zinc-500 dark:text-zinc-400 font-medium">Akun Aktif</span>
           </div>
         </div>
 
-        <!-- 2. Total Omset Realtime -->
-        <div class="rounded-xl border border-border bg-card p-5 text-card-foreground shadow-sm hover:border-primary/40 transition-colors">
-          <div class="flex items-center justify-between">
-            <span class="text-xs font-bold text-muted-foreground">Total Pendapatan Midtrans</span>
-            <div class="h-8 w-8 rounded-lg bg-emerald-500/10 text-emerald-600 flex items-center justify-center">
-              <app-icon name="dollar" [size]="16"></app-icon>
-            </div>
+        <!-- 2. Total Pendapatan -->
+        <div class="rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-4 shadow-none">
+          <div class="flex items-center justify-between text-zinc-500 dark:text-zinc-400 text-xs font-medium">
+            <span>Volume Penjualan</span>
+            <app-icon name="dollar" [size]="15"></app-icon>
           </div>
-          <div class="mt-3">
-            <div class="text-2xl font-black text-foreground">Rp {{ (stats()?.totalRevenue || 688000) | number }}</div>
-            <div class="flex items-center gap-1.5 mt-1 text-[11px] text-emerald-600 font-bold">
-              <span>Otomatis Verifikasi</span>
-              <span class="text-muted-foreground font-normal">Kwitansi aktif</span>
-            </div>
+          <div class="mt-2.5 flex items-baseline justify-between">
+            <span class="text-2xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100 font-mono">
+              Rp {{ (stats()?.totalRevenue || 688000) | number }}
+            </span>
+            <span class="text-[11px] text-emerald-600 dark:text-emerald-400 font-mono font-medium">IDR Net</span>
           </div>
         </div>
 
-        <!-- 3. Total Pesanan -->
-        <div class="rounded-xl border border-border bg-card p-5 text-card-foreground shadow-sm hover:border-primary/40 transition-colors">
-          <div class="flex items-center justify-between">
-            <span class="text-xs font-bold text-muted-foreground">Transaksi Pesanan</span>
-            <div class="h-8 w-8 rounded-lg bg-amber-500/10 text-amber-600 flex items-center justify-center">
-              <app-icon name="shopping-cart" [size]="16"></app-icon>
-            </div>
+        <!-- 3. Total Transaksi -->
+        <div class="rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-4 shadow-none">
+          <div class="flex items-center justify-between text-zinc-500 dark:text-zinc-400 text-xs font-medium">
+            <span>Transaksi Berhasil</span>
+            <app-icon name="shopping-cart" [size]="15"></app-icon>
           </div>
-          <div class="mt-3">
-            <div class="text-2xl font-black text-foreground">{{ (stats()?.totalOrders || 5) | number }}</div>
-            <div class="flex items-center gap-1.5 mt-1 text-[11px] text-blue-600 font-bold">
-              <span>100% Selesai (PAID)</span>
-            </div>
+          <div class="mt-2.5 flex items-baseline justify-between">
+            <span class="text-2xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100 font-mono">
+              {{ (stats()?.totalOrders || 5) | number }}
+            </span>
+            <span class="text-[11px] text-zinc-500 dark:text-zinc-400 font-mono">Settlement</span>
           </div>
         </div>
 
-        <!-- 4. Paket Belajar Aktif -->
-        <div class="rounded-xl border border-border bg-card p-5 text-card-foreground shadow-sm hover:border-primary/40 transition-colors">
-          <div class="flex items-center justify-between">
-            <span class="text-xs font-bold text-muted-foreground">Paket Belajar & Tryout</span>
-            <div class="h-8 w-8 rounded-lg bg-purple-500/10 text-purple-600 flex items-center justify-center">
-              <app-icon name="package" [size]="16"></app-icon>
-            </div>
+        <!-- 4. Paket Belajar -->
+        <div class="rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-4 shadow-none">
+          <div class="flex items-center justify-between text-zinc-500 dark:text-zinc-400 text-xs font-medium">
+            <span>Katalog Kurikulum</span>
+            <app-icon name="package" [size]="15"></app-icon>
           </div>
-          <div class="mt-3">
-            <div class="text-2xl font-black text-foreground">{{ (stats()?.activePackages || 5) }} Paket</div>
-            <div class="flex items-center gap-1.5 mt-1 text-[11px] text-purple-600 font-bold">
-              <span>SD, SMP, SMA & MNR</span>
-            </div>
+          <div class="mt-2.5 flex items-baseline justify-between">
+            <span class="text-2xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100 font-mono">
+              {{ (stats()?.activePackages || 5) }}
+            </span>
+            <span class="text-[11px] text-zinc-500 dark:text-zinc-400 font-medium">Paket Terbit</span>
           </div>
         </div>
       </div>
 
-      <!-- SHORTCUT GRID FOR CMS (Responsive 2-col on mobile, 3-col on tablet, 6-col on desktop) -->
-      <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
-        <a
-          routerLink="/admin/cms"
-          [queryParams]="{ tab: 'banner' }"
-          class="p-3.5 sm:p-4 rounded-xl border border-border bg-card hover:bg-muted/60 transition-all flex flex-col items-center text-center group shadow-sm"
-        >
-          <div class="h-10 w-10 rounded-xl bg-blue-500/10 text-blue-600 flex items-center justify-center mb-2 group-hover:scale-105 transition-transform">
-            <app-icon name="layers" [size]="20"></app-icon>
-          </div>
-          <span class="text-xs font-bold text-foreground">Banner Promo</span>
-          <span class="text-[10px] text-muted-foreground">{{ stats()?.totalVideos ? '3 Banner' : 'Slider Beranda' }}</span>
-        </a>
+      <!-- OPERATIONAL CMS SHORTCUTS STRIP (No childish rainbow boxes) -->
+      <div class="rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-4">
+        <div class="text-xs font-semibold text-zinc-800 dark:text-zinc-200 mb-3 flex items-center justify-between">
+          <span>Manajemen Katalog & Modul Belajar</span>
+          <a routerLink="/admin/cms" class="text-blue-600 dark:text-blue-400 hover:underline text-xs font-medium">Buka CMS Terpadu &rarr;</a>
+        </div>
 
-        <a
-          routerLink="/admin/cms"
-          [queryParams]="{ tab: 'live' }"
-          class="p-3.5 sm:p-4 rounded-xl border border-border bg-card hover:bg-muted/60 transition-all flex flex-col items-center text-center group shadow-sm"
-        >
-          <div class="h-10 w-10 rounded-xl bg-red-500/10 text-red-600 flex items-center justify-center mb-2 group-hover:scale-105 transition-transform">
-            <app-icon name="video" [size]="20"></app-icon>
-          </div>
-          <span class="text-xs font-bold text-foreground">Live Class</span>
-          <span class="text-[10px] text-muted-foreground">Jadwal Zoom & Tutor</span>
-        </a>
+        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2 text-xs">
+          <a
+            routerLink="/admin/cms"
+            [queryParams]="{ tab: 'package' }"
+            class="p-2.5 rounded-md border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-800/60 transition-colors flex items-center gap-2"
+          >
+            <app-icon name="package" [size]="14" className="text-zinc-500"></app-icon>
+            <div>
+              <span class="font-medium text-zinc-800 dark:text-zinc-200 block text-xs">Paket Ujian</span>
+              <span class="text-[10px] text-zinc-400">5 Paket aktif</span>
+            </div>
+          </a>
 
-        <a
-          routerLink="/admin/cms"
-          [queryParams]="{ tab: 'package' }"
-          class="p-3.5 sm:p-4 rounded-xl border border-border bg-card hover:bg-muted/60 transition-all flex flex-col items-center text-center group shadow-sm"
-        >
-          <div class="h-10 w-10 rounded-xl bg-emerald-500/10 text-emerald-600 flex items-center justify-center mb-2 group-hover:scale-105 transition-transform">
-            <app-icon name="package" [size]="20"></app-icon>
-          </div>
-          <span class="text-xs font-bold text-foreground">Paket Belajar</span>
-          <span class="text-[10px] text-muted-foreground">Tryout & Modul</span>
-        </a>
+          <a
+            routerLink="/admin/cms"
+            [queryParams]="{ tab: 'banner' }"
+            class="p-2.5 rounded-md border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-800/60 transition-colors flex items-center gap-2"
+          >
+            <app-icon name="layers" [size]="14" className="text-zinc-500"></app-icon>
+            <div>
+              <span class="font-medium text-zinc-800 dark:text-zinc-200 block text-xs">Banner Slider</span>
+              <span class="text-[10px] text-zinc-400">3 Banner aktif</span>
+            </div>
+          </a>
 
-        <a
-          routerLink="/admin/cms"
-          [queryParams]="{ tab: 'video' }"
-          class="p-3.5 sm:p-4 rounded-xl border border-border bg-card hover:bg-muted/60 transition-all flex flex-col items-center text-center group shadow-sm"
-        >
-          <div class="h-10 w-10 rounded-xl bg-amber-500/10 text-amber-600 flex items-center justify-center mb-2 group-hover:scale-105 transition-transform">
-            <app-icon name="video" [size]="20"></app-icon>
-          </div>
-          <span class="text-xs font-bold text-foreground">Video Materi</span>
-          <span class="text-[10px] text-muted-foreground">4 Video Pembahasan</span>
-        </a>
+          <a
+            routerLink="/admin/cms"
+            [queryParams]="{ tab: 'live' }"
+            class="p-2.5 rounded-md border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-800/60 transition-colors flex items-center gap-2"
+          >
+            <app-icon name="video" [size]="14" className="text-zinc-500"></app-icon>
+            <div>
+              <span class="font-medium text-zinc-800 dark:text-zinc-200 block text-xs">Live Class</span>
+              <span class="text-[10px] text-zinc-400">2 Sesi Zoom</span>
+            </div>
+          </a>
 
-        <a
-          routerLink="/admin/cms"
-          [queryParams]="{ tab: 'module' }"
-          class="p-3.5 sm:p-4 rounded-xl border border-border bg-card hover:bg-muted/60 transition-all flex flex-col items-center text-center group shadow-sm"
-        >
-          <div class="h-10 w-10 rounded-xl bg-indigo-500/10 text-indigo-600 flex items-center justify-center mb-2 group-hover:scale-105 transition-transform">
-            <app-icon name="file-text" [size]="20"></app-icon>
-          </div>
-          <span class="text-xs font-bold text-foreground">Modul PDF</span>
-          <span class="text-[10px] text-muted-foreground">4 Bank Soal PDF</span>
-        </a>
+          <a
+            routerLink="/admin/cms"
+            [queryParams]="{ tab: 'video' }"
+            class="p-2.5 rounded-md border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-800/60 transition-colors flex items-center gap-2"
+          >
+            <app-icon name="video" [size]="14" className="text-zinc-500"></app-icon>
+            <div>
+              <span class="font-medium text-zinc-800 dark:text-zinc-200 block text-xs">Video Materi</span>
+              <span class="text-[10px] text-zinc-400">4 Video MIPA</span>
+            </div>
+          </a>
 
-        <a
-          routerLink="/admin/cms"
-          [queryParams]="{ tab: 'voucher' }"
-          class="p-3.5 sm:p-4 rounded-xl border border-border bg-card hover:bg-muted/60 transition-all flex flex-col items-center text-center group shadow-sm"
-        >
-          <div class="h-10 w-10 rounded-xl bg-pink-500/10 text-pink-600 flex items-center justify-center mb-2 group-hover:scale-105 transition-transform">
-            <app-icon name="ticket" [size]="20"></app-icon>
-          </div>
-          <span class="text-xs font-bold text-foreground">Kupon Voucher</span>
-          <span class="text-[10px] text-muted-foreground">3 Kupon Diskon</span>
-        </a>
+          <a
+            routerLink="/admin/cms"
+            [queryParams]="{ tab: 'module' }"
+            class="p-2.5 rounded-md border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-800/60 transition-colors flex items-center gap-2"
+          >
+            <app-icon name="file-text" [size]="14" className="text-zinc-500"></app-icon>
+            <div>
+              <span class="font-medium text-zinc-800 dark:text-zinc-200 block text-xs">Modul PDF</span>
+              <span class="text-[10px] text-zinc-400">4 E-Book</span>
+            </div>
+          </a>
+
+          <a
+            routerLink="/admin/cms"
+            [queryParams]="{ tab: 'voucher' }"
+            class="p-2.5 rounded-md border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-800/60 transition-colors flex items-center gap-2"
+          >
+            <app-icon name="ticket" [size]="14" className="text-zinc-500"></app-icon>
+            <div>
+              <span class="font-medium text-zinc-800 dark:text-zinc-200 block text-xs">Voucher Diskon</span>
+              <span class="text-[10px] text-zinc-400">3 Kode promo</span>
+            </div>
+          </a>
+        </div>
       </div>
 
-      <!-- RECENT TRANSACTIONS (Responsive table + mobile card list) -->
-      <div class="rounded-2xl border border-border bg-card shadow-sm overflow-hidden">
-        <div class="p-4 sm:p-5 border-b border-border flex items-center justify-between">
+      <!-- RECENT ORDERS SECTION -->
+      <div class="rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 overflow-hidden">
+        <div class="px-4 py-3 border-b border-zinc-200 dark:border-zinc-800 flex items-center justify-between">
           <div>
-            <h2 class="text-sm sm:text-base font-bold text-foreground">Transaksi Pesanan Terbaru</h2>
-            <p class="text-[11px] sm:text-xs text-muted-foreground mt-0.5">Daftar pembayaran siswa terverifikasi Midtrans Sandbox & Production</p>
+            <h2 class="text-xs font-bold text-zinc-900 dark:text-zinc-100 uppercase tracking-wider">Log Transaksi Terkini</h2>
+            <p class="text-[11px] text-zinc-400 mt-0.5">Sinkronisasi status pembayaran gateway Midtrans real-time</p>
           </div>
           <a
             routerLink="/admin/orders"
-            class="text-xs font-bold text-primary hover:underline flex items-center gap-1"
+            class="text-xs font-medium text-blue-600 dark:text-blue-400 hover:underline flex items-center gap-1"
           >
-            <span>Semua Pesanan</span>
-            <app-icon name="external-link" [size]="12"></app-icon>
+            <span>Semua Transaksi</span>
+            <app-icon name="external-link" [size]="11"></app-icon>
           </a>
         </div>
 
-        <!-- Desktop/Tablet Table -->
-        <div class="hidden sm:block overflow-x-auto">
+        <!-- Table View -->
+        <div class="overflow-x-auto">
           <table class="w-full text-left text-xs">
-            <thead class="bg-muted/50 border-b border-border text-muted-foreground uppercase text-[10px] font-bold tracking-wider">
+            <thead class="bg-zinc-50 dark:bg-zinc-900/80 border-b border-zinc-200 dark:border-zinc-800 text-zinc-500 dark:text-zinc-400 text-[11px] font-semibold">
               <tr>
-                <th class="px-5 py-3.5">Invoice</th>
-                <th class="px-5 py-3.5">Siswa & Sekolah</th>
-                <th class="px-5 py-3.5">Paket Belajar</th>
-                <th class="px-5 py-3.5">Total Bayar</th>
-                <th class="px-5 py-3.5">Metode</th>
-                <th class="px-5 py-3.5">Status</th>
-                <th class="px-5 py-3.5">Waktu</th>
+                <th class="px-4 py-2.5">No. Invoice</th>
+                <th class="px-4 py-2.5">Siswa</th>
+                <th class="px-4 py-2.5">Paket Belajar</th>
+                <th class="px-4 py-2.5">Metode Bayar</th>
+                <th class="px-4 py-2.5 text-right">Nominal</th>
+                <th class="px-4 py-2.5 text-center">Status</th>
+                <th class="px-4 py-2.5 text-right">Waktu Transaksi</th>
               </tr>
             </thead>
-            <tbody class="divide-y divide-border">
+            <tbody class="divide-y divide-zinc-200 dark:divide-zinc-800 text-zinc-700 dark:text-zinc-300">
               @for (order of recentOrders(); track order.id) {
-                <tr class="hover:bg-muted/30 transition-colors">
-                  <td class="px-5 py-3.5 font-mono font-bold text-primary">{{ order.id }}</td>
-                  <td class="px-5 py-3.5">
-                    <div class="font-bold text-foreground">{{ order.studentName }}</div>
-                    <div class="text-[10px] text-muted-foreground">{{ order.school }}</div>
+                <tr class="hover:bg-zinc-50/60 dark:hover:bg-zinc-800/40 transition-colors">
+                  <td class="px-4 py-3 font-mono font-medium text-blue-600 dark:text-blue-400">{{ order.id }}</td>
+                  <td class="px-4 py-3">
+                    <span class="font-medium text-zinc-900 dark:text-zinc-100 block">{{ order.studentName }}</span>
+                    <span class="text-[11px] text-zinc-400 block truncate max-w-[200px]">{{ order.school }}</span>
                   </td>
-                  <td class="px-5 py-3.5 font-medium text-foreground">{{ order.packageTitle }}</td>
-                  <td class="px-5 py-3.5 font-bold text-emerald-600">Rp {{ order.amount | number }}</td>
-                  <td class="px-5 py-3.5 text-muted-foreground">{{ order.paymentMethod }}</td>
-                  <td class="px-5 py-3.5">
-                    <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-extrabold bg-emerald-500/10 text-emerald-600 border border-emerald-500/20">
-                      <app-icon name="check" [size]="10"></app-icon>
+                  <td class="px-4 py-3 font-medium text-zinc-800 dark:text-zinc-200">{{ order.packageTitle }}</td>
+                  <td class="px-4 py-3 text-zinc-500 dark:text-zinc-400 text-[11px] font-mono">{{ order.paymentMethod }}</td>
+                  <td class="px-4 py-3 text-right font-mono font-medium text-zinc-900 dark:text-zinc-100">
+                    Rp {{ order.amount | number }}
+                  </td>
+                  <td class="px-4 py-3 text-center">
+                    <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-medium bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800/60 font-mono">
+                      <span class="h-1.5 w-1.5 rounded-full bg-emerald-500"></span>
                       <span>{{ order.status }}</span>
                     </span>
                   </td>
-                  <td class="px-5 py-3.5 text-muted-foreground">{{ order.createdAt }}</td>
+                  <td class="px-4 py-3 text-right text-[11px] text-zinc-400 font-mono">{{ order.createdAt }}</td>
                 </tr>
               }
             </tbody>
           </table>
-        </div>
-
-        <!-- Mobile Card List (< 640px) -->
-        <div class="sm:hidden divide-y divide-border">
-          @for (order of recentOrders(); track order.id) {
-            <div class="p-4 space-y-2">
-              <div class="flex items-center justify-between">
-                <span class="font-mono text-xs font-bold text-primary">{{ order.id }}</span>
-                <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-500/10 text-emerald-600">
-                  <app-icon name="check" [size]="10"></app-icon>
-                  <span>{{ order.status }}</span>
-                </span>
-              </div>
-              <div class="text-xs">
-                <div class="font-bold text-foreground">{{ order.studentName }}</div>
-                <div class="text-[10px] text-muted-foreground">{{ order.school }}</div>
-              </div>
-              <div class="text-xs text-muted-foreground">
-                {{ order.packageTitle }}
-              </div>
-              <div class="flex items-center justify-between text-xs pt-1">
-                <span class="text-muted-foreground">{{ order.createdAt }}</span>
-                <span class="font-black text-emerald-600">Rp {{ order.amount | number }}</span>
-              </div>
-            </div>
-          }
         </div>
       </div>
     </div>

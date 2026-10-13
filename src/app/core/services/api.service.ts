@@ -7,7 +7,7 @@ import { ApiResponse } from '../models/models';
   providedIn: 'root',
 })
 export class ApiService {
-  private defaultApiUrl = 'http://localhost:8080/api/v1';
+  private defaultApiUrl = 'https://backend-api.kpmacademic.io/api/v1';
   baseUrl = signal<string>(localStorage.getItem('kpm_api_url') || this.defaultApiUrl);
 
   constructor(private http: HttpClient) {}
