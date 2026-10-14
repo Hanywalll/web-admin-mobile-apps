@@ -45,6 +45,18 @@ type CMSTab = 'all' | 'banner' | 'package' | 'live' | 'video' | 'module' | 'vouc
         <div class="flex items-center gap-2">
           <button
             type="button"
+            (click)="resetToOfficialData()"
+            [disabled]="isResetting()"
+            class="h-8 px-3 rounded-md border border-border bg-card hover:bg-muted text-xs font-medium flex items-center gap-1.5 text-muted-foreground hover:text-foreground transition-colors cursor-pointer disabled:opacity-50"
+            title="Reset seluruh katalog menjadi data resmi terstandar KPM Academy"
+          >
+            <app-icon name="refresh" [size]="13" [className]="isResetting() ? 'animate-spin' : ''"></app-icon>
+            <span class="hidden sm:inline">Tata Ulang Data Resmi KPM</span>
+            <span class="sm:hidden">Reset Resmi</span>
+          </button>
+
+          <button
+            type="button"
             (click)="openCreateModal()"
             class="h-8 px-3.5 rounded-md bg-primary text-primary-foreground text-xs font-semibold flex items-center gap-2 hover:bg-primary/90 transition-colors shadow-sm cursor-pointer"
           >
@@ -543,6 +555,24 @@ export class CMSComponent implements OnInit {
   videoForm: Partial<Video> = {};
   moduleForm: Partial<Module> = {};
   voucherForm: Partial<Voucher> = {};
+  isResetting = signal<boolean>(false);
+
+  resetToOfficialData(): void {
+    if (confirm('Apakah Anda yakin ingin menata ulang seluruh konten katalog dengan data resmi KPM Academy? Semua data dummy akan dibersihkan dan digantikan dengan materi terstandar.')) {
+      this.isResetting.set(true);
+      this.adminService.resetOfficialCatalog().subscribe({
+        next: (res) => {
+          this.isResetting.set(false);
+          alert(res.message || 'Katalog resmi KPM Academy berhasil dimuat dan ditata ulang!');
+          this.loadAllCMS();
+        },
+        error: (err) => {
+          this.isResetting.set(false);
+          alert('Gagal memuat katalog resmi: ' + (err?.message || 'Server error'));
+        },
+      });
+    }
+  }
 
   ngOnInit(): void {
     this.route.data.subscribe((data) => {

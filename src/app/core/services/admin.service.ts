@@ -286,6 +286,10 @@ export class AdminService {
     return this.api.delete(`/admin/vouchers/${id}`);
   }
 
+  resetOfficialCatalog(): Observable<ApiResponse<any>> {
+    return this.api.post<any>('/admin/cms/reset-official', {});
+  }
+
   // --- ORDERS & TRANSACTIONS ---
   getOrders(): Observable<Order[]> {
     return this.api.get<any[]>('/admin/orders').pipe(
