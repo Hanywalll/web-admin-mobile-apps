@@ -171,22 +171,7 @@ export class LoginComponent {
       },
       error: (err) => {
         this.isLoading.set(false);
-        // If Go backend is offline, support seamless local fallback login
-        if (this.email.toLowerCase() === 'admin@kpmacademy.com') {
-          const mockUser = {
-            id: 'admin_1',
-            name: 'Administrator KPM',
-            email: 'admin@kpmacademy.com',
-            role: 'admin' as const,
-          };
-          this.auth.token.set('mock_jwt_token_admin_kpm');
-          this.auth.currentUser.set(mockUser);
-          localStorage.setItem('kpm_admin_token', 'mock_jwt_token_admin_kpm');
-          localStorage.setItem('kpm_admin_user', JSON.stringify(mockUser));
-          this.router.navigate(['/admin/dashboard']);
-        } else {
-          this.errorMessage.set(err.message || 'Email atau password salah.');
-        }
+        this.errorMessage.set(err.message || 'Email atau password salah.');
       },
     });
   }

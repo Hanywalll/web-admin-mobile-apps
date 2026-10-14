@@ -72,4 +72,13 @@ export class AuthService {
 
     this.router.navigate(['/login']);
   }
+
+  // Clear the local session only (no server call). Used when the server answers 401.
+  forceLogout(): void {
+    this.token.set(null);
+    this.currentUser.set(null);
+    localStorage.removeItem('kpm_admin_token');
+    localStorage.removeItem('kpm_admin_user');
+    this.router.navigate(['/login']);
+  }
 }

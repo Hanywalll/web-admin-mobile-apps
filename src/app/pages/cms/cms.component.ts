@@ -669,20 +669,24 @@ export class CMSComponent implements OnInit {
 
   saveModalData(): void {
     const type = this.modalType();
+    const onSaved = () => {
+      this.isModalOpen.set(false);
+      this.loadAllCMS();
+    };
+    const onFailed = (err: any) => alert('Gagal menyimpan ke server: ' + (err?.message || 'unknown error'));
+
     if (type === 'banner') {
-      if (this.bannerForm.id) {
-        this.adminService.updateBanner(this.bannerForm.id, this.bannerForm).subscribe(() => this.loadAllCMS());
-      } else {
-        this.adminService.createBanner(this.bannerForm).subscribe(() => this.loadAllCMS());
-      }
-      this.banners.update((arr) => [{ id: 'b_' + Date.now(), title: this.bannerForm.title || 'Banner Baru', imageUrl: this.bannerForm.imageUrl || 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=800', targetUrl: this.bannerForm.targetUrl || '/package_list', order: 1 }, ...arr]);
+      const req = this.bannerForm.id
+        ? this.adminService.updateBanner(this.bannerForm.id, this.bannerForm)
+        : this.adminService.createBanner(this.bannerForm);
+      req.subscribe({ next: onSaved, error: onFailed });
+      return;
     } else if (type === 'package') {
-      if (this.packageForm.id) {
-        this.adminService.updatePackage(this.packageForm.id, this.packageForm).subscribe(() => this.loadAllCMS());
-      } else {
-        this.adminService.createPackage(this.packageForm).subscribe(() => this.loadAllCMS());
-      }
-      this.packages.update((arr) => [{ id: 'p_' + Date.now(), title: this.packageForm.title || 'Paket Baru', description: this.packageForm.description || '', price: this.packageForm.price || 150000, discountPrice: this.packageForm.discountPrice || 120000, activeDays: this.packageForm.activeDays || 180, kelas: this.packageForm.kelas || 'SMA' }, ...arr]);
+      const req = this.packageForm.id
+        ? this.adminService.updatePackage(this.packageForm.id, this.packageForm)
+        : this.adminService.createPackage(this.packageForm);
+      req.subscribe({ next: onSaved, error: onFailed });
+      return;
     } else if (type === 'live') {
       this.liveClasses.update((arr) => [{ id: 'lc_' + Date.now(), title: this.liveForm.title || 'Live Class Baru', subject: 'Umum', tutorName: this.liveForm.tutorName || 'Tutor KPM', scheduledAt: this.liveForm.scheduledAt || '2026-10-25 19:30 WIB', meetingUrl: this.liveForm.meetingUrl || 'https://zoom.us' }, ...arr]);
     } else if (type === 'video') {
