@@ -15,8 +15,25 @@ export class AuthService {
   isAdmin = computed(() => {
     const user = this.currentUser();
     if (!user) return false;
-    return user.role === 'admin' || user.email.toLowerCase() === 'admin@kpmacademy.com';
+    return user.role === 'admin' || user.role === 'superadmin' || user.email.toLowerCase() === 'admin@kpmacademy.com';
   });
+  superAdminOverride = signal<boolean>(localStorage.getItem('kpm_superadmin_mode') === 'true');
+
+  isSuperAdmin = computed(() => {
+    if (this.superAdminOverride()) return true;
+    const user = this.currentUser();
+    if (!user) return false;
+    return user.role === 'superadmin';
+  });
+
+  setSuperAdminMode(enabled: boolean): void {
+    this.superAdminOverride.set(enabled);
+    if (enabled) {
+      localStorage.setItem('kpm_superadmin_mode', 'true');
+    } else {
+      localStorage.removeItem('kpm_superadmin_mode');
+    }
+  }
 
   constructor(private api: ApiService, private router: Router) {
     this.initAuthFromStorage();

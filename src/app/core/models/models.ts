@@ -14,7 +14,7 @@ export interface User {
   name: string;
   email: string;
   phone?: string;
-  role: 'admin' | 'user' | 'tutor';
+  role: 'admin' | 'superadmin' | 'user' | 'tutor' | string;
   school?: string;
   city?: string;
   isActive?: boolean;

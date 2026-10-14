@@ -18,12 +18,7 @@ type CMSTab = 'all' | 'banner' | 'package' | 'live' | 'video' | 'module' | 'vouc
       <!-- Header -->
       <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <div class="flex items-center gap-2">
-            <h1 class="text-xl font-bold tracking-tight text-foreground">Katalog Konten & Layanan (CMS)</h1>
-            <span class="px-2 py-0.5 rounded text-[10px] font-mono border border-border bg-muted/60 text-muted-foreground">
-              SYNC ENGINE
-            </span>
-          </div>
+          <h1 class="text-xl font-bold tracking-tight text-foreground">Katalog Konten & Layanan</h1>
           <p class="text-xs text-muted-foreground mt-0.5">
             Kelola banner beranda mobile, paket belajar tryout, live class, video materi, e-book PDF, dan voucher diskon
           </p>
@@ -589,6 +584,11 @@ export class CMSComponent implements OnInit {
   voucherForm: Partial<Voucher> = {};
 
   ngOnInit(): void {
+    this.route.data.subscribe((data) => {
+      if (data && data['tab']) {
+        this.currentTab.set(data['tab'] as CMSTab);
+      }
+    });
     this.route.queryParams.subscribe((params) => {
       if (params['tab']) {
         this.currentTab.set(params['tab'] as CMSTab);

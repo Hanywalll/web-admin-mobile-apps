@@ -37,6 +37,36 @@ export const routes: Routes = [
         component: CMSComponent,
       },
       {
+        path: 'banners',
+        component: CMSComponent,
+        data: { tab: 'banner' },
+      },
+      {
+        path: 'packages',
+        component: CMSComponent,
+        data: { tab: 'package' },
+      },
+      {
+        path: 'live-classes',
+        component: CMSComponent,
+        data: { tab: 'live' },
+      },
+      {
+        path: 'videos',
+        component: CMSComponent,
+        data: { tab: 'video' },
+      },
+      {
+        path: 'modules',
+        component: CMSComponent,
+        data: { tab: 'module' },
+      },
+      {
+        path: 'vouchers',
+        component: CMSComponent,
+        data: { tab: 'voucher' },
+      },
+      {
         path: 'orders',
         component: OrdersComponent,
       },

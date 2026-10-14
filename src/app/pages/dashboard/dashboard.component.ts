@@ -41,28 +41,28 @@ import { IconComponent } from '../../shared/components/icon/icon.component';
       </div>
 
       <!-- SYSTEM INTEGRITY STATUS STRIP -->
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-3 p-3.5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-xs">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-3 p-3.5 rounded-lg border border-border bg-card text-xs">
         <div class="flex items-center gap-2.5">
           <span class="h-2 w-2 rounded-full bg-emerald-500 flex-shrink-0"></span>
           <div>
-            <span class="font-medium text-zinc-800 dark:text-zinc-200 block text-xs">Backend Go Fiber Engine</span>
-            <span class="text-[11px] text-zinc-400 font-mono">Port 3000 / REST API v1.0.0</span>
+            <span class="font-medium text-foreground block text-xs">Layanan API Utama</span>
+            <span class="text-[11px] text-muted-foreground">Terhubung & Operasional</span>
           </div>
         </div>
 
-        <div class="flex items-center gap-2.5 md:border-l md:border-zinc-200 md:dark:border-zinc-800 md:pl-4">
+        <div class="flex items-center gap-2.5 md:border-l md:border-border md:pl-4">
           <span class="h-2 w-2 rounded-full bg-blue-500 flex-shrink-0"></span>
           <div>
-            <span class="font-medium text-zinc-800 dark:text-zinc-200 block text-xs">Midtrans Payment Gateway</span>
-            <span class="text-[11px] text-zinc-400 font-mono">Snap QRIS, VA BCA/Mandiri/BNI</span>
+            <span class="font-medium text-foreground block text-xs">Integrasi Pembayaran</span>
+            <span class="text-[11px] text-muted-foreground">Midtrans Snap QRIS & VA</span>
           </div>
         </div>
 
-        <div class="flex items-center gap-2.5 md:border-l md:border-zinc-200 md:dark:border-zinc-800 md:pl-4">
-          <span class="h-2 w-2 rounded-full bg-purple-500 flex-shrink-0"></span>
+        <div class="flex items-center gap-2.5 md:border-l md:border-border md:pl-4">
+          <span class="h-2 w-2 rounded-full bg-primary flex-shrink-0"></span>
           <div>
-            <span class="font-medium text-zinc-800 dark:text-zinc-200 block text-xs">Gemini 3.5 Flash AI Tutor</span>
-            <span class="text-[11px] text-zinc-400 font-mono">Pembahasan Soal 24/7 Aktif</span>
+            <span class="font-medium text-foreground block text-xs">AI Tutor Assistant</span>
+            <span class="text-[11px] text-muted-foreground">Pembahasan Siswa Aktif</span>
           </div>
         </div>
       </div>

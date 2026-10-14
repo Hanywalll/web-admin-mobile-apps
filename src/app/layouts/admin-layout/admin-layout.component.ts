@@ -28,20 +28,20 @@ import { IconComponent } from '../../shared/components/icon/icon.component';
         class="fixed top-0 bottom-0 left-0 w-72 bg-white dark:bg-zinc-900 border-r border-zinc-200 dark:border-zinc-800 z-50 flex flex-col transition-transform duration-200 ease-out md:hidden shadow-xl"
       >
         <!-- Mobile Header -->
-        <div class="h-14 px-4 border-b border-zinc-200 dark:border-zinc-800 flex items-center justify-between">
+        <div class="h-14 px-4 border-b border-border flex items-center justify-between">
           <div class="flex items-center gap-2.5">
-            <div class="h-7 w-7 rounded-md bg-blue-600 text-white flex items-center justify-center font-bold shadow-sm">
-              <app-icon name="shield" [size]="15"></app-icon>
+            <div class="h-8 w-8 rounded-lg bg-primary text-primary-foreground flex items-center justify-center font-bold shadow-md shadow-primary/20">
+              <app-icon name="shield" [size]="16"></app-icon>
             </div>
             <div>
-              <span class="text-xs font-bold tracking-tight text-zinc-900 dark:text-zinc-100">KPM ACADEMY</span>
-              <span class="block text-[10px] text-zinc-500 font-mono leading-none">Console v2.2</span>
+              <span class="text-xs font-bold tracking-wider text-foreground uppercase">KPM ACADEMY</span>
+              <span class="block text-[10px] text-muted-foreground font-medium leading-none">Portal Admin</span>
             </div>
           </div>
           <button
             type="button"
             (click)="closeMobileDrawer()"
-            class="h-7 w-7 rounded-md border border-zinc-200 dark:border-zinc-800 flex items-center justify-center text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100"
+            class="h-7 w-7 rounded-md border border-border flex items-center justify-center text-muted-foreground hover:text-foreground"
           >
             <app-icon name="x" [size]="14"></app-icon>
           </button>
@@ -49,153 +49,261 @@ import { IconComponent } from '../../shared/components/icon/icon.component';
 
         <!-- Mobile Navigation -->
         <nav class="flex-1 px-3 py-4 space-y-1 overflow-y-auto">
-          <div class="px-2.5 pb-1 text-[10px] font-semibold text-zinc-400 dark:text-zinc-500 uppercase tracking-wider">
+          <div class="px-2.5 pb-1 text-[10px] font-semibold text-muted-foreground uppercase tracking-wider">
             Menu Utama
           </div>
           <a
             routerLink="/admin/dashboard"
             (click)="closeMobileDrawer()"
-            routerLinkActive="bg-zinc-100 dark:bg-zinc-800 text-blue-600 dark:text-blue-400 font-semibold"
-            class="flex items-center gap-3 px-3 py-2 rounded-md text-xs text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 hover:bg-zinc-50 dark:hover:bg-zinc-800/60 transition-colors"
+            routerLinkActive="bg-primary/10 text-primary font-semibold"
+            class="flex items-center gap-3 px-3 py-2 rounded-md text-xs text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
           >
             <app-icon name="dashboard" [size]="15"></app-icon>
-            <span>Ringkasan & Metrik</span>
-          </a>
-          <a
-            routerLink="/admin/cms"
-            (click)="closeMobileDrawer()"
-            routerLinkActive="bg-zinc-100 dark:bg-zinc-800 text-blue-600 dark:text-blue-400 font-semibold"
-            class="flex items-center gap-3 px-3 py-2 rounded-md text-xs text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 hover:bg-zinc-50 dark:hover:bg-zinc-800/60 transition-colors"
-          >
-            <app-icon name="layers" [size]="15"></app-icon>
-            <span>Manajemen Konten (CMS)</span>
+            <span>Ringkasan Dashboard</span>
           </a>
           <a
             routerLink="/admin/orders"
             (click)="closeMobileDrawer()"
-            routerLinkActive="bg-zinc-100 dark:bg-zinc-800 text-blue-600 dark:text-blue-400 font-semibold"
-            class="flex items-center gap-3 px-3 py-2 rounded-md text-xs text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 hover:bg-zinc-50 dark:hover:bg-zinc-800/60 transition-colors"
+            routerLinkActive="bg-primary/10 text-primary font-semibold"
+            class="flex items-center gap-3 px-3 py-2 rounded-md text-xs text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
           >
             <app-icon name="shopping-cart" [size]="15"></app-icon>
             <span>Pesanan & Pembayaran</span>
           </a>
-
-          <div class="px-2.5 pt-4 pb-1 text-[10px] font-semibold text-zinc-400 dark:text-zinc-500 uppercase tracking-wider">
-            Administrasi
-          </div>
           <a
             routerLink="/admin/users"
             (click)="closeMobileDrawer()"
-            routerLinkActive="bg-zinc-100 dark:bg-zinc-800 text-blue-600 dark:text-blue-400 font-semibold"
-            class="flex items-center gap-3 px-3 py-2 rounded-md text-xs text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 hover:bg-zinc-50 dark:hover:bg-zinc-800/60 transition-colors"
+            routerLinkActive="bg-primary/10 text-primary font-semibold"
+            class="flex items-center gap-3 px-3 py-2 rounded-md text-xs text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
           >
             <app-icon name="users" [size]="15"></app-icon>
             <span>Pengguna & Siswa</span>
           </a>
+
+          <div class="px-2.5 pt-4 pb-1 text-[10px] font-semibold text-muted-foreground uppercase tracking-wider">
+            Manajemen Konten
+          </div>
           <a
-            routerLink="/admin/settings"
+            routerLink="/admin/banners"
             (click)="closeMobileDrawer()"
-            routerLinkActive="bg-zinc-100 dark:bg-zinc-800 text-blue-600 dark:text-blue-400 font-semibold"
-            class="flex items-center gap-3 px-3 py-2 rounded-md text-xs text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 hover:bg-zinc-50 dark:hover:bg-zinc-800/60 transition-colors"
+            routerLinkActive="bg-primary/10 text-primary font-semibold"
+            class="flex items-center gap-3 px-3 py-2 rounded-md text-xs text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
           >
-            <app-icon name="settings" [size]="15"></app-icon>
-            <span>Pengaturan Sistem</span>
+            <app-icon name="image" [size]="15"></app-icon>
+            <span>Spanduk Banner</span>
           </a>
+          <a
+            routerLink="/admin/packages"
+            (click)="closeMobileDrawer()"
+            routerLinkActive="bg-primary/10 text-primary font-semibold"
+            class="flex items-center gap-3 px-3 py-2 rounded-md text-xs text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
+          >
+            <app-icon name="package" [size]="15"></app-icon>
+            <span>Paket Belajar</span>
+          </a>
+          <a
+            routerLink="/admin/live-classes"
+            (click)="closeMobileDrawer()"
+            routerLinkActive="bg-primary/10 text-primary font-semibold"
+            class="flex items-center gap-3 px-3 py-2 rounded-md text-xs text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
+          >
+            <app-icon name="calendar" [size]="15"></app-icon>
+            <span>Jadwal Live Class</span>
+          </a>
+          <a
+            routerLink="/admin/videos"
+            (click)="closeMobileDrawer()"
+            routerLinkActive="bg-primary/10 text-primary font-semibold"
+            class="flex items-center gap-3 px-3 py-2 rounded-md text-xs text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
+          >
+            <app-icon name="video" [size]="15"></app-icon>
+            <span>Video Materi</span>
+          </a>
+          <a
+            routerLink="/admin/modules"
+            (click)="closeMobileDrawer()"
+            routerLinkActive="bg-primary/10 text-primary font-semibold"
+            class="flex items-center gap-3 px-3 py-2 rounded-md text-xs text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
+          >
+            <app-icon name="file-text" [size]="15"></app-icon>
+            <span>Modul PDF</span>
+          </a>
+          <a
+            routerLink="/admin/vouchers"
+            (click)="closeMobileDrawer()"
+            routerLinkActive="bg-primary/10 text-primary font-semibold"
+            class="flex items-center gap-3 px-3 py-2 rounded-md text-xs text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
+          >
+            <app-icon name="ticket" [size]="15"></app-icon>
+            <span>Kupon Diskon</span>
+          </a>
+
+          @if (auth.isSuperAdmin()) {
+            <div class="px-2.5 pt-4 pb-1 text-[10px] font-semibold text-muted-foreground uppercase tracking-wider">
+              Superadmin
+            </div>
+            <a
+              routerLink="/admin/settings"
+              (click)="closeMobileDrawer()"
+              routerLinkActive="bg-primary/10 text-primary font-semibold"
+              class="flex items-center gap-3 px-3 py-2 rounded-md text-xs text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
+            >
+              <app-icon name="settings" [size]="15"></app-icon>
+              <span>Konfigurasi API</span>
+            </a>
+          }
         </nav>
 
         <!-- Mobile Drawer Footer -->
-        <div class="p-3 border-t border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900/50">
-          <div class="flex items-center gap-2 text-[11px] text-zinc-600 dark:text-zinc-400">
-            <span class="h-2 w-2 rounded-full bg-emerald-500"></span>
-            <span class="font-mono text-[10px]">API Online: 3000 / VPS</span>
+        <div class="p-3 border-t border-border bg-card/60">
+          <div class="flex items-center justify-between text-[11px]">
+            <div class="flex items-center gap-2 text-foreground font-medium">
+              <span class="relative flex h-2 w-2">
+                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+              </span>
+              <span class="text-xs">Sistem Terhubung</span>
+            </div>
+            <span class="text-[10px] font-medium px-1.5 py-0.5 rounded bg-emerald-500/10 text-emerald-600 dark:text-emerald-400">Online</span>
           </div>
         </div>
       </aside>
 
       <!-- DESKTOP CRISP SIDEBAR -->
       <aside
-        class="hidden md:flex md:w-60 flex-col border-r border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 sticky top-0 h-screen z-30 select-none"
+        class="hidden md:flex md:w-60 flex-col border-r border-border bg-card sticky top-0 h-screen z-30 select-none"
       >
         <!-- Logo / Brand Header -->
-        <div class="h-14 px-5 border-b border-zinc-200 dark:border-zinc-800 flex items-center justify-between">
+        <div class="h-14 px-5 border-b border-border flex items-center justify-between">
           <div class="flex items-center gap-2.5">
-            <div class="h-7 w-7 rounded-md bg-blue-600 text-white flex items-center justify-center font-bold shadow-sm">
-              <app-icon name="shield" [size]="15"></app-icon>
+            <div class="h-8 w-8 rounded-lg bg-primary text-primary-foreground flex items-center justify-center font-bold shadow-md shadow-primary/20">
+              <app-icon name="shield" [size]="16"></app-icon>
             </div>
             <div>
-              <span class="text-xs font-bold tracking-tight text-zinc-900 dark:text-zinc-100">KPM ACADEMY</span>
-              <span class="block text-[10px] text-zinc-400 dark:text-zinc-500 font-mono leading-none">Console v2.2</span>
+              <span class="text-xs font-bold tracking-wider text-foreground uppercase">KPM ACADEMY</span>
+              <span class="block text-[10px] text-muted-foreground font-medium leading-none">Portal Admin</span>
             </div>
           </div>
         </div>
 
         <!-- Navigation Links -->
         <nav class="flex-1 px-3 py-4 space-y-0.5 overflow-y-auto">
-          <div class="px-2.5 pb-1 text-[10px] font-semibold text-zinc-400 dark:text-zinc-500 uppercase tracking-wider">
+          <div class="px-2.5 pb-1 text-[10px] font-semibold text-muted-foreground uppercase tracking-wider">
             Menu Utama
           </div>
 
           <a
             routerLink="/admin/dashboard"
-            routerLinkActive="bg-zinc-100 dark:bg-zinc-800 text-blue-600 dark:text-blue-400 font-semibold"
-            class="flex items-center gap-2.5 px-2.5 py-2 rounded-md text-xs text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 hover:bg-zinc-50 dark:hover:bg-zinc-800/50 transition-colors"
+            routerLinkActive="bg-primary/10 text-primary font-semibold"
+            class="flex items-center gap-2.5 px-2.5 py-2 rounded-md text-xs text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
           >
             <app-icon name="dashboard" [size]="15"></app-icon>
             <span>Ringkasan</span>
           </a>
 
           <a
-            routerLink="/admin/cms"
-            routerLinkActive="bg-zinc-100 dark:bg-zinc-800 text-blue-600 dark:text-blue-400 font-semibold"
-            class="flex items-center gap-2.5 px-2.5 py-2 rounded-md text-xs text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 hover:bg-zinc-50 dark:hover:bg-zinc-800/50 transition-colors"
-          >
-            <app-icon name="layers" [size]="15"></app-icon>
-            <span>Konten (CMS)</span>
-          </a>
-
-          <a
             routerLink="/admin/orders"
-            routerLinkActive="bg-zinc-100 dark:bg-zinc-800 text-blue-600 dark:text-blue-400 font-semibold"
-            class="flex items-center gap-2.5 px-2.5 py-2 rounded-md text-xs text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 hover:bg-zinc-50 dark:hover:bg-zinc-800/50 transition-colors"
+            routerLinkActive="bg-primary/10 text-primary font-semibold"
+            class="flex items-center gap-2.5 px-2.5 py-2 rounded-md text-xs text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
           >
             <app-icon name="shopping-cart" [size]="15"></app-icon>
-            <span>Transaksi & Bayar</span>
+            <span>Pesanan & Bayar</span>
           </a>
-
-          <div class="px-2.5 pt-4 pb-1 text-[10px] font-semibold text-zinc-400 dark:text-zinc-500 uppercase tracking-wider">
-            Administrasi
-          </div>
 
           <a
             routerLink="/admin/users"
-            routerLinkActive="bg-zinc-100 dark:bg-zinc-800 text-blue-600 dark:text-blue-400 font-semibold"
-            class="flex items-center gap-2.5 px-2.5 py-2 rounded-md text-xs text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 hover:bg-zinc-50 dark:hover:bg-zinc-800/50 transition-colors"
+            routerLinkActive="bg-primary/10 text-primary font-semibold"
+            class="flex items-center gap-2.5 px-2.5 py-2 rounded-md text-xs text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
           >
             <app-icon name="users" [size]="15"></app-icon>
             <span>Pengguna & Siswa</span>
           </a>
 
+          <div class="px-2.5 pt-4 pb-1 text-[10px] font-semibold text-muted-foreground uppercase tracking-wider">
+            Manajemen Konten
+          </div>
+
           <a
-            routerLink="/admin/settings"
-            routerLinkActive="bg-zinc-100 dark:bg-zinc-800 text-blue-600 dark:text-blue-400 font-semibold"
-            class="flex items-center gap-2.5 px-2.5 py-2 rounded-md text-xs text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 hover:bg-zinc-50 dark:hover:bg-zinc-800/50 transition-colors"
+            routerLink="/admin/banners"
+            routerLinkActive="bg-primary/10 text-primary font-semibold"
+            class="flex items-center gap-2.5 px-2.5 py-2 rounded-md text-xs text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
           >
-            <app-icon name="settings" [size]="15"></app-icon>
-            <span>Konfigurasi API</span>
+            <app-icon name="image" [size]="15"></app-icon>
+            <span>Spanduk Banner</span>
           </a>
+
+          <a
+            routerLink="/admin/packages"
+            routerLinkActive="bg-primary/10 text-primary font-semibold"
+            class="flex items-center gap-2.5 px-2.5 py-2 rounded-md text-xs text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
+          >
+            <app-icon name="package" [size]="15"></app-icon>
+            <span>Paket Belajar</span>
+          </a>
+
+          <a
+            routerLink="/admin/live-classes"
+            routerLinkActive="bg-primary/10 text-primary font-semibold"
+            class="flex items-center gap-2.5 px-2.5 py-2 rounded-md text-xs text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
+          >
+            <app-icon name="calendar" [size]="15"></app-icon>
+            <span>Jadwal Live Class</span>
+          </a>
+
+          <a
+            routerLink="/admin/videos"
+            routerLinkActive="bg-primary/10 text-primary font-semibold"
+            class="flex items-center gap-2.5 px-2.5 py-2 rounded-md text-xs text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
+          >
+            <app-icon name="video" [size]="15"></app-icon>
+            <span>Video Materi</span>
+          </a>
+
+          <a
+            routerLink="/admin/modules"
+            routerLinkActive="bg-primary/10 text-primary font-semibold"
+            class="flex items-center gap-2.5 px-2.5 py-2 rounded-md text-xs text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
+          >
+            <app-icon name="file-text" [size]="15"></app-icon>
+            <span>Modul PDF</span>
+          </a>
+
+          <a
+            routerLink="/admin/vouchers"
+            routerLinkActive="bg-primary/10 text-primary font-semibold"
+            class="flex items-center gap-2.5 px-2.5 py-2 rounded-md text-xs text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
+          >
+            <app-icon name="ticket" [size]="15"></app-icon>
+            <span>Kupon Diskon</span>
+          </a>
+
+          @if (auth.isSuperAdmin()) {
+            <div class="px-2.5 pt-4 pb-1 text-[10px] font-semibold text-muted-foreground uppercase tracking-wider">
+              Superadmin
+            </div>
+
+            <a
+              routerLink="/admin/settings"
+              routerLinkActive="bg-primary/10 text-primary font-semibold"
+              class="flex items-center gap-2.5 px-2.5 py-2 rounded-md text-xs text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
+            >
+              <app-icon name="settings" [size]="15"></app-icon>
+              <span>Konfigurasi API</span>
+            </a>
+          }
         </nav>
 
-        <!-- Sidebar Footer / Infrastructure Status -->
-        <div class="p-3 border-t border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-900/50">
+        <!-- Sidebar Footer / Status -->
+        <div class="p-3 border-t border-border bg-card/60">
           <div class="flex items-center justify-between text-[11px]">
-            <div class="flex items-center gap-1.5 text-zinc-700 dark:text-zinc-300">
-              <span class="h-2 w-2 rounded-full bg-emerald-500 inline-block"></span>
-              <span class="font-medium text-[11px]">Go API v1</span>
+            <div class="flex items-center gap-2 text-foreground font-medium">
+              <span class="relative flex h-2 w-2">
+                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+              </span>
+              <span class="text-xs">Sistem Terhubung</span>
             </div>
-            <span class="text-[10px] font-mono text-zinc-400">Port 3000</span>
-          </div>
-          <div class="mt-1 text-[10px] font-mono text-zinc-400 truncate" [title]="api.baseUrl()">
-            {{ api.baseUrl().replace('https://', '').replace('/api/v1', '') }}
+            <span class="text-[10px] font-medium px-1.5 py-0.5 rounded bg-emerald-500/10 text-emerald-600 dark:text-emerald-400">Online</span>
           </div>
         </div>
       </aside>
@@ -288,16 +396,28 @@ export class AdminLayoutComponent {
   }
 
   private updateCurrentSection(url: string): void {
-    if (url.includes('/cms')) {
-      this.currentSection.set('Manajemen Konten (CMS)');
+    if (url.includes('/banners')) {
+      this.currentSection.set('Spanduk Banner');
+    } else if (url.includes('/packages')) {
+      this.currentSection.set('Paket Belajar');
+    } else if (url.includes('/live-classes')) {
+      this.currentSection.set('Jadwal Live Class');
+    } else if (url.includes('/videos')) {
+      this.currentSection.set('Video Materi');
+    } else if (url.includes('/modules')) {
+      this.currentSection.set('Modul PDF');
+    } else if (url.includes('/vouchers')) {
+      this.currentSection.set('Kupon Diskon');
+    } else if (url.includes('/cms')) {
+      this.currentSection.set('Manajemen Konten');
     } else if (url.includes('/orders')) {
-      this.currentSection.set('Pesanan & Transaksi');
+      this.currentSection.set('Pesanan & Pembayaran');
     } else if (url.includes('/users')) {
       this.currentSection.set('Pengguna & Siswa');
     } else if (url.includes('/settings')) {
-      this.currentSection.set('Pengaturan Sistem');
+      this.currentSection.set('Konfigurasi API');
     } else {
-      this.currentSection.set('Ringkasan Metrik');
+      this.currentSection.set('Ringkasan Dashboard');
     }
   }
 

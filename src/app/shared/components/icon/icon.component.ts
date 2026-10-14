@@ -65,6 +65,27 @@ import { CommonModule } from '@angular/common';
           <path d="M13 11v2" />
         </g>
 
+        <!-- Image / Banner -->
+        <g *ngSwitchCase="'image'">
+          <rect width="18" height="18" x="3" y="3" rx="2" ry="2" />
+          <circle cx="9" cy="9" r="2" />
+          <path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21" />
+        </g>
+
+        <!-- Calendar / Schedule -->
+        <g *ngSwitchCase="'calendar'">
+          <path d="M8 2v4" />
+          <path d="M16 2v4" />
+          <rect width="18" height="18" x="3" y="4" rx="2" />
+          <path d="M3 10h18" />
+        </g>
+
+        <!-- Lock -->
+        <g *ngSwitchCase="'lock'">
+          <rect width="18" height="11" x="3" y="11" rx="2" ry="2" />
+          <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+        </g>
+
         <!-- Shopping Cart / Orders -->
         <g *ngSwitchCase="'shopping-cart'">
           <circle cx="8" cy="21" r="1" />

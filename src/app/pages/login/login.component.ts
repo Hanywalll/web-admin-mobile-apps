@@ -12,28 +12,24 @@ import { IconComponent } from '../../shared/components/icon/icon.component';
   standalone: true,
   imports: [CommonModule, FormsModule, RouterModule, IconComponent],
   template: `
-    <div class="min-h-screen bg-background text-foreground flex flex-col justify-between p-6 sm:p-8 relative bg-[radial-gradient(#e4e4e7_1px,transparent_1px)] dark:bg-[radial-gradient(#27272a_1px,transparent_1px)] [background-size:24px_24px]">
+    <div class="min-h-screen bg-background text-foreground flex flex-col justify-between p-6 sm:p-8 relative bg-[radial-gradient(#cbd5e1_1px,transparent_1px)] dark:bg-[radial-gradient(#1e293b_1px,transparent_1px)] [background-size:24px_24px]">
       <!-- Header Strip -->
       <header class="w-full max-w-5xl mx-auto flex items-center justify-between">
-        <div class="flex items-center gap-2.5">
-          <div class="h-8 w-8 rounded-lg bg-zinc-950 dark:bg-zinc-50 text-zinc-50 dark:text-zinc-950 flex items-center justify-center font-mono font-black text-xs tracking-tight shadow-sm">
+        <div class="flex items-center gap-3">
+          <div class="h-9 w-9 rounded-xl bg-gradient-to-br from-[#1B2CC1] to-[#091540] text-white flex items-center justify-center font-bold text-xs tracking-tight shadow-md border border-[#7692FF]/30">
             KPM
           </div>
           <div>
             <div class="text-xs font-bold tracking-tight text-foreground">KPM ACADEMY</div>
-            <div class="text-[10px] text-muted-foreground font-mono">INTERNAL OPERATIONS CONSOLE</div>
+            <div class="text-[10px] text-muted-foreground font-medium">Portal Administrasi</div>
           </div>
         </div>
 
         <div class="flex items-center gap-2">
-          <span class="hidden sm:inline-flex items-center gap-1.5 px-2 py-1 rounded-md text-[10px] font-mono border border-border bg-card text-muted-foreground">
-            <span class="h-1.5 w-1.5 rounded-full bg-emerald-500"></span>
-            <span>GO API v1.0.0</span>
-          </span>
           <button
             type="button"
             (click)="theme.toggleTheme()"
-            class="h-8 w-8 rounded-md border border-border bg-card hover:bg-muted flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors"
+            class="h-8 w-8 rounded-lg border border-border bg-card hover:bg-muted flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors shadow-sm"
             title="Ganti Mode Tampilan"
           >
             <app-icon [name]="theme.isDarkMode() ? 'sun' : 'moon'" [size]="14"></app-icon>
@@ -42,27 +38,30 @@ import { IconComponent } from '../../shared/components/icon/icon.component';
       </header>
 
       <!-- Center Auth Box -->
-      <main class="w-full max-w-[390px] mx-auto my-8">
-        <div class="rounded-xl border border-border bg-card p-6 sm:p-7 shadow-sm text-card-foreground">
-          <div class="mb-5">
-            <h1 class="text-lg font-bold tracking-tight text-foreground">Autentikasi Staf</h1>
-            <p class="text-xs text-muted-foreground mt-0.5">
-              Masukkan kredensial resmi untuk mengakses basis data & transaksi.
+      <main class="w-full max-w-[400px] mx-auto my-8">
+        <div class="rounded-2xl border border-border bg-card p-7 sm:p-8 shadow-sm text-card-foreground backdrop-blur-sm">
+          <div class="mb-6 text-center">
+            <div class="inline-flex h-12 w-12 rounded-2xl bg-[#ABD2FA]/30 dark:bg-[#1B2CC1]/20 items-center justify-center text-[#1B2CC1] dark:text-[#7692FF] mb-3">
+              <app-icon name="shield" [size]="24"></app-icon>
+            </div>
+            <h1 class="text-xl font-bold tracking-tight text-foreground">Masuk ke Portal</h1>
+            <p class="text-xs text-muted-foreground mt-1">
+              Silakan masukkan email dan kata sandi akun administrator Anda.
             </p>
           </div>
 
           <!-- Error Alert -->
           @if (errorMessage()) {
-            <div class="mb-4 p-3 rounded-md bg-destructive/10 border border-destructive/20 text-destructive text-xs font-medium flex items-start gap-2">
+            <div class="mb-4 p-3 rounded-lg bg-destructive/10 border border-destructive/20 text-destructive text-xs font-medium flex items-start gap-2">
               <app-icon name="x" [size]="14" className="shrink-0 mt-0.5"></app-icon>
               <span>{{ errorMessage() }}</span>
             </div>
           }
 
           <!-- Form -->
-          <form (ngSubmit)="onSubmit()" class="space-y-3.5">
+          <form (ngSubmit)="onSubmit()" class="space-y-4">
             <div>
-              <label class="block text-xs font-medium text-foreground mb-1.5">Alamat Email Staf</label>
+              <label class="block text-xs font-semibold text-foreground mb-1.5">Alamat Email</label>
               <input
                 type="email"
                 [(ngModel)]="email"
@@ -70,14 +69,13 @@ import { IconComponent } from '../../shared/components/icon/icon.component';
                 required
                 autocomplete="email"
                 placeholder="nama@kpmacademy.com"
-                class="w-full h-9 px-3 rounded-md border border-input bg-background text-foreground text-xs font-mono focus:outline-none focus:ring-1 focus:ring-ring transition-colors placeholder:text-muted-foreground/50"
+                class="w-full h-10 px-3.5 rounded-lg border border-input bg-background text-foreground text-xs focus:outline-none focus:ring-2 focus:ring-[#1B2CC1] transition-all placeholder:text-muted-foreground/50 shadow-sm"
               />
             </div>
 
             <div>
               <div class="flex items-center justify-between mb-1.5">
-                <label class="block text-xs font-medium text-foreground">Kata Sandi</label>
-                <span class="text-[10px] text-muted-foreground">Minimal 8 karakter</span>
+                <label class="block text-xs font-semibold text-foreground">Kata Sandi</label>
               </div>
               <input
                 type="password"
@@ -86,54 +84,34 @@ import { IconComponent } from '../../shared/components/icon/icon.component';
                 required
                 autocomplete="current-password"
                 placeholder="••••••••••••"
-                class="w-full h-9 px-3 rounded-md border border-input bg-background text-foreground text-xs focus:outline-none focus:ring-1 focus:ring-ring transition-colors placeholder:text-muted-foreground/50"
+                class="w-full h-10 px-3.5 rounded-lg border border-input bg-background text-foreground text-xs focus:outline-none focus:ring-2 focus:ring-[#1B2CC1] transition-all placeholder:text-muted-foreground/50 shadow-sm"
               />
             </div>
 
             <button
               type="submit"
               [disabled]="isLoading()"
-              class="w-full h-9 rounded-md bg-primary text-primary-foreground font-semibold text-xs hover:bg-primary/90 focus:outline-none focus:ring-1 focus:ring-ring disabled:opacity-50 transition-colors flex items-center justify-center gap-2 mt-4"
+              class="w-full h-10 rounded-lg bg-[#1B2CC1] hover:bg-[#1B2CC1]/90 text-white font-semibold text-xs focus:outline-none focus:ring-2 focus:ring-[#7692FF] disabled:opacity-50 transition-all flex items-center justify-center gap-2 mt-5 shadow-sm cursor-pointer"
             >
               @if (isLoading()) {
-                <div class="h-3.5 w-3.5 border-2 border-primary-foreground border-t-transparent rounded-full animate-spin"></div>
+                <div class="h-4 w-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
                 <span>Memverifikasi...</span>
               } @else {
-                <span>Masuk ke Konsol</span>
+                <span>Masuk Sekarang</span>
               }
             </button>
           </form>
-
-          <!-- Quick Fill Demo -->
-          <div class="mt-5 pt-4 border-t border-border">
-            <button
-              type="button"
-              (click)="fillDemoAdmin()"
-              class="w-full py-1.5 px-3 rounded-md border border-dashed border-border hover:border-foreground/30 bg-muted/30 hover:bg-muted text-muted-foreground hover:text-foreground text-[11px] font-mono flex items-center justify-between transition-colors"
-            >
-              <span class="flex items-center gap-1.5">
-                <app-icon name="shield" [size]="12"></app-icon>
-                <span>Akun Administrator Demo</span>
-              </span>
-              <span class="text-[10px] font-sans text-primary">Gunakan</span>
-            </button>
-          </div>
         </div>
 
         <!-- Security Notice -->
         <p class="text-center text-[11px] text-muted-foreground mt-4">
-          Akses terbatas untuk personel terotorisasi KPM Academy. Seluruh aktivitas audit tercatat.
+          Akses terbatas untuk personel terotorisasi KPM Academy.
         </p>
       </main>
 
       <!-- Footer Info -->
-      <footer class="w-full max-w-5xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2 text-[11px] text-muted-foreground font-mono">
-        <div class="flex items-center gap-2">
-          <span>HOST: {{ api.baseUrl() }}</span>
-        </div>
-        <div>
-          <span>&copy; {{ currentYear }} KPM ACADEMY ENTERPRISE</span>
-        </div>
+      <footer class="w-full max-w-5xl mx-auto flex items-center justify-center text-xs text-muted-foreground">
+        <span>&copy; {{ currentYear }} KPM Academy. Seluruh hak cipta dilindungi.</span>
       </footer>
     </div>
   `,
@@ -145,19 +123,14 @@ export class LoginComponent {
   router = inject(Router);
 
   currentYear = new Date().getFullYear();
-  email = 'admin@kpmacademy.com';
-  password = 'p@ssw0rd123';
+  email = '';
+  password = '';
   isLoading = signal<boolean>(false);
   errorMessage = signal<string | null>(null);
 
-  fillDemoAdmin(): void {
-    this.email = 'admin@kpmacademy.com';
-    this.password = 'p@ssw0rd123';
-  }
-
   onSubmit(): void {
     if (!this.email || !this.password) {
-      this.errorMessage.set('Silakan isi email dan password.');
+      this.errorMessage.set('Silakan isi email dan kata sandi.');
       return;
     }
 
@@ -165,13 +138,13 @@ export class LoginComponent {
     this.errorMessage.set(null);
 
     this.auth.login({ email: this.email, password: this.password }).subscribe({
-      next: (res) => {
+      next: () => {
         this.isLoading.set(false);
         this.router.navigate(['/admin/dashboard']);
       },
       error: (err) => {
         this.isLoading.set(false);
-        this.errorMessage.set(err.message || 'Email atau password salah.');
+        this.errorMessage.set(err.message || 'Email atau kata sandi tidak valid.');
       },
     });
   }
