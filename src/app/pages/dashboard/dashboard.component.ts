@@ -126,83 +126,77 @@ import { IconComponent } from '../../shared/components/icon/icon.component';
         </div>
       </div>
 
-      <!-- OPERATIONAL CMS SHORTCUTS STRIP (No childish rainbow boxes) -->
-      <div class="rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-4">
-        <div class="text-xs font-semibold text-zinc-800 dark:text-zinc-200 mb-3 flex items-center justify-between">
+      <!-- OPERATIONAL CMS SHORTCUTS STRIP -->
+      <div class="rounded-lg border border-border bg-card p-4">
+        <div class="text-xs font-semibold text-foreground mb-3 flex items-center justify-between">
           <span>Manajemen Katalog & Modul Belajar</span>
-          <a routerLink="/admin/cms" class="text-blue-600 dark:text-blue-400 hover:underline text-xs font-medium">Buka CMS Terpadu &rarr;</a>
+          <a routerLink="/admin/banners" class="text-primary hover:underline text-xs font-medium">Buka Katalog &rarr;</a>
         </div>
 
         <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2 text-xs">
           <a
-            routerLink="/admin/cms"
-            [queryParams]="{ tab: 'package' }"
-            class="p-2.5 rounded-md border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-800/60 transition-colors flex items-center gap-2"
+            routerLink="/admin/packages"
+            class="p-2.5 rounded-md border border-border hover:bg-muted transition-colors flex items-center gap-2"
           >
-            <app-icon name="package" [size]="14" className="text-zinc-500"></app-icon>
+            <app-icon name="package" [size]="14" className="text-muted-foreground"></app-icon>
             <div>
-              <span class="font-medium text-zinc-800 dark:text-zinc-200 block text-xs">Paket Ujian</span>
-              <span class="text-[10px] text-zinc-400">5 Paket aktif</span>
+              <span class="font-medium text-foreground block text-xs">Paket Ujian</span>
+              <span class="text-[10px] text-muted-foreground">Paket aktif</span>
             </div>
           </a>
 
           <a
-            routerLink="/admin/cms"
-            [queryParams]="{ tab: 'banner' }"
-            class="p-2.5 rounded-md border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-800/60 transition-colors flex items-center gap-2"
+            routerLink="/admin/banners"
+            class="p-2.5 rounded-md border border-border hover:bg-muted transition-colors flex items-center gap-2"
           >
-            <app-icon name="layers" [size]="14" className="text-zinc-500"></app-icon>
+            <app-icon name="image" [size]="14" className="text-muted-foreground"></app-icon>
             <div>
-              <span class="font-medium text-zinc-800 dark:text-zinc-200 block text-xs">Banner Slider</span>
-              <span class="text-[10px] text-zinc-400">3 Banner aktif</span>
+              <span class="font-medium text-foreground block text-xs">Spanduk Banner</span>
+              <span class="text-[10px] text-muted-foreground">Banner aktif</span>
             </div>
           </a>
 
           <a
-            routerLink="/admin/cms"
-            [queryParams]="{ tab: 'live' }"
-            class="p-2.5 rounded-md border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-800/60 transition-colors flex items-center gap-2"
+            routerLink="/admin/live-classes"
+            class="p-2.5 rounded-md border border-border hover:bg-muted transition-colors flex items-center gap-2"
           >
-            <app-icon name="video" [size]="14" className="text-zinc-500"></app-icon>
+            <app-icon name="calendar" [size]="14" className="text-muted-foreground"></app-icon>
             <div>
-              <span class="font-medium text-zinc-800 dark:text-zinc-200 block text-xs">Live Class</span>
-              <span class="text-[10px] text-zinc-400">2 Sesi Zoom</span>
+              <span class="font-medium text-foreground block text-xs">Live Class</span>
+              <span class="text-[10px] text-muted-foreground">Sesi Zoom</span>
             </div>
           </a>
 
           <a
-            routerLink="/admin/cms"
-            [queryParams]="{ tab: 'video' }"
-            class="p-2.5 rounded-md border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-800/60 transition-colors flex items-center gap-2"
+            routerLink="/admin/videos"
+            class="p-2.5 rounded-md border border-border hover:bg-muted transition-colors flex items-center gap-2"
           >
-            <app-icon name="video" [size]="14" className="text-zinc-500"></app-icon>
+            <app-icon name="video" [size]="14" className="text-muted-foreground"></app-icon>
             <div>
-              <span class="font-medium text-zinc-800 dark:text-zinc-200 block text-xs">Video Materi</span>
-              <span class="text-[10px] text-zinc-400">4 Video MIPA</span>
+              <span class="font-medium text-foreground block text-xs">Video Materi</span>
+              <span class="text-[10px] text-muted-foreground">Video MIPA</span>
             </div>
           </a>
 
           <a
-            routerLink="/admin/cms"
-            [queryParams]="{ tab: 'module' }"
-            class="p-2.5 rounded-md border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-800/60 transition-colors flex items-center gap-2"
+            routerLink="/admin/modules"
+            class="p-2.5 rounded-md border border-border hover:bg-muted transition-colors flex items-center gap-2"
           >
-            <app-icon name="file-text" [size]="14" className="text-zinc-500"></app-icon>
+            <app-icon name="file-text" [size]="14" className="text-muted-foreground"></app-icon>
             <div>
-              <span class="font-medium text-zinc-800 dark:text-zinc-200 block text-xs">Modul PDF</span>
-              <span class="text-[10px] text-zinc-400">4 E-Book</span>
+              <span class="font-medium text-foreground block text-xs">Modul PDF</span>
+              <span class="text-[10px] text-muted-foreground">E-Book</span>
             </div>
           </a>
 
           <a
-            routerLink="/admin/cms"
-            [queryParams]="{ tab: 'voucher' }"
-            class="p-2.5 rounded-md border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-800/60 transition-colors flex items-center gap-2"
+            routerLink="/admin/vouchers"
+            class="p-2.5 rounded-md border border-border hover:bg-muted transition-colors flex items-center gap-2"
           >
-            <app-icon name="ticket" [size]="14" className="text-zinc-500"></app-icon>
+            <app-icon name="ticket" [size]="14" className="text-muted-foreground"></app-icon>
             <div>
-              <span class="font-medium text-zinc-800 dark:text-zinc-200 block text-xs">Voucher Diskon</span>
-              <span class="text-[10px] text-zinc-400">3 Kode promo</span>
+              <span class="font-medium text-foreground block text-xs">Voucher Diskon</span>
+              <span class="text-[10px] text-muted-foreground">Kode promo</span>
             </div>
           </a>
         </div>

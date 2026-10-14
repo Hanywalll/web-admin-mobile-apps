@@ -15,12 +15,30 @@ type CMSTab = 'all' | 'banner' | 'package' | 'live' | 'video' | 'module' | 'vouc
   imports: [CommonModule, FormsModule, IconComponent, ModalComponent],
   template: `
     <div class="space-y-6">
-      <!-- Header -->
-      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <!-- DYNAMIC SECTION HEADER ACCORDING TO SELECTED SIDEBAR MENU -->
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-3 border-b border-border">
         <div>
-          <h1 class="text-xl font-bold tracking-tight text-foreground">Katalog Konten & Layanan</h1>
+          <h1 class="text-xl font-bold tracking-tight text-foreground">
+            @switch (currentTab()) {
+              @case ('banner') { Spanduk Banner }
+              @case ('package') { Paket Belajar & Tryout }
+              @case ('live') { Jadwal Live Class }
+              @case ('video') { Video Materi Pembelajaran }
+              @case ('module') { Modul & E-Book PDF }
+              @case ('voucher') { Kupon Diskon & Voucher }
+              @default { Manajemen Konten }
+            }
+          </h1>
           <p class="text-xs text-muted-foreground mt-0.5">
-            Kelola banner beranda mobile, paket belajar tryout, live class, video materi, e-book PDF, dan voucher diskon
+            @switch (currentTab()) {
+              @case ('banner') { Kelola spanduk promosi dan pengumuman yang tampil pada beranda aplikasi mobile }
+              @case ('package') { Kelola paket pembelajaran, tryout ujian berkala, dan masa aktif siswa }
+              @case ('live') { Kelola jadwal sesi kelas online interaktif via Zoom / Google Meet dan tutor pengajar }
+              @case ('video') { Kelola video rekaman pembahasan materi dan pembelajaran interaktif }
+              @case ('module') { Kelola e-book materi pelajaran, modul rumus, dan bank latihan soal format PDF }
+              @case ('voucher') { Kelola kupon diskon harga pembelian paket belajar dan kuota klaim }
+              @default { Kelola konten dan katalog aplikasi mobile }
+            }
           </p>
         </div>
 
@@ -28,83 +46,26 @@ type CMSTab = 'all' | 'banner' | 'package' | 'live' | 'video' | 'module' | 'vouc
           <button
             type="button"
             (click)="openCreateModal()"
-            class="h-8 px-3.5 rounded-md bg-primary text-primary-foreground text-xs font-semibold flex items-center gap-2 hover:bg-primary/90 transition-colors shadow-sm"
+            class="h-8 px-3.5 rounded-md bg-primary text-primary-foreground text-xs font-semibold flex items-center gap-2 hover:bg-primary/90 transition-colors shadow-sm cursor-pointer"
           >
             <app-icon name="plus" [size]="13"></app-icon>
-            <span>Tambah Data Baru</span>
+            <span>
+              @switch (currentTab()) {
+                @case ('banner') { Tambah Banner Baru }
+                @case ('package') { Tambah Paket Baru }
+                @case ('live') { Tambah Jadwal Baru }
+                @case ('video') { Tambah Video Baru }
+                @case ('module') { Tambah Modul PDF }
+                @case ('voucher') { Buat Kupon Baru }
+                @default { Tambah Data Baru }
+              }
+            </span>
           </button>
         </div>
       </div>
 
-      <!-- HORIZONTAL FILTER TABS -->
-      <div class="flex items-center gap-1 overflow-x-auto pb-1 border-b border-border text-xs">
-        <button
-          type="button"
-          (click)="setTab('all')"
-          [class]="currentTab() === 'all' ? 'bg-zinc-900 text-zinc-50 dark:bg-zinc-100 dark:text-zinc-900 font-semibold' : 'text-muted-foreground hover:text-foreground hover:bg-muted'"
-          class="h-8 px-3 rounded-md transition-colors flex items-center gap-1.5 whitespace-nowrap"
-        >
-          <app-icon name="layers" [size]="13"></app-icon>
-          <span>Semua Katalog</span>
-        </button>
-
-        <button
-          type="button"
-          (click)="setTab('banner')"
-          [class]="currentTab() === 'banner' ? 'bg-zinc-900 text-zinc-50 dark:bg-zinc-100 dark:text-zinc-900 font-semibold' : 'text-muted-foreground hover:text-foreground hover:bg-muted'"
-          class="h-8 px-3 rounded-md transition-colors flex items-center gap-1.5 whitespace-nowrap"
-        >
-          <span>Banner ({{ banners().length }})</span>
-        </button>
-
-        <button
-          type="button"
-          (click)="setTab('package')"
-          [class]="currentTab() === 'package' ? 'bg-zinc-900 text-zinc-50 dark:bg-zinc-100 dark:text-zinc-900 font-semibold' : 'text-muted-foreground hover:text-foreground hover:bg-muted'"
-          class="h-8 px-3 rounded-md transition-colors flex items-center gap-1.5 whitespace-nowrap"
-        >
-          <span>Paket Belajar ({{ packages().length }})</span>
-        </button>
-
-        <button
-          type="button"
-          (click)="setTab('live')"
-          [class]="currentTab() === 'live' ? 'bg-zinc-900 text-zinc-50 dark:bg-zinc-100 dark:text-zinc-900 font-semibold' : 'text-muted-foreground hover:text-foreground hover:bg-muted'"
-          class="h-8 px-3 rounded-md transition-colors flex items-center gap-1.5 whitespace-nowrap"
-        >
-          <span>Live Class ({{ liveClasses().length }})</span>
-        </button>
-
-        <button
-          type="button"
-          (click)="setTab('video')"
-          [class]="currentTab() === 'video' ? 'bg-zinc-900 text-zinc-50 dark:bg-zinc-100 dark:text-zinc-900 font-semibold' : 'text-muted-foreground hover:text-foreground hover:bg-muted'"
-          class="h-8 px-3 rounded-md transition-colors flex items-center gap-1.5 whitespace-nowrap"
-        >
-          <span>Video Materi ({{ videos().length }})</span>
-        </button>
-
-        <button
-          type="button"
-          (click)="setTab('module')"
-          [class]="currentTab() === 'module' ? 'bg-zinc-900 text-zinc-50 dark:bg-zinc-100 dark:text-zinc-900 font-semibold' : 'text-muted-foreground hover:text-foreground hover:bg-muted'"
-          class="h-8 px-3 rounded-md transition-colors flex items-center gap-1.5 whitespace-nowrap"
-        >
-          <span>Modul PDF ({{ modules().length }})</span>
-        </button>
-
-        <button
-          type="button"
-          (click)="setTab('voucher')"
-          [class]="currentTab() === 'voucher' ? 'bg-zinc-900 text-zinc-50 dark:bg-zinc-100 dark:text-zinc-900 font-semibold' : 'text-muted-foreground hover:text-foreground hover:bg-muted'"
-          class="h-8 px-3 rounded-md transition-colors flex items-center gap-1.5 whitespace-nowrap"
-        >
-          <span>Kupon Diskon ({{ vouchers().length }})</span>
-        </button>
-      </div>
-
       <!-- 1. BANNERS SECTION -->
-      @if (currentTab() === 'all' || currentTab() === 'banner') {
+      @if (currentTab() === 'banner') {
         <section class="rounded-lg border border-border bg-card p-4 sm:p-5 space-y-4">
           <div class="flex items-center justify-between">
             <div>
@@ -156,7 +117,7 @@ type CMSTab = 'all' | 'banner' | 'package' | 'live' | 'video' | 'module' | 'vouc
       }
 
       <!-- 2. PAKET BELAJAR SECTION -->
-      @if (currentTab() === 'all' || currentTab() === 'package') {
+      @if (currentTab() === 'package') {
         <section class="rounded-lg border border-border bg-card p-4 sm:p-5 space-y-4">
           <div class="flex items-center justify-between">
             <div>
@@ -211,7 +172,7 @@ type CMSTab = 'all' | 'banner' | 'package' | 'live' | 'video' | 'module' | 'vouc
       }
 
       <!-- 3. LIVE CLASS SECTION -->
-      @if (currentTab() === 'all' || currentTab() === 'live') {
+      @if (currentTab() === 'live') {
         <section class="rounded-lg border border-border bg-card p-4 sm:p-5 space-y-4">
           <div class="flex items-center justify-between">
             <div>
@@ -257,7 +218,7 @@ type CMSTab = 'all' | 'banner' | 'package' | 'live' | 'video' | 'module' | 'vouc
       }
 
       <!-- 4. VIDEO MATERI SECTION -->
-      @if (currentTab() === 'all' || currentTab() === 'video') {
+      @if (currentTab() === 'video') {
         <section class="rounded-lg border border-border bg-card p-4 sm:p-5 space-y-4">
           <div class="flex items-center justify-between">
             <div>
@@ -308,7 +269,7 @@ type CMSTab = 'all' | 'banner' | 'package' | 'live' | 'video' | 'module' | 'vouc
       }
 
       <!-- 5. MODUL PDF SECTION -->
-      @if (currentTab() === 'all' || currentTab() === 'module') {
+      @if (currentTab() === 'module') {
         <section class="rounded-lg border border-border bg-card p-4 sm:p-5 space-y-4">
           <div class="flex items-center justify-between">
             <div>
@@ -362,7 +323,7 @@ type CMSTab = 'all' | 'banner' | 'package' | 'live' | 'video' | 'module' | 'vouc
       }
 
       <!-- 6. VOUCHERS SECTION -->
-      @if (currentTab() === 'all' || currentTab() === 'voucher') {
+      @if (currentTab() === 'voucher') {
         <section class="rounded-lg border border-border bg-card p-4 sm:p-5 space-y-4">
           <div class="flex items-center justify-between">
             <div>
@@ -562,7 +523,7 @@ export class CMSComponent implements OnInit {
   adminService = inject(AdminService);
   route = inject(ActivatedRoute);
 
-  currentTab = signal<CMSTab>('all');
+  currentTab = signal<CMSTab>('banner');
   banners = signal<Banner[]>([]);
   packages = signal<Package[]>([]);
   liveClasses = signal<LiveClass[]>([]);
@@ -594,6 +555,14 @@ export class CMSComponent implements OnInit {
         this.currentTab.set(params['tab'] as CMSTab);
       }
     });
+    const snapshotUrl = this.route.snapshot.url.map((s) => s.path).join('/');
+    if (snapshotUrl.includes('packages')) this.currentTab.set('package');
+    else if (snapshotUrl.includes('live-classes')) this.currentTab.set('live');
+    else if (snapshotUrl.includes('videos')) this.currentTab.set('video');
+    else if (snapshotUrl.includes('modules')) this.currentTab.set('module');
+    else if (snapshotUrl.includes('vouchers')) this.currentTab.set('voucher');
+    else if (snapshotUrl.includes('banners')) this.currentTab.set('banner');
+
     this.loadAllCMS();
   }
 

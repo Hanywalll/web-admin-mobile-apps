@@ -34,7 +34,8 @@ export const routes: Routes = [
       },
       {
         path: 'cms',
-        component: CMSComponent,
+        pathMatch: 'full',
+        redirectTo: 'banners',
       },
       {
         path: 'banners',

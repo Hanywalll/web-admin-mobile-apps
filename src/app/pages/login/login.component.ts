@@ -102,11 +102,6 @@ import { IconComponent } from '../../shared/components/icon/icon.component';
             </button>
           </form>
         </div>
-
-        <!-- Security Notice -->
-        <p class="text-center text-[11px] text-muted-foreground mt-4">
-          Akses terbatas untuk personel terotorisasi KPM Academy.
-        </p>
       </main>
 
       <!-- Footer Info -->
