@@ -248,11 +248,38 @@ export class AdminService {
 
   // --- VOUCHERS ---
   getVouchers(): Observable<Voucher[]> {
-    return of(this.getMockVouchers());
+    return this.api.get<any[]>('/admin/vouchers').pipe(
+      map((res) => {
+        if (res && res.data && res.data.length > 0) {
+          return res.data.map((v: any) => ({
+            id: v.id,
+            code: v.code,
+            title: v.title,
+            discountPercent: v.discount_percent || v.discountPercent || 0,
+            discountNominal: v.discount_amount || v.discountNominal || 0,
+            minTransaction: v.min_purchase || v.minTransaction || 0,
+            quota: v.usage_limit || v.quota || 100,
+            usedCount: v.usage_count || v.usedCount || 0,
+            expiresAt: v.valid_until ? v.valid_until.substring(0, 10) : '2026-12-31',
+            isActive: v.is_active ?? true,
+          }));
+        }
+        return this.getMockVouchers();
+      }),
+      catchError(() => of(this.getMockVouchers()))
+    );
   }
 
   createVoucher(voucher: Partial<Voucher>): Observable<ApiResponse<Voucher>> {
-    return this.api.post<Voucher>('/admin/vouchers', voucher);
+    const payload = {
+      code: voucher.code,
+      title: voucher.title,
+      description: voucher.title || '',
+      discount_percent: voucher.discountPercent || 0,
+      discount_amount: voucher.discountNominal || 0,
+      quota: voucher.quota || 100,
+    };
+    return this.api.post<Voucher>('/admin/vouchers', payload);
   }
 
   deleteVoucher(id: string): Observable<ApiResponse<any>> {
