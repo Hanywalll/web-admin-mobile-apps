@@ -688,13 +688,33 @@ export class CMSComponent implements OnInit {
       req.subscribe({ next: onSaved, error: onFailed });
       return;
     } else if (type === 'live') {
-      this.liveClasses.update((arr) => [{ id: 'lc_' + Date.now(), title: this.liveForm.title || 'Live Class Baru', subject: 'Umum', tutorName: this.liveForm.tutorName || 'Tutor KPM', scheduledAt: this.liveForm.scheduledAt || '2026-10-25 19:30 WIB', meetingUrl: this.liveForm.meetingUrl || 'https://zoom.us' }, ...arr]);
+      const req = this.liveForm.id
+        ? this.adminService.updateLiveClass(this.liveForm.id, this.liveForm)
+        : this.adminService.createLiveClass(this.liveForm);
+      req.subscribe({ next: onSaved, error: onFailed });
+      return;
     } else if (type === 'video') {
-      this.videos.update((arr) => [{ id: 'vid_' + Date.now(), title: this.videoForm.title || 'Video Baru', category: this.videoForm.category || 'Matematika SMA', videoUrl: this.videoForm.videoUrl || '', durationSeconds: 1800, isLocked: false }, ...arr]);
+      const payload: any = {
+        title: this.videoForm.title,
+        description: this.videoForm.description || '',
+        video_url: this.videoForm.videoUrl,
+        category: this.videoForm.category || 'Matematika SMA',
+      };
+      const req = this.videoForm.id
+        ? this.adminService.updateVideo(this.videoForm.id, payload)
+        : this.adminService.createVideo(payload);
+      req.subscribe({ next: onSaved, error: onFailed });
+      return;
     } else if (type === 'module') {
-      this.modules.update((arr) => [{ id: 'mod_' + Date.now(), title: this.moduleForm.title || 'Modul Baru', subject: this.moduleForm.subject || 'Matematika', grade: this.moduleForm.grade || 'Semua', totalPages: 25, fileSizeMb: 5.0, fileUrl: this.moduleForm.fileUrl || '' }, ...arr]);
+      const req = this.moduleForm.id
+        ? this.adminService.updateModule(this.moduleForm.id, this.moduleForm)
+        : this.adminService.createModule(this.moduleForm);
+      req.subscribe({ next: onSaved, error: onFailed });
+      return;
     } else if (type === 'voucher') {
-      this.vouchers.update((arr) => [{ id: 'v_' + Date.now(), code: this.voucherForm.code || 'PROMO2026', title: this.voucherForm.title || 'Diskon Baru', discountPercent: this.voucherForm.discountPercent || 20, quota: this.voucherForm.quota || 100, usedCount: 0, expiresAt: '2026-12-31' }, ...arr]);
+      const req = this.adminService.createVoucher(this.voucherForm);
+      req.subscribe({ next: onSaved, error: onFailed });
+      return;
     }
 
     this.isModalOpen.set(false);
@@ -702,42 +722,55 @@ export class CMSComponent implements OnInit {
 
   deleteBanner(id: string): void {
     if (confirm('Yakin ingin menghapus banner ini?')) {
-      this.adminService.deleteBanner(id).subscribe(() => {});
-      this.banners.update((arr) => arr.filter((x) => x.id !== id));
+      this.adminService.deleteBanner(id).subscribe({
+        next: () => this.loadAllCMS(),
+        error: (err) => alert('Gagal menghapus banner: ' + (err?.message || 'error')),
+      });
     }
   }
 
   deletePackage(id: string): void {
     if (confirm('Yakin ingin menghapus paket belajar ini?')) {
-      this.adminService.deletePackage(id).subscribe(() => {});
-      this.packages.update((arr) => arr.filter((x) => x.id !== id));
+      this.adminService.deletePackage(id).subscribe({
+        next: () => this.loadAllCMS(),
+        error: (err) => alert('Gagal menghapus paket: ' + (err?.message || 'error')),
+      });
     }
   }
 
   deleteLiveClass(id: string): void {
     if (confirm('Yakin ingin menghapus jadwal live class ini?')) {
-      this.adminService.deleteLiveClass(id).subscribe(() => {});
-      this.liveClasses.update((arr) => arr.filter((x) => x.id !== id));
+      this.adminService.deleteLiveClass(id).subscribe({
+        next: () => this.loadAllCMS(),
+        error: (err) => alert('Gagal menghapus live class: ' + (err?.message || 'error')),
+      });
     }
   }
 
   deleteVideo(id: string): void {
     if (confirm('Yakin ingin menghapus video materi ini?')) {
-      this.adminService.deleteVideo(id).subscribe(() => {});
-      this.videos.update((arr) => arr.filter((x) => x.id !== id));
+      this.adminService.deleteVideo(id).subscribe({
+        next: () => this.loadAllCMS(),
+        error: (err) => alert('Gagal menghapus video: ' + (err?.message || 'error')),
+      });
     }
   }
 
   deleteModule(id: string): void {
     if (confirm('Yakin ingin menghapus modul PDF ini?')) {
-      this.adminService.deleteModule(id).subscribe(() => {});
-      this.modules.update((arr) => arr.filter((x) => x.id !== id));
+      this.adminService.deleteModule(id).subscribe({
+        next: () => this.loadAllCMS(),
+        error: (err) => alert('Gagal menghapus modul: ' + (err?.message || 'error')),
+      });
     }
   }
 
   deleteVoucher(id: string): void {
     if (confirm('Yakin ingin menghapus kupon voucher ini?')) {
-      this.vouchers.update((arr) => arr.filter((x) => x.id !== id));
+      this.adminService.deleteVoucher(id).subscribe({
+        next: () => this.loadAllCMS(),
+        error: (err) => alert('Gagal menghapus voucher: ' + (err?.message || 'error')),
+      });
     }
   }
 }
