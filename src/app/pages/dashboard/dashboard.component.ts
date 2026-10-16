@@ -40,32 +40,7 @@ import { IconComponent } from '../../shared/components/icon/icon.component';
         </div>
       </div>
 
-      <!-- SYSTEM INTEGRITY STATUS STRIP -->
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-3 p-3.5 rounded-lg border border-border bg-card text-xs">
-        <div class="flex items-center gap-2.5">
-          <span class="h-2 w-2 rounded-full bg-emerald-500 flex-shrink-0"></span>
-          <div>
-            <span class="font-medium text-foreground block text-xs">Layanan API Utama</span>
-            <span class="text-[11px] text-muted-foreground">Terhubung & Operasional</span>
-          </div>
-        </div>
 
-        <div class="flex items-center gap-2.5 md:border-l md:border-border md:pl-4">
-          <span class="h-2 w-2 rounded-full bg-blue-500 flex-shrink-0"></span>
-          <div>
-            <span class="font-medium text-foreground block text-xs">Integrasi Pembayaran</span>
-            <span class="text-[11px] text-muted-foreground">Midtrans Snap QRIS & VA</span>
-          </div>
-        </div>
-
-        <div class="flex items-center gap-2.5 md:border-l md:border-border md:pl-4">
-          <span class="h-2 w-2 rounded-full bg-primary flex-shrink-0"></span>
-          <div>
-            <span class="font-medium text-foreground block text-xs">AI Tutor Assistant</span>
-            <span class="text-[11px] text-muted-foreground">Pembahasan Siswa Aktif</span>
-          </div>
-        </div>
-      </div>
 
       <!-- KEY METRIC CARDS -->
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
