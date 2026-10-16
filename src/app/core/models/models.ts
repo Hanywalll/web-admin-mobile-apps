@@ -236,3 +236,17 @@ export interface EnrollKey {
   accessDuration?: string;
   createdAt?: string;
 }
+
+export interface AdminNotification {
+  id: string;
+  type: 'order' | 'payment' | 'support' | 'testimonial' | 'tryout' | 'user' | string;
+  title: string;
+  message: string;
+  studentName?: string;
+  studentEmail?: string;
+  readAt?: string;
+  isRead: boolean;
+  createdAt: string;
+  targetRoute?: string;
+  amount?: number;
+}

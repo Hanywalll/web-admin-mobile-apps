@@ -11,6 +11,7 @@ import { TryoutsComponent } from './pages/tryouts/tryouts.component';
 import { SupportComponent } from './pages/support/support.component';
 import { TestimonialsComponent } from './pages/testimonials/testimonials.component';
 import { EnrollKeysComponent } from './pages/enroll-keys/enroll-keys.component';
+import { NotificationsComponent } from './pages/notifications/notifications.component';
 
 export const routes: Routes = [
   {
@@ -35,6 +36,10 @@ export const routes: Routes = [
       {
         path: 'dashboard',
         component: DashboardComponent,
+      },
+      {
+        path: 'notifications',
+        component: NotificationsComponent,
       },
       {
         path: 'cms',

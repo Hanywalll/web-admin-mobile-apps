@@ -5,6 +5,7 @@ import { filter } from 'rxjs';
 import { AuthService } from '../../core/services/auth.service';
 import { ThemeService } from '../../core/services/theme.service';
 import { ApiService } from '../../core/services/api.service';
+import { AdminService } from '../../core/services/admin.service';
 import { IconComponent } from '../../shared/components/icon/icon.component';
 
 @Component({
@@ -60,6 +61,22 @@ import { IconComponent } from '../../shared/components/icon/icon.component';
           >
             <app-icon name="dashboard" [size]="15"></app-icon>
             <span>Ringkasan Dashboard</span>
+          </a>
+          <a
+            routerLink="/admin/notifications"
+            (click)="closeMobileDrawer()"
+            routerLinkActive="bg-primary/10 text-primary font-semibold"
+            class="flex items-center justify-between px-3 py-2 rounded-md text-xs text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
+          >
+            <div class="flex items-center gap-3">
+              <app-icon name="bell" [size]="15"></app-icon>
+              <span>Notifikasi Aktivitas</span>
+            </div>
+            @if (adminService.unreadNotificationCount() > 0) {
+              <span class="px-1.5 py-0.5 rounded-full text-[10px] font-bold bg-rose-500 text-white">
+                {{ adminService.unreadNotificationCount() }}
+              </span>
+            }
           </a>
           <a
             routerLink="/admin/orders"
@@ -246,6 +263,22 @@ import { IconComponent } from '../../shared/components/icon/icon.component';
           </a>
 
           <a
+            routerLink="/admin/notifications"
+            routerLinkActive="bg-primary/10 text-primary font-semibold"
+            class="flex items-center justify-between px-2.5 py-2 rounded-md text-xs text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
+          >
+            <div class="flex items-center gap-2.5">
+              <app-icon name="bell" [size]="15"></app-icon>
+              <span>Notifikasi</span>
+            </div>
+            @if (adminService.unreadNotificationCount() > 0) {
+              <span class="px-1.5 py-0.5 rounded-full text-[10px] font-bold bg-rose-500 text-white">
+                {{ adminService.unreadNotificationCount() }}
+              </span>
+            }
+          </a>
+
+          <a
             routerLink="/admin/orders"
             routerLinkActive="bg-primary/10 text-primary font-semibold"
             class="flex items-center gap-2.5 px-2.5 py-2 rounded-md text-xs text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
@@ -423,6 +456,20 @@ import { IconComponent } from '../../shared/components/icon/icon.component';
 
           <!-- Right: System Tools & Admin Session -->
           <div class="flex items-center gap-2">
+            <!-- Notifications Bell -->
+            <a
+              routerLink="/admin/notifications"
+              class="relative h-8 w-8 rounded-md border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 flex items-center justify-center text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100 hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-colors"
+              title="Notifikasi Aktivitas Masuk"
+            >
+              <app-icon name="bell" [size]="15"></app-icon>
+              @if (adminService.unreadNotificationCount() > 0) {
+                <span class="absolute -top-1 -right-1 flex h-4 min-w-4 px-1 items-center justify-center rounded-full bg-rose-500 text-[9px] font-bold text-white shadow-sm ring-2 ring-white dark:ring-zinc-900 animate-pulse">
+                  {{ adminService.unreadNotificationCount() }}
+                </span>
+              }
+            </a>
+
             <!-- Theme Toggle -->
             <button
               type="button"
@@ -471,6 +518,7 @@ export class AdminLayoutComponent {
   auth = inject(AuthService);
   theme = inject(ThemeService);
   api = inject(ApiService);
+  adminService = inject(AdminService);
   router = inject(Router);
 
   isMobileDrawerOpen = signal<boolean>(false);
@@ -481,10 +529,14 @@ export class AdminLayoutComponent {
     this.router.events.pipe(filter((e) => e instanceof NavigationEnd)).subscribe((e: any) => {
       this.updateCurrentSection(e.urlAfterRedirects || e.url);
     });
+    // Load notifications count
+    this.adminService.getNotifications().subscribe();
   }
 
   private updateCurrentSection(url: string): void {
-    if (url.includes('/banners')) {
+    if (url.includes('/notifications')) {
+      this.currentSection.set('Notifikasi Aktivitas');
+    } else if (url.includes('/banners')) {
       this.currentSection.set('Spanduk Banner');
     } else if (url.includes('/packages')) {
       this.currentSection.set('Paket Belajar');

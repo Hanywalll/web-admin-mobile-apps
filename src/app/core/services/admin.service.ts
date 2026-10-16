@@ -1,5 +1,5 @@
-import { Injectable } from '@angular/core';
-import { Observable, map, catchError, of, forkJoin } from 'rxjs';
+import { Injectable, signal } from '@angular/core';
+import { Observable, map, catchError, of, forkJoin, tap } from 'rxjs';
 import { ApiService } from './api.service';
 import {
   AdminStats,
@@ -16,12 +16,15 @@ import {
   Testimonial,
   PracticeStatistic,
   EnrollKey,
+  AdminNotification,
 } from '../models/models';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AdminService {
+  unreadNotificationCount = signal<number>(3);
+
   constructor(private api: ApiService) {}
 
   // Dashboard Stats - calculates dynamically from real Go API or fallback data
@@ -475,6 +478,83 @@ export class AdminService {
         return this.getMockEnrollKeys();
       }),
       catchError(() => of(this.getMockEnrollKeys()))
+    );
+  }
+
+  // --- NOTIFICATIONS & REAL-TIME ACTIVITY ---
+  getNotifications(): Observable<AdminNotification[]> {
+    return this.api.get<any[]>('/admin/notifications').pipe(
+      map((res) => {
+        if (res && res.data && res.data.length > 0) {
+          const list: AdminNotification[] = res.data.map((n: any) => ({
+            id: n.id,
+            type: n.type || 'info',
+            title: n.title || 'Aktivitas Baru',
+            message: n.message || '',
+            studentName: n.user?.name || 'Siswa KPM',
+            studentEmail: n.user?.email || '-',
+            readAt: n.read_at,
+            isRead: !!n.read_at,
+            createdAt: n.created_at ? new Date(n.created_at).toLocaleString('id-ID') : 'Baru saja',
+            targetRoute: this.getNotificationTargetRoute(n.type),
+          }));
+          const unread = list.filter((i) => !i.isRead).length;
+          this.unreadNotificationCount.set(unread);
+          return list;
+        }
+        const mock = this.getMockNotifications();
+        this.unreadNotificationCount.set(mock.filter((i) => !i.isRead).length);
+        return mock;
+      }),
+      catchError(() => {
+        const mock = this.getMockNotifications();
+        this.unreadNotificationCount.set(mock.filter((i) => !i.isRead).length);
+        return of(mock);
+      })
+    );
+  }
+
+  private getNotificationTargetRoute(type: string): string {
+    switch (type) {
+      case 'order':
+      case 'payment':
+        return '/admin/orders';
+      case 'support':
+        return '/admin/support';
+      case 'testimonial':
+        return '/admin/testimonials';
+      case 'tryout':
+        return '/admin/tryouts';
+      case 'user':
+        return '/admin/users';
+      case 'enroll':
+        return '/admin/enroll-keys';
+      default:
+        return '/admin/dashboard';
+    }
+  }
+
+  markNotificationRead(id: string): Observable<ApiResponse<any>> {
+    return this.api.post(`/notifications/${id}/read`, {}).pipe(
+      tap(() => {
+        const current = this.unreadNotificationCount();
+        if (current > 0) this.unreadNotificationCount.set(current - 1);
+      }),
+      catchError(() => {
+        const current = this.unreadNotificationCount();
+        if (current > 0) this.unreadNotificationCount.set(current - 1);
+        return of({ success: true, message: 'Notification marked as read' });
+      })
+    );
+  }
+
+  markAllNotificationsRead(): Observable<ApiResponse<any>> {
+    return this.api.post('/notifications/read-all', {}).pipe(
+      tap(() => this.unreadNotificationCount.set(0)),
+      catchError(() => {
+        this.unreadNotificationCount.set(0);
+        return of({ success: true, message: 'All notifications marked as read' });
+      })
     );
   }
 
@@ -1046,6 +1126,82 @@ export class AdminService {
         paymentMethod: 'QRIS Gopay',
         accessDuration: '365 Hari',
         createdAt: '13/10/2026',
+      },
+    ];
+  }
+
+  private getMockNotifications(): AdminNotification[] {
+    return [
+      {
+        id: 'notif_1',
+        type: 'payment',
+        title: 'Pembayaran Lunas Diterima',
+        message: 'Ahmad Fauzan telah menyelesaikan pembayaran Paket Intensif SNBT 2026 via BCA Virtual Account.',
+        studentName: 'Ahmad Fauzan',
+        studentEmail: 'ahmad.fauzan@gmail.com',
+        amount: 129000,
+        isRead: false,
+        createdAt: '16/10/2026, 11:20:15',
+        targetRoute: '/admin/orders',
+      },
+      {
+        id: 'notif_2',
+        type: 'support',
+        title: 'Tiket Bantuan Baru Masuk',
+        message: 'Siti Nurhaliza mengirimkan pertanyaan: "Saya sudah transfer tapi paket belum aktif otomatis."',
+        studentName: 'Siti Nurhaliza',
+        studentEmail: 'siti.nurhaliza@gmail.com',
+        isRead: false,
+        createdAt: '16/10/2026, 09:12:44',
+        targetRoute: '/admin/support',
+      },
+      {
+        id: 'notif_3',
+        type: 'testimonial',
+        title: 'Ulasan Testimoni Perlu Review',
+        message: 'Budi Santoso mengirim ulasan baru rating bintang 5: "Aplikasi belajarnya sangat ringan dan lancar..."',
+        studentName: 'Budi Santoso',
+        studentEmail: 'budi.santoso@gmail.com',
+        isRead: false,
+        createdAt: '16/10/2026, 08:30:00',
+        targetRoute: '/admin/testimonials',
+      },
+      {
+        id: 'notif_4',
+        type: 'tryout',
+        title: 'Siswa Menyelesaikan Tryout CBT',
+        message: 'Budi Santoso menyelesaikan Tryout Penalaran MNR dengan Skor 920 (Akurasi 92%).',
+        studentName: 'Budi Santoso',
+        studentEmail: 'budi.santoso@gmail.com',
+        isRead: true,
+        readAt: '16/10/2026, 08:50:00',
+        createdAt: '16/10/2026, 07:45:10',
+        targetRoute: '/admin/tryouts',
+      },
+      {
+        id: 'notif_5',
+        type: 'order',
+        title: 'Pesanan Paket Baru Dibuat',
+        message: 'Rian Hidayat membuat pesanan baru Super Intensif Kedokteran (Menunggu Pembayaran).',
+        studentName: 'Rian Hidayat',
+        studentEmail: 'rian.hidayat@gmail.com',
+        amount: 200000,
+        isRead: true,
+        readAt: '15/10/2026, 16:00:00',
+        createdAt: '15/10/2026, 15:40:22',
+        targetRoute: '/admin/orders',
+      },
+      {
+        id: 'notif_6',
+        type: 'user',
+        title: 'Siswa Baru Terdaftar',
+        message: 'Dewi Lestari dari SMA Negeri 5 Semarang telah mendaftar akun baru lewat aplikasi mobile.',
+        studentName: 'Dewi Lestari',
+        studentEmail: 'dewi.lestari@gmail.com',
+        isRead: true,
+        readAt: '15/10/2026, 12:00:00',
+        createdAt: '15/10/2026, 10:15:00',
+        targetRoute: '/admin/users',
       },
     ];
   }
