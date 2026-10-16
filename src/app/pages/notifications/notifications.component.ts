@@ -211,11 +211,12 @@ import { IconComponent } from '../../shared/components/icon/icon.component';
   `,
 })
 export class NotificationsComponent implements OnInit {
-  private adminService = inject(AdminService);
+  adminService = inject(AdminService);
   private router = inject(Router);
 
-  notifications = signal<AdminNotification[]>([]);
-  isLoading = signal<boolean>(true);
+  notifications = this.adminService.latestNotifications;
+  unreadCount = this.adminService.unreadNotificationCount;
+  isLoading = signal<boolean>(false);
   searchQuery = '';
   selectedCategory = signal<string>('all');
 
@@ -231,21 +232,19 @@ export class NotificationsComponent implements OnInit {
   ];
 
   ngOnInit(): void {
-    this.loadNotifications();
+    if (this.notifications().length === 0) {
+      this.loadNotifications();
+    }
   }
 
   loadNotifications(): void {
     this.isLoading.set(true);
     this.adminService.getNotifications().subscribe({
-      next: (data) => {
-        this.notifications.set(data);
-        this.isLoading.set(false);
-      },
+      next: () => this.isLoading.set(false),
       error: () => this.isLoading.set(false),
     });
   }
 
-  unreadCount = computed(() => this.notifications().filter((n) => !n.isRead).length);
   countPayment = computed(() => this.notifications().filter((n) => n.type === 'payment' || n.type === 'order').length);
   countSupport = computed(() => this.notifications().filter((n) => n.type === 'support').length);
 
@@ -271,29 +270,11 @@ export class NotificationsComponent implements OnInit {
   });
 
   markAsRead(n: AdminNotification): void {
-    this.adminService.markNotificationRead(n.id).subscribe({
-      next: () => {
-        this.notifications.update((arr) =>
-          arr.map((item) => (item.id === n.id ? { ...item, isRead: true } : item))
-        );
-      },
-      error: () => {
-        this.notifications.update((arr) =>
-          arr.map((item) => (item.id === n.id ? { ...item, isRead: true } : item))
-        );
-      },
-    });
+    this.adminService.markNotificationRead(n.id).subscribe();
   }
 
   markAllAsRead(): void {
-    this.adminService.markAllNotificationsRead().subscribe({
-      next: () => {
-        this.notifications.update((arr) => arr.map((item) => ({ ...item, isRead: true })));
-      },
-      error: () => {
-        this.notifications.update((arr) => arr.map((item) => ({ ...item, isRead: true })));
-      },
-    });
+    this.adminService.markAllNotificationsRead().subscribe();
   }
 
   openDetail(n: AdminNotification): void {

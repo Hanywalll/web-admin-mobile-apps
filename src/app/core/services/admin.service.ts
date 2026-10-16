@@ -483,11 +483,30 @@ export class AdminService {
   }
 
   // --- NOTIFICATIONS & REAL-TIME ACTIVITY ---
+  private getReadNotifIds(): Set<string> {
+    try {
+      const stored = localStorage.getItem('kpm_admin_read_notifs');
+      if (stored) {
+        return new Set<string>(JSON.parse(stored));
+      }
+    } catch (_) {}
+    return new Set<string>();
+  }
+
+  private saveReadNotifIds(set: Set<string>): void {
+    try {
+      localStorage.setItem('kpm_admin_read_notifs', JSON.stringify(Array.from(set)));
+    } catch (_) {}
+  }
+
   getNotifications(): Observable<AdminNotification[]> {
+    const readIds = this.getReadNotifIds();
+
     return this.api.get<any[]>('/admin/notifications').pipe(
       map((res) => {
+        let list: AdminNotification[] = [];
         if (res && res.data && res.data.length > 0) {
-          const list: AdminNotification[] = res.data.map((n: any) => ({
+          list = res.data.map((n: any) => ({
             id: n.id,
             type: n.type || 'info',
             title: n.title || 'Aktivitas Baru',
@@ -495,25 +514,30 @@ export class AdminService {
             studentName: n.user?.name || 'Siswa KPM',
             studentEmail: n.user?.email || '-',
             readAt: n.read_at,
-            isRead: !!n.read_at,
+            isRead: !!n.read_at || readIds.has(n.id),
             createdAt: n.created_at ? new Date(n.created_at).toLocaleString('id-ID') : 'Baru saja',
             targetRoute: this.getNotificationTargetRoute(n.type),
           }));
-          const unread = list.filter((i) => !i.isRead).length;
-          this.unreadNotificationCount.set(unread);
-          this.latestNotifications.set(list);
-          return list;
+        } else {
+          list = this.getMockNotifications().map((n) => ({
+            ...n,
+            isRead: n.isRead || readIds.has(n.id),
+          }));
         }
-        const mock = this.getMockNotifications();
-        this.unreadNotificationCount.set(mock.filter((i) => !i.isRead).length);
-        this.latestNotifications.set(mock);
-        return mock;
+        const unread = list.filter((i) => !i.isRead).length;
+        this.unreadNotificationCount.set(unread);
+        this.latestNotifications.set(list);
+        return list;
       }),
       catchError(() => {
-        const mock = this.getMockNotifications();
-        this.unreadNotificationCount.set(mock.filter((i) => !i.isRead).length);
-        this.latestNotifications.set(mock);
-        return of(mock);
+        const list = this.getMockNotifications().map((n) => ({
+          ...n,
+          isRead: n.isRead || readIds.has(n.id),
+        }));
+        const unread = list.filter((i) => !i.isRead).length;
+        this.unreadNotificationCount.set(unread);
+        this.latestNotifications.set(list);
+        return of(list);
       })
     );
   }
@@ -540,11 +564,15 @@ export class AdminService {
 
   markNotificationRead(id: string): Observable<ApiResponse<any>> {
     const updateLocal = () => {
+      const readIds = this.getReadNotifIds();
+      readIds.add(id);
+      this.saveReadNotifIds(readIds);
+
       this.latestNotifications.update((arr) =>
         arr.map((item) => (item.id === id ? { ...item, isRead: true } : item))
       );
-      const current = this.unreadNotificationCount();
-      if (current > 0) this.unreadNotificationCount.set(current - 1);
+      const unread = this.latestNotifications().filter((i) => !i.isRead).length;
+      this.unreadNotificationCount.set(unread);
     };
 
     return this.api.post(`/notifications/${id}/read`, {}).pipe(
@@ -558,6 +586,12 @@ export class AdminService {
 
   markAllNotificationsRead(): Observable<ApiResponse<any>> {
     const updateLocal = () => {
+      const readIds = this.getReadNotifIds();
+      for (const item of this.latestNotifications()) {
+        readIds.add(item.id);
+      }
+      this.saveReadNotifIds(readIds);
+
       this.latestNotifications.update((arr) =>
         arr.map((item) => ({ ...item, isRead: true }))
       );
