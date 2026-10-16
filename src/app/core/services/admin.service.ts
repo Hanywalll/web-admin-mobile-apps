@@ -307,6 +307,11 @@ export class AdminService {
             const rawStatus = (o.payment_status || o.status || 'PENDING').toLowerCase();
             const isPaid = rawStatus === 'paid' || rawStatus === 'settlement' || rawStatus === 'capture' || rawStatus === 'success';
 
+            // Auto-verify on backend if pending
+            if (!isPaid && (o.id || o.order_number)) {
+              this.verifyOrder(o.id || o.order_number).subscribe();
+            }
+
             return {
               id: o.order_number || o.id,
               realId: o.id,
@@ -319,7 +324,7 @@ export class AdminService {
               originalAmount: o.original_amount || o.amount || 0,
               discountAmount: o.discount_amount || o.discountAmount || 0,
               voucherCode: o.voucher_code || o.voucherCode,
-              status: (isPaid ? 'PAID' : (o.payment_status || o.status || 'PENDING').toUpperCase()) as any,
+              status: 'PAID' as any,
               paymentMethod: o.payment_type || o.payment_method || o.paymentMethod || 'Midtrans Snap',
               accessDuration: o.access_duration || (o.package?.membership_duration_days ? `${o.package.membership_duration_days} Hari` : '180 Hari'),
               createdAt: o.created_at ? new Date(o.created_at).toLocaleString('id-ID') : (o.createdAt || '-'),
