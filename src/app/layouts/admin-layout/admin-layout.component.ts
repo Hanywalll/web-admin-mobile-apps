@@ -214,20 +214,6 @@ import { IconComponent } from '../../shared/components/icon/icon.component';
             </a>
           }
         </nav>
-
-        <!-- Mobile Drawer Footer -->
-        <div class="p-3 border-t border-border bg-card/60">
-          <div class="flex items-center justify-between text-[11px]">
-            <div class="flex items-center gap-2 text-foreground font-medium">
-              <span class="relative flex h-2 w-2">
-                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
-              </span>
-              <span class="text-xs">Sistem Terhubung</span>
-            </div>
-            <span class="text-[10px] font-medium px-1.5 py-0.5 rounded bg-emerald-500/10 text-emerald-600 dark:text-emerald-400">Online</span>
-          </div>
-        </div>
       </aside>
 
       <!-- DESKTOP CRISP SIDEBAR -->
@@ -413,20 +399,6 @@ import { IconComponent } from '../../shared/components/icon/icon.component';
             </a>
           }
         </nav>
-
-        <!-- Sidebar Footer / Status -->
-        <div class="p-3 border-t border-border bg-card/60">
-          <div class="flex items-center justify-between text-[11px]">
-            <div class="flex items-center gap-2 text-foreground font-medium">
-              <span class="relative flex h-2 w-2">
-                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
-              </span>
-              <span class="text-xs">Sistem Terhubung</span>
-            </div>
-            <span class="text-[10px] font-medium px-1.5 py-0.5 rounded bg-emerald-500/10 text-emerald-600 dark:text-emerald-400">Online</span>
-          </div>
-        </div>
       </aside>
 
       <!-- MAIN CONTENT WRAPPER -->
