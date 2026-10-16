@@ -87,9 +87,8 @@ import { IconComponent } from '../../shared/components/icon/icon.component';
         <div class="rounded-lg border border-border bg-card p-5 space-y-4">
           <div class="flex items-start justify-between">
             <div>
-              <h2 class="text-xs font-mono uppercase tracking-wider text-muted-foreground">01 / Alamat Endpoint Server</h2>
-              <div class="text-sm font-semibold text-foreground mt-0.5">Layanan API Backend</div>
-              <p class="text-xs text-muted-foreground">Base URL endpoint backend yang melayani Web Admin dan Mobile Apps</p>
+              <h2 class="text-sm font-semibold text-foreground">Layanan API Backend</h2>
+              <p class="text-xs text-muted-foreground mt-0.5">Base URL endpoint backend yang melayani Web Admin dan Mobile Apps</p>
             </div>
           </div>
 
@@ -171,7 +170,7 @@ import { IconComponent } from '../../shared/components/icon/icon.component';
 
         <!-- 2. SUBSYSTEM STATUS MATRIX -->
         <div class="rounded-lg border border-border bg-card p-5 space-y-3">
-          <h2 class="text-xs font-mono uppercase tracking-wider text-muted-foreground">02 / Status Layanan Terpadu</h2>
+          <h2 class="text-sm font-semibold text-foreground">Status Layanan Terpadu</h2>
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
             <div class="p-3 rounded-md border border-border bg-muted/20 space-y-1">
               <div class="flex items-center justify-between">
@@ -210,9 +209,8 @@ import { IconComponent } from '../../shared/components/icon/icon.component';
         <!-- 3. MOBILE HEADER PALETTE TOKEN -->
         <div class="rounded-lg border border-border bg-card p-5 space-y-4">
           <div>
-            <h2 class="text-xs font-mono uppercase tracking-wider text-muted-foreground">03 / Desain Mobile App</h2>
-            <div class="text-sm font-semibold text-foreground mt-0.5">Palette Token Header Siswa</div>
-            <p class="text-xs text-muted-foreground">Tema warna aksen spanduk yang disinkronisasi ke aplikasi mobile siswa</p>
+            <h2 class="text-sm font-semibold text-foreground">Palette Token Header Siswa</h2>
+            <p class="text-xs text-muted-foreground mt-0.5">Tema warna aksen spanduk yang disinkronisasi ke aplikasi mobile siswa</p>
           </div>
 
           <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 pt-1">
@@ -237,7 +235,7 @@ import { IconComponent } from '../../shared/components/icon/icon.component';
 
         <!-- 4. OPERATIONAL SESSION -->
         <div class="rounded-lg border border-border bg-card p-5 space-y-2">
-          <h2 class="text-xs font-mono uppercase tracking-wider text-muted-foreground">04 / Sesi Terautentikasi</h2>
+          <h2 class="text-sm font-semibold text-foreground">Sesi Terautentikasi</h2>
           <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pt-1 text-xs">
             <div>
               <span class="text-muted-foreground">Pengguna:</span>

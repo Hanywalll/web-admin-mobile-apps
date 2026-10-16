@@ -68,11 +68,23 @@ import { IconComponent } from '../../shared/components/icon/icon.component';
         </div>
       </div>
 
-      <!-- Filter Controls: Dropdown & Search -->
+      <!-- Filter Controls: Search on Left, Dropdown on Right -->
       <div class="p-3.5 sm:p-4 rounded-xl border border-border bg-card shadow-sm flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
-        <div class="flex items-center gap-2">
+        <!-- Sisi Kiri: Fitur Pencarian -->
+        <div class="relative flex-1 sm:max-w-md">
+          <app-icon name="search" [size]="14" className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground"></app-icon>
+          <input
+            type="text"
+            [(ngModel)]="searchQuery"
+            placeholder="Cari notifikasi, aktivitas, atau nama siswa..."
+            class="w-full h-9 pl-9 pr-3 rounded-lg border border-input bg-background text-foreground text-xs focus:outline-none focus:ring-2 focus:ring-[#1B2CC1] transition-all placeholder:text-muted-foreground/50 shadow-xs"
+          />
+        </div>
+
+        <!-- Sisi Kanan: Filter Dropdown -->
+        <div class="flex items-center gap-2 shrink-0">
           <label class="text-xs font-medium text-muted-foreground whitespace-nowrap">Filter Kategori:</label>
-          <div class="relative min-w-[180px]">
+          <div class="relative min-w-[200px]">
             <select
               [ngModel]="selectedCategory()"
               (ngModelChange)="selectedCategory.set($event)"
@@ -84,16 +96,6 @@ import { IconComponent } from '../../shared/components/icon/icon.component';
               <svg class="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
             </div>
           </div>
-        </div>
-
-        <div class="relative w-full sm:w-72">
-          <app-icon name="search" [size]="14" className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground"></app-icon>
-          <input
-            type="text"
-            [(ngModel)]="searchQuery"
-            placeholder="Cari pesan atau siswa..."
-            class="w-full h-9 pl-9 pr-3 rounded-lg border border-input bg-background text-foreground text-xs focus:outline-none focus:ring-2 focus:ring-[#1B2CC1] transition-all placeholder:text-muted-foreground/50 shadow-xs"
-          />
         </div>
       </div>
 

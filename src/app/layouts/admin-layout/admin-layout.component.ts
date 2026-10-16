@@ -435,7 +435,7 @@ import { IconComponent } from '../../shared/components/icon/icon.component';
         <header
           class="h-14 px-4 md:px-6 border-b border-zinc-200 dark:border-zinc-800 bg-white/80 dark:bg-zinc-900/80 backdrop-blur-sm sticky top-0 z-20 flex items-center justify-between gap-4"
         >
-          <!-- Left: Mobile Toggle & Breadcrumb -->
+          <!-- Left: Mobile Toggle -->
           <div class="flex items-center gap-3">
             <button
               type="button"
@@ -445,13 +445,6 @@ import { IconComponent } from '../../shared/components/icon/icon.component';
             >
               <app-icon name="layers" [size]="15"></app-icon>
             </button>
-
-            <!-- Breadcrumbs -->
-            <div class="flex items-center gap-1.5 text-xs text-zinc-500">
-              <span class="text-zinc-400 dark:text-zinc-600">Konsol</span>
-              <span class="text-zinc-300 dark:text-zinc-700">/</span>
-              <span class="font-medium text-zinc-800 dark:text-zinc-200">{{ currentSection() }}</span>
-            </div>
           </div>
 
           <!-- Right: System Tools & Admin Session -->

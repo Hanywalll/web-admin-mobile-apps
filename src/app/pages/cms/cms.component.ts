@@ -80,10 +80,7 @@ type CMSTab = 'all' | 'banner' | 'package' | 'live' | 'video' | 'module' | 'vouc
       @if (currentTab() === 'banner') {
         <section class="rounded-lg border border-border bg-card p-4 sm:p-5 space-y-4">
           <div class="flex items-center justify-between">
-            <div>
-              <div class="text-[11px] font-mono text-muted-foreground uppercase tracking-wider">01 / Spanduk Mobile</div>
-              <h2 class="text-sm font-semibold text-foreground mt-0.5">Banner Promosi & Beranda</h2>
-            </div>
+            <h2 class="text-sm font-semibold text-foreground">Banner Promosi & Beranda</h2>
             <button
               (click)="openBannerModal()"
               class="h-7 px-2.5 rounded border border-border bg-muted/30 hover:bg-muted text-xs font-medium flex items-center gap-1.5 transition-colors"
@@ -132,10 +129,7 @@ type CMSTab = 'all' | 'banner' | 'package' | 'live' | 'video' | 'module' | 'vouc
       @if (currentTab() === 'package') {
         <section class="rounded-lg border border-border bg-card p-4 sm:p-5 space-y-4">
           <div class="flex items-center justify-between">
-            <div>
-              <div class="text-[11px] font-mono text-muted-foreground uppercase tracking-wider">02 / Katalog Langganan</div>
-              <h2 class="text-sm font-semibold text-foreground mt-0.5">Paket Belajar & Tryout Ujian</h2>
-            </div>
+            <h2 class="text-sm font-semibold text-foreground">Paket Belajar & Tryout Ujian</h2>
             <button
               (click)="openPackageModal()"
               class="h-7 px-2.5 rounded border border-border bg-muted/30 hover:bg-muted text-xs font-medium flex items-center gap-1.5 transition-colors"
@@ -187,10 +181,7 @@ type CMSTab = 'all' | 'banner' | 'package' | 'live' | 'video' | 'module' | 'vouc
       @if (currentTab() === 'live') {
         <section class="rounded-lg border border-border bg-card p-4 sm:p-5 space-y-4">
           <div class="flex items-center justify-between">
-            <div>
-              <div class="text-[11px] font-mono text-muted-foreground uppercase tracking-wider">03 / Sesi Daring</div>
-              <h2 class="text-sm font-semibold text-foreground mt-0.5">Jadwal Live Class & Tutor</h2>
-            </div>
+            <h2 class="text-sm font-semibold text-foreground">Jadwal Live Class & Tutor</h2>
             <button
               (click)="openLiveModal()"
               class="h-7 px-2.5 rounded border border-border bg-muted/30 hover:bg-muted text-xs font-medium flex items-center gap-1.5 transition-colors"
@@ -233,10 +224,7 @@ type CMSTab = 'all' | 'banner' | 'package' | 'live' | 'video' | 'module' | 'vouc
       @if (currentTab() === 'video') {
         <section class="rounded-lg border border-border bg-card p-4 sm:p-5 space-y-4">
           <div class="flex items-center justify-between">
-            <div>
-              <div class="text-[11px] font-mono text-muted-foreground uppercase tracking-wider">04 / Perpustakaan Video</div>
-              <h2 class="text-sm font-semibold text-foreground mt-0.5">Video Pembelajaran Interaktif</h2>
-            </div>
+            <h2 class="text-sm font-semibold text-foreground">Video Pembelajaran Interaktif</h2>
             <button
               (click)="openVideoModal()"
               class="h-7 px-2.5 rounded border border-border bg-muted/30 hover:bg-muted text-xs font-medium flex items-center gap-1.5 transition-colors"
@@ -284,10 +272,7 @@ type CMSTab = 'all' | 'banner' | 'package' | 'live' | 'video' | 'module' | 'vouc
       @if (currentTab() === 'module') {
         <section class="rounded-lg border border-border bg-card p-4 sm:p-5 space-y-4">
           <div class="flex items-center justify-between">
-            <div>
-              <div class="text-[11px] font-mono text-muted-foreground uppercase tracking-wider">05 / Dokumen & E-Book</div>
-              <h2 class="text-sm font-semibold text-foreground mt-0.5">Modul & Bank Soal PDF</h2>
-            </div>
+            <h2 class="text-sm font-semibold text-foreground">Modul & Bank Soal PDF</h2>
             <button
               (click)="openModuleModal()"
               class="h-7 px-2.5 rounded border border-border bg-muted/30 hover:bg-muted text-xs font-medium flex items-center gap-1.5 transition-colors"
@@ -338,10 +323,7 @@ type CMSTab = 'all' | 'banner' | 'package' | 'live' | 'video' | 'module' | 'vouc
       @if (currentTab() === 'voucher') {
         <section class="rounded-lg border border-border bg-card p-4 sm:p-5 space-y-4">
           <div class="flex items-center justify-between">
-            <div>
-              <div class="text-[11px] font-mono text-muted-foreground uppercase tracking-wider">06 / Promosi & Kupon</div>
-              <h2 class="text-sm font-semibold text-foreground mt-0.5">Kupon Voucher Diskon</h2>
-            </div>
+            <h2 class="text-sm font-semibold text-foreground">Kupon Voucher Diskon</h2>
             <button
               (click)="openVoucherModal()"
               class="h-7 px-2.5 rounded border border-border bg-muted/30 hover:bg-muted text-xs font-medium flex items-center gap-1.5 transition-colors"
