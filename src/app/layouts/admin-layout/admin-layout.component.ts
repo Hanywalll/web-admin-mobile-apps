@@ -456,19 +456,154 @@ import { IconComponent } from '../../shared/components/icon/icon.component';
 
           <!-- Right: System Tools & Admin Session -->
           <div class="flex items-center gap-2">
-            <!-- Notifications Bell -->
-            <a
-              routerLink="/admin/notifications"
-              class="relative h-8 w-8 rounded-md border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 flex items-center justify-center text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100 hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-colors"
-              title="Notifikasi Aktivitas Masuk"
-            >
-              <app-icon name="bell" [size]="15"></app-icon>
-              @if (adminService.unreadNotificationCount() > 0) {
-                <span class="absolute -top-1 -right-1 flex h-4 min-w-4 px-1 items-center justify-center rounded-full bg-rose-500 text-[9px] font-bold text-white shadow-sm ring-2 ring-white dark:ring-zinc-900 animate-pulse">
-                  {{ adminService.unreadNotificationCount() }}
-                </span>
+            <!-- Notifications Bell with Dropdown -->
+            <div class="relative">
+              <button
+                type="button"
+                (click)="toggleNotifDropdown()"
+                class="relative h-8 w-8 rounded-md border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 flex items-center justify-center text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100 hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-colors cursor-pointer"
+                title="Notifikasi Aktivitas Masuk"
+              >
+                <app-icon name="bell" [size]="15"></app-icon>
+                @if (adminService.unreadNotificationCount() > 0) {
+                  <span class="absolute -top-1 -right-1 flex h-4 min-w-4 px-1 items-center justify-center rounded-full bg-rose-500 text-[9px] font-bold text-white shadow-sm ring-2 ring-white dark:ring-zinc-900 animate-pulse">
+                    {{ adminService.unreadNotificationCount() }}
+                  </span>
+                }
+              </button>
+
+              <!-- Backdrop when dropdown is open -->
+              @if (isNotifDropdownOpen()) {
+                <div
+                  class="fixed inset-0 z-40 bg-transparent"
+                  (click)="closeNotifDropdown()"
+                ></div>
               }
-            </a>
+
+              <!-- Notification Dropdown Popover Panel -->
+              @if (isNotifDropdownOpen()) {
+                <div
+                  class="absolute right-0 top-full mt-2 w-80 sm:w-96 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-2xl z-50 overflow-hidden divide-y divide-zinc-100 dark:divide-zinc-800 animate-in fade-in zoom-in-95 duration-100"
+                >
+                  <!-- Dropdown Header -->
+                  <div class="p-3 bg-zinc-50/70 dark:bg-zinc-800/40 flex items-center justify-between">
+                    <div class="flex items-center gap-2">
+                      <span class="text-xs font-bold text-foreground">Notifikasi Masuk</span>
+                      @if (adminService.unreadNotificationCount() > 0) {
+                        <span class="px-1.5 py-0.5 rounded-full text-[10px] font-bold bg-rose-500/10 text-rose-600 dark:text-rose-400">
+                          {{ adminService.unreadNotificationCount() }} baru
+                        </span>
+                      }
+                    </div>
+
+                    @if (adminService.unreadNotificationCount() > 0) {
+                      <button
+                        type="button"
+                        (click)="markAllNotifsAsRead($event)"
+                        class="text-[11px] font-medium text-[#1B2CC1] dark:text-[#7692FF] hover:underline flex items-center gap-1 cursor-pointer"
+                        title="Tandai semua dibaca"
+                      >
+                        <app-icon name="check" [size]="12"></app-icon>
+                        <span>Semua dibaca</span>
+                      </button>
+                    }
+                  </div>
+
+                  <!-- Dropdown Body (Feed list) -->
+                  <div class="max-h-80 overflow-y-auto divide-y divide-zinc-100 dark:divide-zinc-800/60">
+                    @if (adminService.latestNotifications().length === 0) {
+                      <div class="py-8 text-center text-muted-foreground text-xs">
+                        <app-icon name="bell" [size]="20" className="mx-auto mb-1 opacity-30"></app-icon>
+                        Tidak ada notifikasi saat ini
+                      </div>
+                    } @else {
+                      @for (n of adminService.latestNotifications().slice(0, 6); track n.id) {
+                        <div
+                          (click)="navigateToNotif(n)"
+                          class="p-3 hover:bg-zinc-50 dark:hover:bg-zinc-800/50 flex items-start justify-between gap-2.5 transition-colors cursor-pointer group"
+                          [class.bg-blue-500/5]="!n.isRead"
+                        >
+                          <div class="flex items-start gap-2.5 min-w-0">
+                            <div
+                              class="h-7 w-7 rounded-lg flex items-center justify-center shrink-0 mt-0.5"
+                              [ngClass]="{
+                                'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400': n.type === 'payment',
+                                'bg-blue-500/10 text-[#1B2CC1] dark:text-[#7692FF]': n.type === 'order',
+                                'bg-amber-500/10 text-amber-600 dark:text-amber-400': n.type === 'support',
+                                'bg-purple-500/10 text-purple-600 dark:text-purple-400': n.type === 'testimonial',
+                                'bg-indigo-500/10 text-indigo-600 dark:text-indigo-400': n.type === 'tryout',
+                                'bg-zinc-500/10 text-zinc-600 dark:text-zinc-400': n.type === 'user'
+                              }"
+                            >
+                              <ng-container [ngSwitch]="n.type">
+                                <app-icon *ngSwitchCase="'payment'" name="dollar" [size]="13"></app-icon>
+                                <app-icon *ngSwitchCase="'order'" name="shopping-cart" [size]="13"></app-icon>
+                                <app-icon *ngSwitchCase="'support'" name="help-circle" [size]="13"></app-icon>
+                                <app-icon *ngSwitchCase="'testimonial'" name="star" [size]="13"></app-icon>
+                                <app-icon *ngSwitchCase="'tryout'" name="award" [size]="13"></app-icon>
+                                <app-icon *ngSwitchCase="'user'" name="users" [size]="13"></app-icon>
+                                <app-icon *ngSwitchDefault name="bell" [size]="13"></app-icon>
+                              </ng-container>
+                            </div>
+
+                            <div class="min-w-0 flex-1">
+                              <div class="flex items-center gap-1.5">
+                                <span class="text-xs font-semibold text-foreground truncate block">{{ n.title }}</span>
+                                @if (!n.isRead) {
+                                  <span class="h-1.5 w-1.5 rounded-full bg-rose-500 shrink-0"></span>
+                                }
+                              </div>
+                              <p class="text-[11px] text-muted-foreground truncate leading-tight mt-0.5">{{ n.message }}</p>
+                              <div class="flex items-center gap-2 text-[10px] text-muted-foreground/70 mt-1">
+                                <span>{{ n.studentName }}</span>
+                                <span>•</span>
+                                <span>{{ n.createdAt }}</span>
+                              </div>
+                            </div>
+                          </div>
+
+                          <!-- Mini quick actions: Icon only -->
+                          <div class="flex items-center gap-1 shrink-0 pt-0.5">
+                            @if (!n.isRead) {
+                              <button
+                                type="button"
+                                (click)="markNotifAsRead(n, $event)"
+                                class="h-6 w-6 rounded-md hover:bg-emerald-50 dark:hover:bg-emerald-950/40 text-muted-foreground hover:text-emerald-600 dark:hover:text-emerald-400 flex items-center justify-center transition-colors"
+                                title="Tandai dibaca"
+                              >
+                                <app-icon name="check" [size]="12"></app-icon>
+                              </button>
+                            }
+                            @if (n.targetRoute) {
+                              <button
+                                type="button"
+                                (click)="navigateToNotif(n)"
+                                class="h-6 w-6 rounded-md hover:bg-zinc-200 dark:hover:bg-zinc-700 text-muted-foreground hover:text-foreground flex items-center justify-center transition-colors"
+                                title="Buka menu terkait"
+                              >
+                                <app-icon name="external-link" [size]="11"></app-icon>
+                              </button>
+                            }
+                          </div>
+                        </div>
+                      }
+                    }
+                  </div>
+
+                  <!-- Dropdown Footer -->
+                  <div class="p-2.5 bg-zinc-50/70 dark:bg-zinc-800/40 text-center">
+                    <a
+                      routerLink="/admin/notifications"
+                      (click)="closeNotifDropdown()"
+                      class="inline-flex items-center justify-center gap-1.5 text-xs font-semibold text-[#1B2CC1] dark:text-[#7692FF] hover:underline cursor-pointer"
+                    >
+                      <span>Lihat Semua Notifikasi</span>
+                      <app-icon name="external-link" [size]="11"></app-icon>
+                    </a>
+                  </div>
+                </div>
+              }
+            </div>
 
             <!-- Theme Toggle -->
             <button
@@ -522,6 +657,7 @@ export class AdminLayoutComponent {
   router = inject(Router);
 
   isMobileDrawerOpen = signal<boolean>(false);
+  isNotifDropdownOpen = signal<boolean>(false);
   currentSection = signal<string>('Ringkasan');
 
   constructor() {
@@ -575,5 +711,36 @@ export class AdminLayoutComponent {
 
   closeMobileDrawer(): void {
     this.isMobileDrawerOpen.set(false);
+  }
+
+  toggleNotifDropdown(): void {
+    this.isNotifDropdownOpen.update((v) => !v);
+    if (this.isNotifDropdownOpen()) {
+      this.adminService.getNotifications().subscribe();
+    }
+  }
+
+  closeNotifDropdown(): void {
+    this.isNotifDropdownOpen.set(false);
+  }
+
+  markNotifAsRead(n: any, event?: Event): void {
+    if (event) event.stopPropagation();
+    this.adminService.markNotificationRead(n.id).subscribe();
+  }
+
+  markAllNotifsAsRead(event?: Event): void {
+    if (event) event.stopPropagation();
+    this.adminService.markAllNotificationsRead().subscribe();
+  }
+
+  navigateToNotif(n: any): void {
+    if (!n.isRead) {
+      this.adminService.markNotificationRead(n.id).subscribe();
+    }
+    this.closeNotifDropdown();
+    if (n.targetRoute) {
+      this.router.navigate([n.targetRoute]);
+    }
   }
 }

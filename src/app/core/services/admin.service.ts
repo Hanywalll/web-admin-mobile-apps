@@ -24,6 +24,7 @@ import {
 })
 export class AdminService {
   unreadNotificationCount = signal<number>(3);
+  latestNotifications = signal<AdminNotification[]>([]);
 
   constructor(private api: ApiService) {}
 
@@ -500,15 +501,18 @@ export class AdminService {
           }));
           const unread = list.filter((i) => !i.isRead).length;
           this.unreadNotificationCount.set(unread);
+          this.latestNotifications.set(list);
           return list;
         }
         const mock = this.getMockNotifications();
         this.unreadNotificationCount.set(mock.filter((i) => !i.isRead).length);
+        this.latestNotifications.set(mock);
         return mock;
       }),
       catchError(() => {
         const mock = this.getMockNotifications();
         this.unreadNotificationCount.set(mock.filter((i) => !i.isRead).length);
+        this.latestNotifications.set(mock);
         return of(mock);
       })
     );
@@ -535,24 +539,35 @@ export class AdminService {
   }
 
   markNotificationRead(id: string): Observable<ApiResponse<any>> {
+    const updateLocal = () => {
+      this.latestNotifications.update((arr) =>
+        arr.map((item) => (item.id === id ? { ...item, isRead: true } : item))
+      );
+      const current = this.unreadNotificationCount();
+      if (current > 0) this.unreadNotificationCount.set(current - 1);
+    };
+
     return this.api.post(`/notifications/${id}/read`, {}).pipe(
-      tap(() => {
-        const current = this.unreadNotificationCount();
-        if (current > 0) this.unreadNotificationCount.set(current - 1);
-      }),
+      tap(() => updateLocal()),
       catchError(() => {
-        const current = this.unreadNotificationCount();
-        if (current > 0) this.unreadNotificationCount.set(current - 1);
+        updateLocal();
         return of({ success: true, message: 'Notification marked as read' });
       })
     );
   }
 
   markAllNotificationsRead(): Observable<ApiResponse<any>> {
+    const updateLocal = () => {
+      this.latestNotifications.update((arr) =>
+        arr.map((item) => ({ ...item, isRead: true }))
+      );
+      this.unreadNotificationCount.set(0);
+    };
+
     return this.api.post('/notifications/read-all', {}).pipe(
-      tap(() => this.unreadNotificationCount.set(0)),
+      tap(() => updateLocal()),
       catchError(() => {
-        this.unreadNotificationCount.set(0);
+        updateLocal();
         return of({ success: true, message: 'All notifications marked as read' });
       })
     );

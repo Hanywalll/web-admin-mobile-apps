@@ -68,30 +68,31 @@ import { IconComponent } from '../../shared/components/icon/icon.component';
         </div>
       </div>
 
-      <!-- Filter Tabs -->
-      <div class="p-4 rounded-xl border border-border bg-card shadow-sm flex flex-col md:flex-row items-center justify-between gap-3">
-        <div class="flex items-center gap-1.5 w-full md:w-auto overflow-x-auto pb-1 md:pb-0">
-          <button
-            *ngFor="let tab of tabs"
-            type="button"
-            (click)="selectedCategory.set(tab.key)"
-            [class.bg-[#1B2CC1]]="selectedCategory() === tab.key"
-            [class.text-white]="selectedCategory() === tab.key"
-            [class.bg-muted]="selectedCategory() !== tab.key"
-            [class.text-muted-foreground]="selectedCategory() !== tab.key"
-            class="px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition-colors cursor-pointer"
-          >
-            {{ tab.label }}
-          </button>
+      <!-- Filter Controls: Dropdown & Search -->
+      <div class="p-3.5 sm:p-4 rounded-xl border border-border bg-card shadow-sm flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
+        <div class="flex items-center gap-2">
+          <label class="text-xs font-medium text-muted-foreground whitespace-nowrap">Filter Kategori:</label>
+          <div class="relative min-w-[180px]">
+            <select
+              [ngModel]="selectedCategory()"
+              (ngModelChange)="selectedCategory.set($event)"
+              class="w-full h-9 pl-3 pr-8 rounded-lg border border-input bg-background text-foreground text-xs font-medium focus:outline-none focus:ring-2 focus:ring-[#1B2CC1] cursor-pointer shadow-xs appearance-none"
+            >
+              <option *ngFor="let tab of tabs" [value]="tab.key">{{ tab.label }}</option>
+            </select>
+            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2.5 text-muted-foreground">
+              <svg class="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+            </div>
+          </div>
         </div>
 
-        <div class="relative w-full md:w-72">
+        <div class="relative w-full sm:w-72">
           <app-icon name="search" [size]="14" className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground"></app-icon>
           <input
             type="text"
             [(ngModel)]="searchQuery"
             placeholder="Cari pesan atau siswa..."
-            class="w-full h-9 pl-9 pr-3 rounded-lg border border-input bg-background text-foreground text-xs focus:outline-none focus:ring-2 focus:ring-[#1B2CC1] transition-all placeholder:text-muted-foreground/50 shadow-sm"
+            class="w-full h-9 pl-9 pr-3 rounded-lg border border-input bg-background text-foreground text-xs focus:outline-none focus:ring-2 focus:ring-[#1B2CC1] transition-all placeholder:text-muted-foreground/50 shadow-xs"
           />
         </div>
       </div>
@@ -175,16 +176,17 @@ import { IconComponent } from '../../shared/components/icon/icon.component';
               </div>
             </div>
 
-            <!-- Right Actions -->
-            <div class="flex items-center gap-2 self-end sm:self-center shrink-0">
+            <!-- Right Actions: Minimalist Icons Only -->
+            <div class="flex items-center gap-1.5 self-end sm:self-center shrink-0">
               @if (!n.isRead) {
                 <button
                   type="button"
                   (click)="markAsRead(n)"
-                  class="h-8 px-3 rounded-md border border-border hover:bg-muted text-foreground text-xs font-medium transition-colors cursor-pointer"
+                  class="h-8 w-8 rounded-lg border border-border bg-card hover:bg-emerald-50 dark:hover:bg-emerald-950/40 text-muted-foreground hover:text-emerald-600 dark:hover:text-emerald-400 flex items-center justify-center transition-colors cursor-pointer shadow-xs"
                   title="Tandai Sudah Dibaca"
+                  aria-label="Tandai Sudah Dibaca"
                 >
-                  Tandai Dibaca
+                  <app-icon name="check" [size]="14"></app-icon>
                 </button>
               }
 
@@ -192,10 +194,11 @@ import { IconComponent } from '../../shared/components/icon/icon.component';
                 <button
                   type="button"
                   (click)="openDetail(n)"
-                  class="h-8 px-3.5 rounded-md bg-[#1B2CC1] hover:bg-[#1B2CC1]/90 text-white text-xs font-semibold flex items-center gap-1.5 transition-colors cursor-pointer shadow-sm"
+                  class="h-8 w-8 rounded-lg bg-[#1B2CC1] hover:bg-[#1B2CC1]/90 text-white flex items-center justify-center transition-colors cursor-pointer shadow-xs"
+                  title="Buka Menu Terkait"
+                  aria-label="Buka Menu Terkait"
                 >
-                  <span>Buka Menu Terkait</span>
-                  <app-icon name="external-link" [size]="12"></app-icon>
+                  <app-icon name="external-link" [size]="13"></app-icon>
                 </button>
               }
             </div>
