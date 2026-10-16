@@ -199,10 +199,20 @@ import { IconComponent } from '../../shared/components/icon/icon.component';
             <span>Moderasi Testimoni</span>
           </a>
 
+          <div class="px-2.5 pt-4 pb-1 text-[10px] font-semibold text-muted-foreground uppercase tracking-wider">
+            Akun & Pengaturan
+          </div>
+          <a
+            routerLink="/admin/profile"
+            (click)="closeMobileDrawer()"
+            routerLinkActive="bg-primary/10 text-primary font-semibold"
+            class="flex items-center gap-3 px-3 py-2 rounded-md text-xs text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
+          >
+            <app-icon name="user" [size]="15"></app-icon>
+            <span>Profil Saya</span>
+          </a>
+
           @if (auth.isSuperAdmin()) {
-            <div class="px-2.5 pt-4 pb-1 text-[10px] font-semibold text-muted-foreground uppercase tracking-wider">
-              Superadmin
-            </div>
             <a
               routerLink="/admin/settings"
               (click)="closeMobileDrawer()"
@@ -384,11 +394,20 @@ import { IconComponent } from '../../shared/components/icon/icon.component';
             <span>Moderasi Testimoni</span>
           </a>
 
-          @if (auth.isSuperAdmin()) {
-            <div class="px-2.5 pt-4 pb-1 text-[10px] font-semibold text-muted-foreground uppercase tracking-wider">
-              Superadmin
-            </div>
+          <div class="px-2.5 pt-4 pb-1 text-[10px] font-semibold text-muted-foreground uppercase tracking-wider">
+            Akun & Pengaturan
+          </div>
 
+          <a
+            routerLink="/admin/profile"
+            routerLinkActive="bg-primary/10 text-primary font-semibold"
+            class="flex items-center gap-2.5 px-2.5 py-2 rounded-md text-xs text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
+          >
+            <app-icon name="user" [size]="15"></app-icon>
+            <span>Profil Saya</span>
+          </a>
+
+          @if (auth.isSuperAdmin()) {
             <a
               routerLink="/admin/settings"
               routerLinkActive="bg-primary/10 text-primary font-semibold"
@@ -650,14 +669,14 @@ import { IconComponent } from '../../shared/components/icon/icon.component';
 
                   <!-- Menu Options -->
                   <div class="p-1.5 space-y-0.5">
-                    <button
-                      type="button"
-                      (click)="openProfileModal()"
+                    <a
+                      routerLink="/admin/profile"
+                      (click)="closeProfileDropdown()"
                       class="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs text-foreground hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors text-left cursor-pointer group"
                     >
                       <app-icon name="user" [size]="14" className="text-muted-foreground group-hover:text-[#1B2CC1] dark:group-hover:text-[#7692FF]"></app-icon>
-                      <span class="font-medium">Profil Akun Saya</span>
-                    </button>
+                      <span class="font-medium">Profil & Edit Data Diri</span>
+                    </a>
 
                     @if (auth.isSuperAdmin()) {
                       <a
@@ -688,107 +707,6 @@ import { IconComponent } from '../../shared/components/icon/icon.component';
           </div>
         </header>
 
-        <!-- MODAL PROFIL AKUN ADMIN -->
-        @if (isProfileModalOpen()) {
-          <div class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-zinc-950/60 backdrop-blur-xs animate-in fade-in duration-150">
-            <div
-              class="w-full max-w-md rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-2xl overflow-hidden animate-in zoom-in-95 duration-150"
-              (click)="$event.stopPropagation()"
-            >
-              <!-- Modal Header -->
-              <div class="p-4 sm:p-5 border-b border-zinc-100 dark:border-zinc-800 flex items-center justify-between bg-zinc-50/50 dark:bg-zinc-800/30">
-                <div class="flex items-center gap-2.5">
-                  <div class="h-8 w-8 rounded-lg bg-[#1B2CC1]/10 text-[#1B2CC1] dark:text-[#7692FF] flex items-center justify-center">
-                    <app-icon name="user" [size]="16"></app-icon>
-                  </div>
-                  <div>
-                    <h3 class="font-bold text-sm text-foreground">Profil Pengguna</h3>
-                    <p class="text-[11px] text-muted-foreground">Detail informasi akun login Anda</p>
-                  </div>
-                </div>
-                <button
-                  type="button"
-                  (click)="closeProfileModal()"
-                  class="h-8 w-8 rounded-lg border border-border bg-card hover:bg-muted text-muted-foreground hover:text-foreground flex items-center justify-center transition-colors cursor-pointer"
-                  title="Tutup Modal"
-                >
-                  <app-icon name="x" [size]="14"></app-icon>
-                </button>
-              </div>
-
-              <!-- Modal Body -->
-              <div class="p-5 space-y-4">
-                <!-- Avatar Card -->
-                <div class="flex items-center gap-3.5 p-3.5 rounded-xl border border-border bg-zinc-50 dark:bg-zinc-800/40">
-                  <div class="h-14 w-14 rounded-full bg-[#1B2CC1] text-white flex items-center justify-center font-bold text-xl select-none shadow-md shrink-0">
-                    {{ (auth.currentUser()?.name || 'A')[0].toUpperCase() }}
-                  </div>
-                  <div class="min-w-0 flex-1">
-                    <h4 class="font-bold text-sm text-foreground truncate">{{ auth.currentUser()?.name || 'Administrator KPM' }}</h4>
-                    <p class="text-xs text-muted-foreground truncate">{{ auth.currentUser()?.email || 'admin@kpmacademy.com' }}</p>
-                    <div class="flex items-center gap-2 mt-1.5">
-                      <span class="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">
-                        Aktif & Terverifikasi
-                      </span>
-                      <span class="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-blue-500/10 text-[#1B2CC1] dark:text-[#7692FF] border border-blue-500/20 uppercase">
-                        {{ auth.isSuperAdmin() ? 'Super Admin' : (auth.currentUser()?.role || 'Admin') }}
-                      </span>
-                    </div>
-                  </div>
-                </div>
-
-                <!-- Information Grid -->
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
-                  <div class="p-3 rounded-lg border border-border bg-card">
-                    <span class="text-[10px] font-medium text-muted-foreground uppercase tracking-wider block">ID Pengguna</span>
-                    <span class="font-mono text-xs font-semibold text-foreground mt-0.5 block truncate">
-                      {{ auth.currentUser()?.id || 'ADM-ROOT-001' }}
-                    </span>
-                  </div>
-                  <div class="p-3 rounded-lg border border-border bg-card">
-                    <span class="text-[10px] font-medium text-muted-foreground uppercase tracking-wider block">Tingkat Hak Akses</span>
-                    <span class="text-xs font-semibold text-foreground mt-0.5 block capitalize">
-                      {{ auth.isSuperAdmin() ? 'Superadministrator' : (auth.currentUser()?.role || 'Administrator') }}
-                    </span>
-                  </div>
-                  <div class="p-3 rounded-lg border border-border bg-card">
-                    <span class="text-[10px] font-medium text-muted-foreground uppercase tracking-wider block">Unit Institusi</span>
-                    <span class="text-xs font-semibold text-foreground mt-0.5 block truncate">
-                      {{ auth.currentUser()?.school || 'KPM Academy Center' }}
-                    </span>
-                  </div>
-                  <div class="p-3 rounded-lg border border-border bg-card">
-                    <span class="text-[10px] font-medium text-muted-foreground uppercase tracking-wider block">Lokasi / Kota</span>
-                    <span class="text-xs font-semibold text-foreground mt-0.5 block">
-                      {{ auth.currentUser()?.city || 'Bogor / Indonesia' }}
-                    </span>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Modal Footer -->
-              <div class="p-4 border-t border-border bg-zinc-50/70 dark:bg-zinc-800/40 flex items-center justify-between gap-2">
-                <button
-                  type="button"
-                  (click)="logout()"
-                  class="px-3.5 py-2 rounded-lg border border-rose-200 dark:border-rose-900/50 bg-rose-50 dark:bg-rose-950/30 text-rose-600 dark:text-rose-400 hover:bg-rose-100 text-xs font-semibold flex items-center gap-1.5 transition-colors cursor-pointer"
-                >
-                  <app-icon name="log-out" [size]="13"></app-icon>
-                  <span>Keluar Akun</span>
-                </button>
-
-                <button
-                  type="button"
-                  (click)="closeProfileModal()"
-                  class="px-4 py-2 rounded-lg bg-[#1B2CC1] hover:bg-[#1B2CC1]/90 text-white text-xs font-semibold transition-colors cursor-pointer shadow-xs"
-                >
-                  Tutup
-                </button>
-              </div>
-            </div>
-          </div>
-        }
-
         <!-- PAGE CONTENT -->
         <main class="flex-1 p-4 md:p-6 lg:p-8 max-w-7xl w-full mx-auto">
           <router-outlet></router-outlet>
@@ -807,7 +725,6 @@ export class AdminLayoutComponent {
   isMobileDrawerOpen = signal<boolean>(false);
   isNotifDropdownOpen = signal<boolean>(false);
   isProfileDropdownOpen = signal<boolean>(false);
-  isProfileModalOpen = signal<boolean>(false);
   currentSection = signal<string>('Ringkasan');
 
   constructor() {
@@ -822,6 +739,8 @@ export class AdminLayoutComponent {
   private updateCurrentSection(url: string): void {
     if (url.includes('/notifications')) {
       this.currentSection.set('Notifikasi Aktivitas');
+    } else if (url.includes('/profile')) {
+      this.currentSection.set('Profil Administrator');
     } else if (url.includes('/banners')) {
       this.currentSection.set('Spanduk Banner');
     } else if (url.includes('/packages')) {
@@ -884,18 +803,8 @@ export class AdminLayoutComponent {
     this.isProfileDropdownOpen.set(false);
   }
 
-  openProfileModal(): void {
-    this.closeProfileDropdown();
-    this.isProfileModalOpen.set(true);
-  }
-
-  closeProfileModal(): void {
-    this.isProfileModalOpen.set(false);
-  }
-
   logout(): void {
     this.closeProfileDropdown();
-    this.closeProfileModal();
     this.auth.logout();
   }
 

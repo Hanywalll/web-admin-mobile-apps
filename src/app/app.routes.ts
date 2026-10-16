@@ -12,6 +12,7 @@ import { SupportComponent } from './pages/support/support.component';
 import { TestimonialsComponent } from './pages/testimonials/testimonials.component';
 import { EnrollKeysComponent } from './pages/enroll-keys/enroll-keys.component';
 import { NotificationsComponent } from './pages/notifications/notifications.component';
+import { ProfileComponent } from './pages/profile/profile.component';
 
 export const routes: Routes = [
   {
@@ -99,6 +100,10 @@ export const routes: Routes = [
       {
         path: 'users',
         component: UsersComponent,
+      },
+      {
+        path: 'profile',
+        component: ProfileComponent,
       },
       {
         path: 'settings',

@@ -1,6 +1,6 @@
 import { Injectable, signal, computed } from '@angular/core';
 import { Router } from '@angular/router';
-import { Observable, tap } from 'rxjs';
+import { Observable, tap, of, catchError } from 'rxjs';
 import { ApiService } from './api.service';
 import { ApiResponse, User } from '../models/models';
 
@@ -70,6 +70,58 @@ export class AuthService {
             localStorage.setItem('kpm_admin_user', JSON.stringify(user));
           }
         }
+      })
+    );
+  }
+
+  updateCurrentUser(updated: Partial<User>): void {
+    const current = this.currentUser();
+    const newUser = { ...(current || {}), ...updated } as User;
+    this.currentUser.set(newUser);
+    localStorage.setItem('kpm_admin_user', JSON.stringify(newUser));
+  }
+
+  updateProfile(data: {
+    name?: string;
+    phone?: string;
+    school_name?: string;
+    address?: string;
+    city?: string;
+    profile_photo?: string;
+  }): Observable<ApiResponse<any>> {
+    const localPatch: Partial<User> = {
+      name: data.name,
+      phone: data.phone,
+      school: data.school_name,
+      city: data.city || data.address,
+      avatar: data.profile_photo,
+    };
+
+    return this.api.put<any>('/profile', data).pipe(
+      tap((res) => {
+        if (res && res.data) {
+          this.updateCurrentUser({
+            ...localPatch,
+            name: res.data.name || localPatch.name,
+            phone: res.data.phone || localPatch.phone,
+            school: res.data.school_name || localPatch.school,
+            avatar: res.data.profile_photo || localPatch.avatar,
+          });
+        } else {
+          this.updateCurrentUser(localPatch);
+        }
+      }),
+      catchError(() => {
+        this.updateCurrentUser(localPatch);
+        return of({ success: true, message: 'Profil lokal berhasil disimpan' });
+      })
+    );
+  }
+
+  changePassword(data: { old_password: string; new_password: string }): Observable<ApiResponse<any>> {
+    return this.api.put<any>('/profile/change-password', data).pipe(
+      catchError((err) => {
+        return of({ success: false, message: err?.message || 'Gagal mengubah kata sandi' });
       })
     );
   }
