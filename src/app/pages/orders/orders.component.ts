@@ -223,19 +223,7 @@ import { ModalComponent } from '../../shared/components/modal/modal.component';
 
                   <!-- Action -->
                   <td class="px-4 py-3 text-right">
-                    <div class="flex items-center justify-end gap-1.5">
-                      @if (order.status === 'PENDING') {
-                        <button
-                          type="button"
-                          (click)="approveOrder(order)"
-                          [disabled]="approvingId() === order.id"
-                          class="h-7 px-2.5 rounded bg-emerald-600 hover:bg-emerald-700 text-white text-[11px] font-semibold flex items-center gap-1.5 transition-colors cursor-pointer shadow-xs disabled:opacity-50"
-                          title="Setujui transaksi dan aktifkan akses belajar siswa"
-                        >
-                          <app-icon [name]="approvingId() === order.id ? 'refresh' : 'check'" [size]="12" [className]="approvingId() === order.id ? 'animate-spin' : ''"></app-icon>
-                          <span>{{ approvingId() === order.id ? 'Memproses...' : 'Setujui' }}</span>
-                        </button>
-                      }
+                    <div class="flex items-center justify-end">
                       <button
                         type="button"
                         (click)="viewReceipt(order)"
@@ -290,26 +278,13 @@ import { ModalComponent } from '../../shared/components/modal/modal.component';
 
             <div class="flex items-center justify-between pt-0.5">
               <span class="text-[10px] text-muted-foreground font-mono">{{ order.createdAt }}</span>
-              <div class="flex items-center gap-1.5">
-                @if (order.status === 'PENDING') {
-                  <button
-                    type="button"
-                    (click)="approveOrder(order)"
-                    [disabled]="approvingId() === order.id"
-                    class="h-7 px-2.5 rounded bg-emerald-600 hover:bg-emerald-700 text-white text-[11px] font-semibold flex items-center gap-1 transition-colors cursor-pointer disabled:opacity-50 shadow-xs"
-                  >
-                    <app-icon [name]="approvingId() === order.id ? 'refresh' : 'check'" [size]="11" [className]="approvingId() === order.id ? 'animate-spin' : ''"></app-icon>
-                    <span>{{ approvingId() === order.id ? '...' : 'Setujui' }}</span>
-                  </button>
-                }
-                <button
-                  type="button"
-                  (click)="viewReceipt(order)"
-                  class="h-7 px-2.5 rounded border border-border bg-muted/50 hover:bg-muted text-[11px] font-medium transition-colors cursor-pointer"
-                >
-                  Detail Faktur
-                </button>
-              </div>
+              <button
+                type="button"
+                (click)="viewReceipt(order)"
+                class="h-7 px-2.5 rounded border border-border bg-muted/50 hover:bg-muted text-[11px] font-medium transition-colors cursor-pointer"
+              >
+                Detail Faktur
+              </button>
             </div>
           </div>
         }
@@ -411,21 +386,7 @@ import { ModalComponent } from '../../shared/components/modal/modal.component';
         </div>
       }
 
-      <div modal-footer class="flex items-center justify-between w-full">
-        @if (selectedOrder()?.status === 'PENDING') {
-          <button
-            type="button"
-            (click)="approveSelectedOrder()"
-            [disabled]="approvingId() === selectedOrder()?.id"
-            class="h-8 px-4 rounded-md bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold flex items-center gap-1.5 transition-colors cursor-pointer shadow-xs disabled:opacity-50"
-          >
-            <app-icon [name]="approvingId() === selectedOrder()?.id ? 'refresh' : 'check'" [size]="13" [className]="approvingId() === selectedOrder()?.id ? 'animate-spin' : ''"></app-icon>
-            <span>{{ approvingId() === selectedOrder()?.id ? 'Memproses Persetujuan...' : 'Setujui Pembayaran Ini' }}</span>
-          </button>
-        } @else {
-          <div></div>
-        }
-
+      <div modal-footer class="flex items-center justify-end w-full">
         <button
           type="button"
           (click)="isReceiptOpen.set(false)"
@@ -447,7 +408,6 @@ export class OrdersComponent implements OnInit {
   isReceiptOpen = signal<boolean>(false);
   selectedOrder = signal<Order | null>(null);
 
-  approvingId = signal<string | null>(null);
   toastMessage = signal<string | null>(null);
   toastType = signal<'success' | 'error'>('success');
 
@@ -522,36 +482,7 @@ export class OrdersComponent implements OnInit {
     }, 4500);
   }
 
-  approveOrder(order: Order): void {
-    const targetId = order.realId || order.id;
-    this.approvingId.set(order.id);
 
-    this.adminService.verifyOrder(targetId).subscribe({
-      next: () => {
-        this.approvingId.set(null);
-        // Instantly update local order status to PAID
-        this.orders.update((list) =>
-          list.map((item) => (item.id === order.id ? { ...item, status: 'PAID' as const } : item))
-        );
-        // If receipt modal is open for this order, update selectedOrder as well
-        if (this.selectedOrder()?.id === order.id) {
-          this.selectedOrder.update((curr) => (curr ? { ...curr, status: 'PAID' as const } : null));
-        }
-        this.showToast(`Pembayaran transaksi ${order.id} berhasil disetujui! Hak akses siswa aktif.`);
-      },
-      error: (err) => {
-        this.approvingId.set(null);
-        this.showToast(err?.message || 'Gagal menyetujui transaksi', 'error');
-      },
-    });
-  }
-
-  approveSelectedOrder(): void {
-    const ord = this.selectedOrder();
-    if (ord) {
-      this.approveOrder(ord);
-    }
-  }
 
   exportCSV(): void {
     const data = this.filteredOrders();
