@@ -12,6 +12,22 @@ import { ModalComponent } from '../../shared/components/modal/modal.component';
   imports: [CommonModule, FormsModule, IconComponent, ModalComponent],
   template: `
     <div class="space-y-6">
+      <!-- Action Feedback Toast -->
+      @if (toastMessage()) {
+        <div
+          class="p-3.5 rounded-xl border flex items-center justify-between text-xs transition-all shadow-sm animate-in fade-in duration-200"
+          [ngClass]="toastType() === 'success' ? 'border-emerald-500/20 bg-emerald-50/70 dark:bg-emerald-950/30 text-emerald-700 dark:text-emerald-300' : 'border-rose-500/20 bg-rose-50/70 dark:bg-rose-950/30 text-rose-700 dark:text-rose-300'"
+        >
+          <div class="flex items-center gap-2.5">
+            <app-icon [name]="toastType() === 'success' ? 'check' : 'x'" [size]="15"></app-icon>
+            <span class="font-medium">{{ toastMessage() }}</span>
+          </div>
+          <button (click)="toastMessage.set(null)" class="opacity-60 hover:opacity-100 cursor-pointer">
+            <app-icon name="x" [size]="14"></app-icon>
+          </button>
+        </div>
+      }
+
       <!-- Page Header -->
       <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
@@ -207,13 +223,27 @@ import { ModalComponent } from '../../shared/components/modal/modal.component';
 
                   <!-- Action -->
                   <td class="px-4 py-3 text-right">
-                    <button
-                      type="button"
-                      (click)="viewReceipt(order)"
-                      class="h-7 px-2.5 rounded border border-border bg-card hover:bg-muted text-[11px] font-medium text-foreground transition-colors"
-                    >
-                      Detail Faktur
-                    </button>
+                    <div class="flex items-center justify-end gap-1.5">
+                      @if (order.status === 'PENDING') {
+                        <button
+                          type="button"
+                          (click)="approveOrder(order)"
+                          [disabled]="approvingId() === order.id"
+                          class="h-7 px-2.5 rounded bg-emerald-600 hover:bg-emerald-700 text-white text-[11px] font-semibold flex items-center gap-1.5 transition-colors cursor-pointer shadow-xs disabled:opacity-50"
+                          title="Setujui transaksi dan aktifkan akses belajar siswa"
+                        >
+                          <app-icon [name]="approvingId() === order.id ? 'refresh' : 'check'" [size]="12" [className]="approvingId() === order.id ? 'animate-spin' : ''"></app-icon>
+                          <span>{{ approvingId() === order.id ? 'Memproses...' : 'Setujui' }}</span>
+                        </button>
+                      }
+                      <button
+                        type="button"
+                        (click)="viewReceipt(order)"
+                        class="h-7 px-2.5 rounded border border-border bg-card hover:bg-muted text-[11px] font-medium text-foreground transition-colors cursor-pointer"
+                      >
+                        Detail Faktur
+                      </button>
+                    </div>
                   </td>
                 </tr>
               } @empty {
@@ -260,13 +290,26 @@ import { ModalComponent } from '../../shared/components/modal/modal.component';
 
             <div class="flex items-center justify-between pt-0.5">
               <span class="text-[10px] text-muted-foreground font-mono">{{ order.createdAt }}</span>
-              <button
-                type="button"
-                (click)="viewReceipt(order)"
-                class="h-7 px-2.5 rounded border border-border bg-muted/50 hover:bg-muted text-[11px] font-medium transition-colors"
-              >
-                Detail Faktur
-              </button>
+              <div class="flex items-center gap-1.5">
+                @if (order.status === 'PENDING') {
+                  <button
+                    type="button"
+                    (click)="approveOrder(order)"
+                    [disabled]="approvingId() === order.id"
+                    class="h-7 px-2.5 rounded bg-emerald-600 hover:bg-emerald-700 text-white text-[11px] font-semibold flex items-center gap-1 transition-colors cursor-pointer disabled:opacity-50 shadow-xs"
+                  >
+                    <app-icon [name]="approvingId() === order.id ? 'refresh' : 'check'" [size]="11" [className]="approvingId() === order.id ? 'animate-spin' : ''"></app-icon>
+                    <span>{{ approvingId() === order.id ? '...' : 'Setujui' }}</span>
+                  </button>
+                }
+                <button
+                  type="button"
+                  (click)="viewReceipt(order)"
+                  class="h-7 px-2.5 rounded border border-border bg-muted/50 hover:bg-muted text-[11px] font-medium transition-colors cursor-pointer"
+                >
+                  Detail Faktur
+                </button>
+              </div>
             </div>
           </div>
         }
@@ -286,15 +329,23 @@ import { ModalComponent } from '../../shared/components/modal/modal.component';
           <div class="rounded-lg border border-border bg-muted/30 p-4 space-y-2">
             <div class="flex items-center justify-between">
               <span class="text-[10px] font-mono text-muted-foreground uppercase tracking-wider">Invoice Reference</span>
-              <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-mono font-semibold text-emerald-600 bg-emerald-500/10 border border-emerald-500/20">
-                SETTLEMENT BERHASIL
-              </span>
+              @if (ord.status === 'PAID') {
+                <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-mono font-semibold text-emerald-600 bg-emerald-500/10 border border-emerald-500/20">
+                  <span class="h-1.5 w-1.5 rounded-full bg-emerald-500"></span>
+                  <span>SETTLEMENT BERHASIL</span>
+                </span>
+              } @else {
+                <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-mono font-semibold text-amber-600 bg-amber-500/10 border border-amber-500/20">
+                  <span class="h-1.5 w-1.5 rounded-full bg-amber-500"></span>
+                  <span>MENUNGGU PEMBAYARAN</span>
+                </span>
+              }
             </div>
             <div class="flex items-center justify-between">
               <span class="text-base font-mono font-bold text-foreground">{{ ord.id }}</span>
               <button
                 (click)="copyToClipboard(ord.id)"
-                class="h-7 px-2.5 rounded border border-border bg-card hover:bg-muted text-xs font-mono transition-colors"
+                class="h-7 px-2.5 rounded border border-border bg-card hover:bg-muted text-xs font-mono transition-colors cursor-pointer"
               >
                 Salin ID
               </button>
@@ -319,7 +370,9 @@ import { ModalComponent } from '../../shared/components/modal/modal.component';
               </div>
               <div>
                 <span class="text-muted-foreground block text-[11px]">Status Akses</span>
-                <span class="font-medium text-emerald-600">Aktif ({{ ord.accessDuration || '180 Hari' }})</span>
+                <span class="font-medium" [ngClass]="ord.status === 'PAID' ? 'text-emerald-600 dark:text-emerald-400' : 'text-amber-600 dark:text-amber-400'">
+                  {{ ord.status === 'PAID' ? 'Aktif (' + (ord.accessDuration || '180 Hari') + ')' : 'Belum Aktif (Menunggu Pembayaran)' }}
+                </span>
               </div>
             </div>
           </div>
@@ -358,11 +411,25 @@ import { ModalComponent } from '../../shared/components/modal/modal.component';
         </div>
       }
 
-      <div modal-footer class="flex items-center justify-end gap-2">
+      <div modal-footer class="flex items-center justify-between w-full">
+        @if (selectedOrder()?.status === 'PENDING') {
+          <button
+            type="button"
+            (click)="approveSelectedOrder()"
+            [disabled]="approvingId() === selectedOrder()?.id"
+            class="h-8 px-4 rounded-md bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold flex items-center gap-1.5 transition-colors cursor-pointer shadow-xs disabled:opacity-50"
+          >
+            <app-icon [name]="approvingId() === selectedOrder()?.id ? 'refresh' : 'check'" [size]="13" [className]="approvingId() === selectedOrder()?.id ? 'animate-spin' : ''"></app-icon>
+            <span>{{ approvingId() === selectedOrder()?.id ? 'Memproses Persetujuan...' : 'Setujui Pembayaran Ini' }}</span>
+          </button>
+        } @else {
+          <div></div>
+        }
+
         <button
           type="button"
           (click)="isReceiptOpen.set(false)"
-          class="h-8 px-4 rounded-md border border-border bg-card hover:bg-muted text-xs font-medium text-foreground transition-colors"
+          class="h-8 px-4 rounded-md border border-border bg-card hover:bg-muted text-xs font-medium text-foreground transition-colors cursor-pointer"
         >
           Tutup
         </button>
@@ -379,6 +446,10 @@ export class OrdersComponent implements OnInit {
 
   isReceiptOpen = signal<boolean>(false);
   selectedOrder = signal<Order | null>(null);
+
+  approvingId = signal<string | null>(null);
+  toastMessage = signal<string | null>(null);
+  toastType = signal<'success' | 'error'>('success');
 
   totalGrossVolume = computed(() => {
     return this.orders()
@@ -439,6 +510,47 @@ export class OrdersComponent implements OnInit {
 
   copyToClipboard(text: string): void {
     navigator.clipboard.writeText(text);
+  }
+
+  showToast(message: string, type: 'success' | 'error' = 'success'): void {
+    this.toastMessage.set(message);
+    this.toastType.set(type);
+    setTimeout(() => {
+      if (this.toastMessage() === message) {
+        this.toastMessage.set(null);
+      }
+    }, 4500);
+  }
+
+  approveOrder(order: Order): void {
+    const targetId = order.realId || order.id;
+    this.approvingId.set(order.id);
+
+    this.adminService.verifyOrder(targetId).subscribe({
+      next: () => {
+        this.approvingId.set(null);
+        // Instantly update local order status to PAID
+        this.orders.update((list) =>
+          list.map((item) => (item.id === order.id ? { ...item, status: 'PAID' as const } : item))
+        );
+        // If receipt modal is open for this order, update selectedOrder as well
+        if (this.selectedOrder()?.id === order.id) {
+          this.selectedOrder.update((curr) => (curr ? { ...curr, status: 'PAID' as const } : null));
+        }
+        this.showToast(`Pembayaran transaksi ${order.id} berhasil disetujui! Hak akses siswa aktif.`);
+      },
+      error: (err) => {
+        this.approvingId.set(null);
+        this.showToast(err?.message || 'Gagal menyetujui transaksi', 'error');
+      },
+    });
+  }
+
+  approveSelectedOrder(): void {
+    const ord = this.selectedOrder();
+    if (ord) {
+      this.approveOrder(ord);
+    }
   }
 
   exportCSV(): void {

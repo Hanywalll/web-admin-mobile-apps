@@ -140,6 +140,7 @@ export interface Voucher {
 
 export interface Order {
   id: string;
+  realId?: string;
   orderNumber?: string;
   order_number?: string;
   userId?: string;
