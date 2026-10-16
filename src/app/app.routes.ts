@@ -7,6 +7,10 @@ import { CMSComponent } from './pages/cms/cms.component';
 import { OrdersComponent } from './pages/orders/orders.component';
 import { UsersComponent } from './pages/users/users.component';
 import { SettingsComponent } from './pages/settings/settings.component';
+import { TryoutsComponent } from './pages/tryouts/tryouts.component';
+import { SupportComponent } from './pages/support/support.component';
+import { TestimonialsComponent } from './pages/testimonials/testimonials.component';
+import { EnrollKeysComponent } from './pages/enroll-keys/enroll-keys.component';
 
 export const routes: Routes = [
   {
@@ -70,6 +74,22 @@ export const routes: Routes = [
       {
         path: 'orders',
         component: OrdersComponent,
+      },
+      {
+        path: 'enroll-keys',
+        component: EnrollKeysComponent,
+      },
+      {
+        path: 'tryouts',
+        component: TryoutsComponent,
+      },
+      {
+        path: 'testimonials',
+        component: TestimonialsComponent,
+      },
+      {
+        path: 'support',
+        component: SupportComponent,
       },
       {
         path: 'users',

@@ -195,6 +195,35 @@ import { CommonModule } from '@angular/common';
           <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" />
         </g>
 
+        <!-- Star -->
+        <g *ngSwitchCase="'star'">
+          <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+        </g>
+
+        <!-- Help Circle / Support -->
+        <g *ngSwitchCase="'help-circle'">
+          <circle cx="12" cy="12" r="10" />
+          <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" />
+          <line x1="12" x2="12.01" y1="17" y2="17" />
+        </g>
+
+        <!-- Award / Trophy / Tryout -->
+        <g *ngSwitchCase="'award'">
+          <circle cx="12" cy="8" r="6" />
+          <polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88" />
+        </g>
+
+        <!-- Key / Enroll Key -->
+        <g *ngSwitchCase="'key'">
+          <path d="m21 2-2 2m-1.5 1.5L14 9l-2-2-4 4a5 5 0 1 0 7 7l4-4 2 2 1.5-1.5M19 4l2 2" />
+          <circle cx="7.5" cy="16.5" r="1.5" />
+        </g>
+
+        <!-- Message Square / Testimonial -->
+        <g *ngSwitchCase="'message-square'">
+          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+        </g>
+
         <!-- External Link -->
         <g *ngSwitchCase="'external-link'">
           <path d="M15 3h6v6" />

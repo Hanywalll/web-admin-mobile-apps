@@ -12,6 +12,10 @@ import {
   Order,
   User,
   ApiResponse,
+  SupportTicket,
+  Testimonial,
+  PracticeStatistic,
+  EnrollKey,
 } from '../models/models';
 
 @Injectable({
@@ -346,6 +350,132 @@ export class AdminService {
 
   toggleUserActive(id: string): Observable<ApiResponse<any>> {
     return this.api.post(`/admin/users/${id}/toggle-active`, {});
+  }
+
+  // --- SUPPORT TICKETS ---
+  getSupportTickets(status?: string): Observable<SupportTicket[]> {
+    const endpoint = status ? `/admin/support?status=${status}` : '/admin/support';
+    return this.api.get<any[]>(endpoint).pipe(
+      map((res) => {
+        if (res && res.data && res.data.length > 0) {
+          return res.data.map((t: any) => ({
+            id: t.id,
+            sessionId: t.session_id || t.sessionId || `SUPPORT-${t.id.substring(0, 8)}`,
+            name: t.user?.name || t.name || 'Siswa KPM',
+            email: t.user?.email || t.email || '-',
+            question: t.question || t.message || '',
+            answer: t.answer,
+            status: (t.status || 'pending').toLowerCase() as any,
+            createdAt: t.created_at ? new Date(t.created_at).toLocaleString('id-ID') : '-',
+            answeredAt: t.answered_at ? new Date(t.answered_at).toLocaleString('id-ID') : undefined,
+          }));
+        }
+        return this.getMockSupportTickets();
+      }),
+      catchError(() => of(this.getMockSupportTickets()))
+    );
+  }
+
+  answerSupportTicket(id: string, answer: string): Observable<ApiResponse<any>> {
+    return this.api.post(`/admin/support/${id}/answer`, { answer });
+  }
+
+  updateSupportStatus(id: string, status: string): Observable<ApiResponse<any>> {
+    return this.api.put(`/admin/support/${id}/status`, { status });
+  }
+
+  deleteSupportTicket(id: string): Observable<ApiResponse<any>> {
+    return this.api.delete(`/admin/support/${id}`);
+  }
+
+  // --- TESTIMONIALS ---
+  getTestimonials(): Observable<Testimonial[]> {
+    return this.api.get<any[]>('/admin/testimonials').pipe(
+      map((res) => {
+        if (res && res.data && res.data.length > 0) {
+          return res.data.map((t: any) => ({
+            id: t.id,
+            userId: t.user_id || t.userId,
+            userName: t.user?.name || t.userName || 'Siswa KPM',
+            userEmail: t.user?.email || t.userEmail,
+            userSchool: t.user?.school_name || t.userSchool || 'KPM Academy',
+            userAvatar: t.user?.avatar || t.userAvatar,
+            content: t.content || '',
+            rating: t.rating || 5,
+            isApproved: t.is_approved ?? t.isApproved ?? true,
+            isActive: t.is_active ?? t.isActive ?? true,
+            createdAt: t.created_at ? new Date(t.created_at).toLocaleDateString('id-ID') : '-',
+            approvedAt: t.approved_at,
+          }));
+        }
+        return this.getMockTestimonials();
+      }),
+      catchError(() => of(this.getMockTestimonials()))
+    );
+  }
+
+  approveTestimonial(id: string): Observable<ApiResponse<any>> {
+    return this.api.post(`/admin/testimonials/${id}/approve`, {});
+  }
+
+  toggleTestimonialActive(id: string): Observable<ApiResponse<any>> {
+    return this.api.post(`/admin/testimonials/${id}/toggle-active`, {});
+  }
+
+  deleteTestimonial(id: string): Observable<ApiResponse<any>> {
+    return this.api.delete(`/admin/testimonials/${id}`);
+  }
+
+  // --- TRYOUT & PRACTICE STATISTICS ---
+  getPracticeStatistics(): Observable<PracticeStatistic[]> {
+    return this.api.get<any[]>('/admin/practice-statistics').pipe(
+      map((res) => {
+        if (res && res.data && res.data.length > 0) {
+          return res.data.map((s: any) => ({
+            id: s.id,
+            userId: s.user_id || s.userId,
+            studentName: s.user?.name || s.studentName || 'Siswa KPM',
+            school: s.user?.school_name || s.school || 'SMA Negeri 1',
+            packageId: s.package_id || s.packageId,
+            packageTitle: s.package?.title || s.packageTitle || 'Simulasi Ujian SNBT & MIPA',
+            totalScore: s.total_score || s.totalScore || 0,
+            correctAnswer: s.correct_answer || s.correctAnswer || 0,
+            wrongAnswer: s.wrong_answer || s.wrongAnswer || 0,
+            status: s.status || 'finished',
+            startedAt: s.started_at ? new Date(s.started_at).toLocaleString('id-ID') : undefined,
+            finishedAt: s.finished_at ? new Date(s.finished_at).toLocaleString('id-ID') : undefined,
+            createdAt: s.created_at ? new Date(s.created_at).toLocaleDateString('id-ID') : '-',
+          }));
+        }
+        return this.getMockPracticeStatistics();
+      }),
+      catchError(() => of(this.getMockPracticeStatistics()))
+    );
+  }
+
+  // --- ENROLLMENT KEYS ---
+  getEnrollKeys(): Observable<EnrollKey[]> {
+    return this.api.get<any[]>('/admin/enroll-keys').pipe(
+      map((res) => {
+        if (res && res.data && res.data.length > 0) {
+          return res.data.map((k: any) => ({
+            id: k.id,
+            orderNumber: k.order_number || k.id,
+            studentName: k.user?.name || k.studentName || 'Siswa KPM',
+            studentEmail: k.user?.email || k.studentEmail || '-',
+            studentPhone: k.user?.phone || k.studentPhone || '-',
+            packageTitle: k.package?.title || k.packageTitle || 'Paket Belajar KPM',
+            packageId: k.package_id || k.packageId,
+            status: (k.payment_status || k.status || 'PAID').toUpperCase() as any,
+            paymentMethod: k.payment_type || k.paymentMethod || 'Midtrans Snap',
+            accessDuration: k.access_duration || '180 Hari',
+            createdAt: k.created_at ? new Date(k.created_at).toLocaleDateString('id-ID') : '-',
+          }));
+        }
+        return this.getMockEnrollKeys();
+      }),
+      catchError(() => of(this.getMockEnrollKeys()))
+    );
   }
 
   // ==========================================
@@ -757,6 +887,165 @@ export class AdminService {
         city: 'Bogor',
         isActive: true,
         createdAt: '2026-01-15',
+      },
+    ];
+  }
+
+  private getMockSupportTickets(): SupportTicket[] {
+    return [
+      {
+        id: 'sup_1',
+        sessionId: 'SUPPORT-88219412',
+        name: 'Ahmad Fauzan',
+        email: 'ahmad.fauzan@gmail.com',
+        question: 'Halo Kak, bagaimana cara mengunduh modul PDF untuk offline di HP?',
+        answer: 'Halo Ahmad! Anda bisa klik ikon download di samping judul modul di aplikasi.',
+        status: 'answered',
+        createdAt: '15/10/2026, 14:20:10',
+        answeredAt: '15/10/2026, 14:35:00',
+      },
+      {
+        id: 'sup_2',
+        sessionId: 'SUPPORT-77319022',
+        name: 'Siti Nurhaliza',
+        email: 'siti.nurhaliza@gmail.com',
+        question: 'Saya sudah transfer via BCA Virtual Account tapi paket belum aktif otomatis.',
+        status: 'pending',
+        createdAt: '16/10/2026, 09:12:44',
+      },
+      {
+        id: 'sup_3',
+        sessionId: 'SUPPORT-99124401',
+        name: 'Budi Santoso',
+        email: 'budi.santoso@gmail.com',
+        question: 'Apakah jadwal Live Class ada rekaman ulangnya jika saya berhalangan hadir?',
+        answer: 'Tentu ada Budi, rekaman kelas akan diunggah ke menu Video Materi maksimal 24 jam setelah sesi selesai.',
+        status: 'resolved',
+        createdAt: '14/10/2026, 16:05:12',
+        answeredAt: '14/10/2026, 16:40:22',
+      },
+    ];
+  }
+
+  private getMockTestimonials(): Testimonial[] {
+    return [
+      {
+        id: 'testi_1',
+        userName: 'Ahmad Fauzan',
+        userSchool: 'SMA Negeri 1 Jakarta',
+        userAvatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100&auto=format&fit=crop&q=80',
+        rating: 5,
+        content: 'Metode penalaran Matematika Nalaria Realistik (MNR) dari Pak Ridwan benar-benar membuka cara berpikir saya. Latihan soalnya sangat prediktif untuk SNBT!',
+        isApproved: true,
+        isActive: true,
+        createdAt: '12/10/2026',
+      },
+      {
+        id: 'testi_2',
+        userName: 'Siti Nurhaliza',
+        userSchool: 'SMA Negeri 3 Surabaya',
+        userAvatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&auto=format&fit=crop&q=80',
+        rating: 5,
+        content: 'Alhamdulillah lolos FK UNAIR berkat bimbingan intensif dan latihan tryout CBT rutin di KPM Academy. Pembahasannya sangat mendalam.',
+        isApproved: true,
+        isActive: true,
+        createdAt: '14/10/2026',
+      },
+      {
+        id: 'testi_3',
+        userName: 'Budi Santoso',
+        userSchool: 'SMA Negeri 8 Bandung',
+        userAvatar: 'https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?w=100&auto=format&fit=crop&q=80',
+        rating: 5,
+        content: 'Aplikasi belajarnya sangat ringan dan lancar. Live class Zoom-nya interaktif, tutornya ramah dan sabar menjawab pertanyaan.',
+        isApproved: false,
+        isActive: true,
+        createdAt: '16/10/2026',
+      },
+    ];
+  }
+
+  private getMockPracticeStatistics(): PracticeStatistic[] {
+    return [
+      {
+        id: 'sess_1',
+        studentName: 'Ahmad Fauzan',
+        school: 'SMA Negeri 1 Jakarta',
+        packageTitle: 'Tryout UTBK TPS & Literasi',
+        totalScore: 845,
+        correctAnswer: 42,
+        wrongAnswer: 8,
+        status: 'finished',
+        startedAt: '15/10/2026, 08:00:00',
+        finishedAt: '15/10/2026, 09:30:00',
+        createdAt: '15/10/2026',
+      },
+      {
+        id: 'sess_2',
+        studentName: 'Siti Nurhaliza',
+        school: 'SMA Negeri 3 Surabaya',
+        packageTitle: 'Paket Intensif SNBT 2026 TPS & Literasi',
+        totalScore: 790,
+        correctAnswer: 38,
+        wrongAnswer: 12,
+        status: 'finished',
+        startedAt: '15/10/2026, 13:00:00',
+        finishedAt: '15/10/2026, 14:30:00',
+        createdAt: '15/10/2026',
+      },
+      {
+        id: 'sess_3',
+        studentName: 'Budi Santoso',
+        school: 'SMA Negeri 8 Bandung',
+        packageTitle: 'Mastering Penalaran Matematika MNR',
+        totalScore: 920,
+        correctAnswer: 46,
+        wrongAnswer: 4,
+        status: 'finished',
+        startedAt: '16/10/2026, 07:30:00',
+        finishedAt: '16/10/2026, 08:45:00',
+        createdAt: '16/10/2026',
+      },
+    ];
+  }
+
+  private getMockEnrollKeys(): EnrollKey[] {
+    return [
+      {
+        id: 'enr_1',
+        orderNumber: 'KPM-20261014-001',
+        studentName: 'Ahmad Fauzan',
+        studentEmail: 'ahmad.fauzan@gmail.com',
+        studentPhone: '081234567890',
+        packageTitle: 'Paket Intensif SNBT 2026 TPS & Literasi',
+        status: 'ACTIVE',
+        paymentMethod: 'BCA Virtual Account',
+        accessDuration: '180 Hari',
+        createdAt: '14/10/2026',
+      },
+      {
+        id: 'enr_2',
+        orderNumber: 'KPM-20261014-002',
+        studentName: 'Siti Nurhaliza',
+        studentEmail: 'siti.nurhaliza@gmail.com',
+        studentPhone: '081298765432',
+        packageTitle: 'Super Intensif Kedokteran & Sains MIPA',
+        status: 'ACTIVE',
+        paymentMethod: 'Mandiri Bill',
+        accessDuration: '180 Hari',
+        createdAt: '14/10/2026',
+      },
+      {
+        id: 'enr_3',
+        orderNumber: 'KPM-20261013-005',
+        studentName: 'Budi Santoso',
+        studentEmail: 'budi.santoso@gmail.com',
+        studentPhone: '081377889900',
+        packageTitle: 'Mastering Penalaran Matematika MNR',
+        status: 'ACTIVE',
+        paymentMethod: 'QRIS Gopay',
+        accessDuration: '365 Hari',
+        createdAt: '13/10/2026',
       },
     ];
   }

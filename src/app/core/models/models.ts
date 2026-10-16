@@ -178,3 +178,61 @@ export interface Order {
   paidAt?: string;
   paid_at?: string;
 }
+
+export interface SupportTicket {
+  id: string;
+  sessionId: string;
+  name: string;
+  email: string;
+  question: string;
+  answer?: string;
+  status: 'pending' | 'answered' | 'resolved' | 'closed';
+  createdAt?: string;
+  answeredAt?: string;
+}
+
+export interface Testimonial {
+  id: string;
+  userId?: string;
+  userName?: string;
+  userEmail?: string;
+  userSchool?: string;
+  userAvatar?: string;
+  content: string;
+  rating: number;
+  isApproved: boolean;
+  isActive: boolean;
+  createdAt?: string;
+  approvedAt?: string;
+}
+
+export interface PracticeStatistic {
+  id: string;
+  userId?: string;
+  studentName?: string;
+  school?: string;
+  packageId?: string;
+  packageTitle?: string;
+  totalScore: number;
+  correctAnswer: number;
+  wrongAnswer: number;
+  unanswered?: number;
+  status: 'in_progress' | 'finished';
+  startedAt?: string;
+  finishedAt?: string;
+  createdAt?: string;
+}
+
+export interface EnrollKey {
+  id: string;
+  orderNumber: string;
+  studentName: string;
+  studentEmail: string;
+  studentPhone?: string;
+  packageTitle: string;
+  packageId?: string;
+  status: 'PAID' | 'ACTIVE';
+  paymentMethod?: string;
+  accessDuration?: string;
+  createdAt?: string;
+}

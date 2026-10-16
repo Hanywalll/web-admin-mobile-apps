@@ -71,6 +71,15 @@ import { IconComponent } from '../../shared/components/icon/icon.component';
             <span>Pesanan & Pembayaran</span>
           </a>
           <a
+            routerLink="/admin/enroll-keys"
+            (click)="closeMobileDrawer()"
+            routerLinkActive="bg-primary/10 text-primary font-semibold"
+            class="flex items-center gap-3 px-3 py-2 rounded-md text-xs text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
+          >
+            <app-icon name="key" [size]="15"></app-icon>
+            <span>Kunci Akses Siswa</span>
+          </a>
+          <a
             routerLink="/admin/users"
             (click)="closeMobileDrawer()"
             routerLinkActive="bg-primary/10 text-primary font-semibold"
@@ -78,6 +87,19 @@ import { IconComponent } from '../../shared/components/icon/icon.component';
           >
             <app-icon name="users" [size]="15"></app-icon>
             <span>Pengguna & Siswa</span>
+          </a>
+
+          <div class="px-2.5 pt-4 pb-1 text-[10px] font-semibold text-muted-foreground uppercase tracking-wider">
+            Akademik & CBT
+          </div>
+          <a
+            routerLink="/admin/tryouts"
+            (click)="closeMobileDrawer()"
+            routerLinkActive="bg-primary/10 text-primary font-semibold"
+            class="flex items-center gap-3 px-3 py-2 rounded-md text-xs text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
+          >
+            <app-icon name="award" [size]="15"></app-icon>
+            <span>Hasil Tryout CBT</span>
           </a>
 
           <div class="px-2.5 pt-4 pb-1 text-[10px] font-semibold text-muted-foreground uppercase tracking-wider">
@@ -136,6 +158,28 @@ import { IconComponent } from '../../shared/components/icon/icon.component';
           >
             <app-icon name="ticket" [size]="15"></app-icon>
             <span>Kupon Diskon</span>
+          </a>
+
+          <div class="px-2.5 pt-4 pb-1 text-[10px] font-semibold text-muted-foreground uppercase tracking-wider">
+            Layanan & Bantuan
+          </div>
+          <a
+            routerLink="/admin/support"
+            (click)="closeMobileDrawer()"
+            routerLinkActive="bg-primary/10 text-primary font-semibold"
+            class="flex items-center gap-3 px-3 py-2 rounded-md text-xs text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
+          >
+            <app-icon name="help-circle" [size]="15"></app-icon>
+            <span>Pusat Bantuan Siswa</span>
+          </a>
+          <a
+            routerLink="/admin/testimonials"
+            (click)="closeMobileDrawer()"
+            routerLinkActive="bg-primary/10 text-primary font-semibold"
+            class="flex items-center gap-3 px-3 py-2 rounded-md text-xs text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
+          >
+            <app-icon name="star" [size]="15"></app-icon>
+            <span>Moderasi Testimoni</span>
           </a>
 
           @if (auth.isSuperAdmin()) {
@@ -211,12 +255,34 @@ import { IconComponent } from '../../shared/components/icon/icon.component';
           </a>
 
           <a
+            routerLink="/admin/enroll-keys"
+            routerLinkActive="bg-primary/10 text-primary font-semibold"
+            class="flex items-center gap-2.5 px-2.5 py-2 rounded-md text-xs text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
+          >
+            <app-icon name="key" [size]="15"></app-icon>
+            <span>Kunci Akses Siswa</span>
+          </a>
+
+          <a
             routerLink="/admin/users"
             routerLinkActive="bg-primary/10 text-primary font-semibold"
             class="flex items-center gap-2.5 px-2.5 py-2 rounded-md text-xs text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
           >
             <app-icon name="users" [size]="15"></app-icon>
             <span>Pengguna & Siswa</span>
+          </a>
+
+          <div class="px-2.5 pt-4 pb-1 text-[10px] font-semibold text-muted-foreground uppercase tracking-wider">
+            Akademik & CBT
+          </div>
+
+          <a
+            routerLink="/admin/tryouts"
+            routerLinkActive="bg-primary/10 text-primary font-semibold"
+            class="flex items-center gap-2.5 px-2.5 py-2 rounded-md text-xs text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
+          >
+            <app-icon name="award" [size]="15"></app-icon>
+            <span>Hasil Tryout CBT</span>
           </a>
 
           <div class="px-2.5 pt-4 pb-1 text-[10px] font-semibold text-muted-foreground uppercase tracking-wider">
@@ -275,6 +341,28 @@ import { IconComponent } from '../../shared/components/icon/icon.component';
           >
             <app-icon name="ticket" [size]="15"></app-icon>
             <span>Kupon Diskon</span>
+          </a>
+
+          <div class="px-2.5 pt-4 pb-1 text-[10px] font-semibold text-muted-foreground uppercase tracking-wider">
+            Layanan & Bantuan
+          </div>
+
+          <a
+            routerLink="/admin/support"
+            routerLinkActive="bg-primary/10 text-primary font-semibold"
+            class="flex items-center gap-2.5 px-2.5 py-2 rounded-md text-xs text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
+          >
+            <app-icon name="help-circle" [size]="15"></app-icon>
+            <span>Pusat Bantuan</span>
+          </a>
+
+          <a
+            routerLink="/admin/testimonials"
+            routerLinkActive="bg-primary/10 text-primary font-semibold"
+            class="flex items-center gap-2.5 px-2.5 py-2 rounded-md text-xs text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
+          >
+            <app-icon name="star" [size]="15"></app-icon>
+            <span>Moderasi Testimoni</span>
           </a>
 
           @if (auth.isSuperAdmin()) {
@@ -412,6 +500,14 @@ export class AdminLayoutComponent {
       this.currentSection.set('Manajemen Konten');
     } else if (url.includes('/orders')) {
       this.currentSection.set('Pesanan & Pembayaran');
+    } else if (url.includes('/enroll-keys')) {
+      this.currentSection.set('Kunci Akses Siswa');
+    } else if (url.includes('/tryouts')) {
+      this.currentSection.set('Hasil Tryout CBT');
+    } else if (url.includes('/support')) {
+      this.currentSection.set('Pusat Bantuan Siswa');
+    } else if (url.includes('/testimonials')) {
+      this.currentSection.set('Moderasi Testimoni');
     } else if (url.includes('/users')) {
       this.currentSection.set('Pengguna & Siswa');
     } else if (url.includes('/settings')) {
