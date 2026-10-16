@@ -215,8 +215,10 @@ import { CommonModule } from '@angular/common';
 
         <!-- Key / Enroll Key -->
         <g *ngSwitchCase="'key'">
-          <path d="m21 2-2 2m-1.5 1.5L14 9l-2-2-4 4a5 5 0 1 0 7 7l4-4 2 2 1.5-1.5M19 4l2 2" />
-          <circle cx="7.5" cy="16.5" r="1.5" />
+          <circle cx="7.5" cy="15.5" r="5.5" />
+          <path d="m21 2-9.6 9.6" />
+          <path d="m15.5 7.5 2.5 2.5" />
+          <path d="m18.5 4.5 2.5 2.5" />
         </g>
 
         <!-- Message Square / Testimonial -->
