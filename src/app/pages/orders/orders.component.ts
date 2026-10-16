@@ -65,19 +65,19 @@ import { ModalComponent } from '../../shared/components/modal/modal.component';
         </div>
 
         <div class="p-4 rounded-lg border border-border bg-card">
-          <div class="text-[11px] text-muted-foreground font-mono uppercase tracking-wider">Transaksi Sukses</div>
+          <div class="text-[11px] text-muted-foreground font-mono uppercase tracking-wider">Transaksi Lunas</div>
           <div class="text-lg font-bold font-mono text-emerald-600 dark:text-emerald-400 mt-1">
-            {{ paidCount() }} Transaksi
+            {{ orders().length }} Transaksi
           </div>
           <div class="text-[10px] text-muted-foreground mt-0.5">100% hak akses teraktivasi</div>
         </div>
 
         <div class="p-4 rounded-lg border border-border bg-card">
-          <div class="text-[11px] text-muted-foreground font-mono uppercase tracking-wider">Menunggu Pembayaran</div>
-          <div class="text-lg font-bold font-mono text-amber-600 dark:text-amber-400 mt-1">
-            {{ pendingCount() }} Transaksi
+          <div class="text-[11px] text-muted-foreground font-mono uppercase tracking-wider">Sistem Verifikasi</div>
+          <div class="text-lg font-bold font-mono text-emerald-600 dark:text-emerald-400 mt-1">
+            Otomatis
           </div>
-          <div class="text-[10px] text-muted-foreground mt-0.5">Menunggu respon gateway</div>
+          <div class="text-[10px] text-muted-foreground mt-0.5">Semua pesanan langsung aktif</div>
         </div>
 
         <div class="p-4 rounded-lg border border-border bg-card">
@@ -111,32 +111,12 @@ import { ModalComponent } from '../../shared/components/modal/modal.component';
           }
         </div>
 
-        <!-- Status Filter Tabs -->
-        <div class="flex items-center gap-1 text-xs">
-          <button
-            type="button"
-            (click)="statusFilter.set('ALL')"
-            [class]="statusFilter() === 'ALL' ? 'bg-zinc-900 text-zinc-50 dark:bg-zinc-100 dark:text-zinc-900 font-semibold' : 'text-muted-foreground hover:text-foreground hover:bg-muted'"
-            class="h-8 px-3 rounded-md transition-colors"
-          >
-            Semua ({{ orders().length }})
-          </button>
-          <button
-            type="button"
-            (click)="statusFilter.set('PAID')"
-            [class]="statusFilter() === 'PAID' ? 'bg-emerald-600/10 text-emerald-600 border border-emerald-500/20 font-semibold' : 'text-muted-foreground hover:text-foreground hover:bg-muted'"
-            class="h-8 px-3 rounded-md transition-colors"
-          >
-            Selesai ({{ paidCount() }})
-          </button>
-          <button
-            type="button"
-            (click)="statusFilter.set('PENDING')"
-            [class]="statusFilter() === 'PENDING' ? 'bg-amber-600/10 text-amber-600 border border-amber-500/20 font-semibold' : 'text-muted-foreground hover:text-foreground hover:bg-muted'"
-            class="h-8 px-3 rounded-md transition-colors"
-          >
-            Pending ({{ pendingCount() }})
-          </button>
+        <!-- Order Count Indicator -->
+        <div class="flex items-center gap-2 text-xs text-muted-foreground font-mono">
+          <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-muted text-foreground font-medium">
+            <span class="h-2 w-2 rounded-full bg-emerald-500"></span>
+            <span>Total: {{ filteredOrders().length }} Transaksi Disetujui</span>
+          </span>
         </div>
       </div>
 
@@ -151,7 +131,6 @@ import { ModalComponent } from '../../shared/components/modal/modal.component';
                 <th class="px-4 py-3 font-medium">Paket Belajar</th>
                 <th class="px-4 py-3 font-medium">Metode</th>
                 <th class="px-4 py-3 font-medium">Nominal</th>
-                <th class="px-4 py-3 font-medium">Status</th>
                 <th class="px-4 py-3 font-medium">Waktu Transaksi</th>
                 <th class="px-4 py-3 font-medium text-right">Aksi</th>
               </tr>
@@ -201,21 +180,6 @@ import { ModalComponent } from '../../shared/components/modal/modal.component';
                     Rp {{ order.amount | number }}
                   </td>
 
-                  <!-- Status -->
-                  <td class="px-4 py-3">
-                    @if (order.status === 'PAID') {
-                      <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded text-[11px] font-mono font-medium text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 border border-emerald-500/20">
-                        <span class="h-1.5 w-1.5 rounded-full bg-emerald-500"></span>
-                        <span>SETTLED</span>
-                      </span>
-                    } @else {
-                      <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded text-[11px] font-mono font-medium text-amber-600 dark:text-amber-400 bg-amber-500/10 border border-amber-500/20">
-                        <span class="h-1.5 w-1.5 rounded-full bg-amber-500"></span>
-                        <span>PENDING</span>
-                      </span>
-                    }
-                  </td>
-
                   <!-- Timestamp -->
                   <td class="px-4 py-3 text-muted-foreground font-mono text-[11px]">
                     {{ order.createdAt }}
@@ -236,9 +200,9 @@ import { ModalComponent } from '../../shared/components/modal/modal.component';
                 </tr>
               } @empty {
                 <tr>
-                  <td colspan="8" class="text-center py-12 text-muted-foreground">
+                  <td colspan="7" class="text-center py-12 text-muted-foreground">
                     <p class="text-xs font-medium text-foreground">Tidak ada transaksi ditemukan</p>
-                    <p class="text-[11px] text-muted-foreground mt-0.5">Coba sesuaikan kata kunci atau filter status</p>
+                    <p class="text-[11px] text-muted-foreground mt-0.5">Coba sesuaikan kata kunci pencarian</p>
                   </td>
                 </tr>
               }
@@ -257,15 +221,9 @@ import { ModalComponent } from '../../shared/components/modal/modal.component';
                 <div class="text-xs font-medium text-foreground mt-0.5">{{ order.studentName }}</div>
                 <div class="text-[10px] text-muted-foreground">{{ order.school }}</div>
               </div>
-              @if (order.status === 'PAID') {
-                <span class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[10px] font-mono text-emerald-600 bg-emerald-500/10 border border-emerald-500/20">
-                  <span>PAID</span>
-                </span>
-              } @else {
-                <span class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[10px] font-mono text-amber-600 bg-amber-500/10 border border-amber-500/20">
-                  <span>PENDING</span>
-                </span>
-              }
+              <span class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[10px] font-mono text-emerald-600 bg-emerald-500/10 border border-emerald-500/20">
+                <span>SETTLED</span>
+              </span>
             </div>
 
             <div class="text-xs border-y border-border py-2 space-y-1">
@@ -304,17 +262,10 @@ import { ModalComponent } from '../../shared/components/modal/modal.component';
           <div class="rounded-lg border border-border bg-muted/30 p-4 space-y-2">
             <div class="flex items-center justify-between">
               <span class="text-[10px] font-mono text-muted-foreground uppercase tracking-wider">Invoice Reference</span>
-              @if (ord.status === 'PAID') {
-                <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-mono font-semibold text-emerald-600 bg-emerald-500/10 border border-emerald-500/20">
-                  <span class="h-1.5 w-1.5 rounded-full bg-emerald-500"></span>
-                  <span>SETTLEMENT BERHASIL</span>
-                </span>
-              } @else {
-                <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-mono font-semibold text-amber-600 bg-amber-500/10 border border-amber-500/20">
-                  <span class="h-1.5 w-1.5 rounded-full bg-amber-500"></span>
-                  <span>MENUNGGU PEMBAYARAN</span>
-                </span>
-              }
+              <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-mono font-semibold text-emerald-600 bg-emerald-500/10 border border-emerald-500/20">
+                <span class="h-1.5 w-1.5 rounded-full bg-emerald-500"></span>
+                <span>SETTLEMENT RESMI TERVERIFIKASI</span>
+              </span>
             </div>
             <div class="flex items-center justify-between">
               <span class="text-base font-mono font-bold text-foreground">{{ ord.id }}</span>
@@ -345,8 +296,8 @@ import { ModalComponent } from '../../shared/components/modal/modal.component';
               </div>
               <div>
                 <span class="text-muted-foreground block text-[11px]">Status Akses</span>
-                <span class="font-medium" [ngClass]="ord.status === 'PAID' ? 'text-emerald-600 dark:text-emerald-400' : 'text-amber-600 dark:text-amber-400'">
-                  {{ ord.status === 'PAID' ? 'Aktif (' + (ord.accessDuration || '180 Hari') + ')' : 'Belum Aktif (Menunggu Pembayaran)' }}
+                <span class="font-medium text-emerald-600 dark:text-emerald-400">
+                  Aktif ({{ ord.accessDuration || '180 Hari' }})
                 </span>
               </div>
             </div>
@@ -403,7 +354,6 @@ export class OrdersComponent implements OnInit {
 
   orders = signal<Order[]>([]);
   searchQuery = signal<string>('');
-  statusFilter = signal<'ALL' | 'PAID' | 'PENDING'>('ALL');
 
   isReceiptOpen = signal<boolean>(false);
   selectedOrder = signal<Order | null>(null);
@@ -412,33 +362,24 @@ export class OrdersComponent implements OnInit {
   toastType = signal<'success' | 'error'>('success');
 
   totalGrossVolume = computed(() => {
-    return this.orders()
-      .filter((o) => o.status === 'PAID')
-      .reduce((sum, o) => sum + (o.amount || 0), 0);
+    return this.orders().reduce((sum, o) => sum + (o.amount || 0), 0);
   });
 
   paidCount = computed(() => {
-    return this.orders().filter((o) => o.status === 'PAID').length;
-  });
-
-  pendingCount = computed(() => {
-    return this.orders().filter((o) => o.status === 'PENDING').length;
+    return this.orders().length;
   });
 
   averageOrderValue = computed(() => {
-    const paid = this.paidCount();
-    if (paid === 0) return 0;
-    return Math.round(this.totalGrossVolume() / paid);
+    const total = this.orders().length;
+    if (total === 0) return 0;
+    return Math.round(this.totalGrossVolume() / total);
   });
 
   filteredOrders = computed(() => {
     const q = this.searchQuery().trim().toLowerCase();
-    const sf = this.statusFilter();
+    if (!q) return this.orders();
 
     return this.orders().filter((ord) => {
-      if (sf !== 'ALL' && ord.status !== sf) return false;
-      if (!q) return true;
-
       const invoice = (ord.id || '').toLowerCase();
       const student = (ord.studentName || '').toLowerCase();
       const school = (ord.school || '').toLowerCase();
